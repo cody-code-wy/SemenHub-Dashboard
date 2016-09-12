@@ -7,9 +7,8 @@ class CreateAddresses < ActiveRecord::Migration[5.0]
       t.string :city
       t.string :region
       t.string :alpha_2, limit: 2
-      t.timestamps
 
-      t.belongs_to :country, foreign_key: :alpha_2, primary_key: :alpha_2
+      t.timestamps
     end
   end
 end

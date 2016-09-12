@@ -10,7 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160908182015) do
+ActiveRecord::Schema.define(version: 20160910131955) do
+
+  create_table "addresses", force: :cascade do |t|
+    t.string   "line1"
+    t.string   "line2"
+    t.string   "postal_code"
+    t.string   "city"
+    t.string   "region"
+    t.string   "alpha_2",     limit: 2
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
 
   create_table "countries", force: :cascade do |t|
     t.string   "name"

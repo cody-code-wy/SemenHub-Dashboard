@@ -6,4 +6,5 @@ class User < ApplicationRecord
   has_one :commission, class_name: 'Commission' # class_name required due to rails bug
 
   has_many :purchases
+  has_many :animals, foreign_key: 'owner_id'
 end

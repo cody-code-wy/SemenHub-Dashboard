@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  registration_type: 1
+  registration: MyString
+  name: MyString
+  breed: one
+
+two:
+  registration_type: 1
+  registration: MyString
+  name: MyString
+  breed: two

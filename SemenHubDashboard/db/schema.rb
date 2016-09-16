@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160914194847) do
+ActiveRecord::Schema.define(version: 20160916073651) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "line1"
@@ -21,6 +21,12 @@ ActiveRecord::Schema.define(version: 20160914194847) do
     t.string   "alpha_2",     limit: 2
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
+  end
+
+  create_table "breeds", force: :cascade do |t|
+    t.string   "breed_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "commissions", force: :cascade do |t|

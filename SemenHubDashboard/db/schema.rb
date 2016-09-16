@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160916082138) do
+ActiveRecord::Schema.define(version: 20160916111939) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "line1"
@@ -54,6 +54,20 @@ ActiveRecord::Schema.define(version: 20160916082138) do
     t.string   "alpha_3",    limit: 3, default: ""
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
+  end
+
+  create_table "inventory_transactions", force: :cascade do |t|
+    t.integer  "quantity"
+    t.boolean  "private"
+    t.integer  "semen_type"
+    t.decimal  "price_per_unit"
+    t.integer  "semen_count"
+    t.integer  "animal_id"
+    t.integer  "storageFacility_id"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.index ["animal_id"], name: "index_inventory_transactions_on_animal_id"
+    t.index ["storageFacility_id"], name: "index_inventory_transactions_on_storageFacility_id"
   end
 
   create_table "purchases", force: :cascade do |t|

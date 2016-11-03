@@ -7,4 +7,8 @@ class User < ApplicationRecord
 
   has_many :purchases
   has_many :animals, foreign_key: 'owner_id'
+
+  validates_presence_of :first_name, :last_name, :email, :phone_primary
+
+  validates_uniqueness_of :email
 end

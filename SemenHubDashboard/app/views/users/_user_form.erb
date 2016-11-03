@@ -1,0 +1,78 @@
+<%= form_for @user do |f| %>
+  <div>
+    <%= f.label :first_name, get_field_errors(@user, :first_name) %>
+    <%= f.text_field :first_name %>
+  </div>
+  <div>
+    <%= f.label :last_name, get_field_errors(@user, :last_name) %>
+    <%= f.text_field :last_name %>
+  </div>
+  <div class="optional">
+    <%= f.label :spouse_name, get_field_errors(@user, :spouse_name) %>
+    <%= f.text_field :spouse_name %>
+    <%= f.label :spouse_name, "If you would like your spouse to be able to call SemenHub on your behalf" %>
+  </div>
+  <div>
+    <%= f.label :email, get_field_errors(@user, :email, "email address") %>
+    <%= f.text_field :email %>
+  </div>
+  <div>
+    <%= f.label :phone_primary, "Phone number" %>
+    <%= f.text_field :phone_primary %>
+  </div>
+  <div class="optional">
+    <%= f.label :phone_secondary, "Secondary phone number" %>
+    <%= f.text_field :phone_secondary %>
+  </div>
+  <div class="optional">
+    <%= f.label :website %>
+    <%= f.text_field :website %>
+  </div>
+  <div id="mailing_address">
+    <%= f.label :mailing_address %>
+    <%= f.fields_for :mailing_address, @user.mailing_address do |addr| %>
+      <%= render "address", addr: addr, model: @user.mailing_address %>
+    <% end %>
+  </div>
+  <div id="billing_address">
+    <%= f.label :billing_address %>
+    <%= f.fields_for :billing_address, @user.billing_address do |addr| %>
+      <%= addr.fields_for :options do |opts| %>
+        <div>
+          <%= opts.label :use_other, "Same as mailing address" %>
+          <%= opts.radio_button :use_other, :mailing, checked: get_billing_address_option_mailing %>
+        </div>
+        <div>
+          <%= opts.label :use_other, "Use different billing address" %>
+          <%= opts.radio_button :use_other, :custom, checked: get_billing_address_option_custom %>
+        </div>
+      <% end %>
+      <%= render "address", addr: addr, model: @user.billing_address %>
+    <% end %>
+  </div>
+  <div id="payee_address" class="optional">
+    <%= f.label :payee_address, "Payee address (this can be added later)" %>
+    <%= f.fields_for :payee_address, @user.payee_address do |addr| %>
+      <%= addr.fields_for :options do |opts| %>
+        <div>
+          <%= opts.label :use_other, "No payee address" %>
+          <%= opts.radio_button :use_other, false, checked: get_payee_address_option_false %>
+        </div>
+        <div>
+          <%= opts.label :use_other, "Use Mailing address" %>
+          <%= opts.radio_button :use_other, :mailing, checked: get_payee_address_option_mailing %>
+        </div>
+        <div>
+          <%= opts.label :use_other, "Use Billing address" %>
+          <%= opts.radio_button :use_other, :billing, checked: get_payee_address_option_billing %>
+        </div>
+        <div>
+          <%= opts.label :use_other, "Use different payee address" %>
+          <%= opts.radio_button :use_other, :custom, checked: get_payee_address_option_custom %>
+        </div>
+      <% end %>
+      <%= render "address", addr: addr, model: @user.payee_address %>
+    <% end %>
+  </div>
+  <%= f.submit %>
+<% end %>

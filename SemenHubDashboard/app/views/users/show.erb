@@ -1,0 +1,23 @@
+<div>
+  <%= link_to "edit", edit_user_path(@user) %>
+</div>
+<div>
+  <%= @user.first_name %>
+  <%= @user.last_name %>
+</div>
+<div>
+  Spouse: <%= @user.spouse_name %>
+</div>
+<div>
+  Primary Phone: <%= @user.phone_primary %>
+  Other Phone: <%= @user.phone_secondary %>
+</div>
+<div>
+  Email: <%= @user.email %>
+</div>
+<div>
+  Website: <%= @user.website %>
+</div>
+<%= render 'address_show', addr_label: "Mailing Address", addr: @user.mailing_address %>
+<%= render 'address_show', addr_label: "Billing Address", addr: @user.billing_address %>
+<%= render 'address_show', addr_label: "Payee Address", addr: @user.payee_address if @user.payee_address %>

@@ -1,0 +1,2 @@
+module StorageFacilitiesHelper
+end

@@ -1,0 +1,16 @@
+<div>
+  <%= link_to :edit, edit_storage_facility_path(@facility) %>
+</div>
+<%= render 'address_show', addr: @facility.address %>
+<div>
+  Phone Number: <%= @facility.phone_number %>
+</div>
+<div>
+  Webside: <%= @facility.website %>
+</div>
+<div>
+  Storage Fee: <%= @facility.storage_fee %>
+</div>
+<div>
+  Release Fee: <%= @facility.release_fee %>
+</div>

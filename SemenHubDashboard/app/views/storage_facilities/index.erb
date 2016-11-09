@@ -1,0 +1,23 @@
+<%= link_to "Create Facility", new_storage_facility_path %>
+<table>
+  <thead>
+  <tr>
+    <th>Profile</th>
+    <th>Phone Number</th>
+    <th>Website</th>
+    <th>Storage Fee</th>
+    <th>Release Fee</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @facilities.each do |facility| %>
+      <tr>
+        <td><%= link_to "Show Profile", facility %></td>
+        <td><%= facility.phone_number %></td>
+        <td><%= facility.website %></td>
+        <td><%= facility.storage_fee %></td>
+        <td><%= facility.release_fee %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

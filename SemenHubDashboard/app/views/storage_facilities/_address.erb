@@ -1,0 +1,27 @@
+<div class="address">
+  <div>
+    <%= addr.label :line1, get_field_errors(model,:line1) %>
+    <%= addr.text_field :line1 %>
+  </div>
+  <div class="optional">
+    <%= addr.label :line2 %>
+    <%= addr.text_field :line2 %>
+  </div>
+  <div>
+    <%= addr.label :postal_code, get_field_errors(model,:postal_code) %>
+    <%= addr.text_field :postal_code %>
+  </div>
+  <div>
+    <%= addr.label :city, get_field_errors(model,:city) %>
+    <%= addr.text_field :city %>
+  </div>
+  <div>
+    <%= addr.label :region, get_field_errors(model,:region,"State/Provence") %>
+    <%= addr.text_field :region %>
+  </div>
+  <div>
+    <%= addr.label :alpha_2, "United States (other countrys are not yet supported)" %>
+    <%= addr.hidden_field :alpha_2, value: 'us' %>
+    <%# TODO add country drop down (built form db countrys table) %>
+  </div>
+</div>

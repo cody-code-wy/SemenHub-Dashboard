@@ -1,6 +1,9 @@
 <div>
   <%= link_to :edit, edit_storage_facility_path(@facility) %>
 </div>
+<div>
+  <%= link_to "delete", @facility, method: :delete, data: {confirm: 'Are you sure you want to delete this facility'} %>
+</div>
 <%= render 'address_show', addr: @facility.address %>
 <div>
   Phone Number: <%= @facility.phone_number %>

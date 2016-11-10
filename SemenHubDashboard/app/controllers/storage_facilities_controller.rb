@@ -43,6 +43,12 @@ class StorageFacilitiesController < ApplicationController
 
   end
 
+  def destroy
+    @facility = StorageFacility.find(params[:id])
+    @facility.destroy
+    redirect_to StorageFacility
+  end
+
   protected
 
   def facility_params

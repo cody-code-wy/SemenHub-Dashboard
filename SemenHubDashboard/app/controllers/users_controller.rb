@@ -43,6 +43,12 @@ class UsersController < ApplicationController
     end
   end
 
+  def destroy
+    @user = User.find(params[:id])
+    @user.destroy
+    redirect_to User
+  end
+
   protected
 
   def put_address_in_user(user)

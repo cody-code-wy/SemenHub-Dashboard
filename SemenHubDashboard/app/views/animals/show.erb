@@ -1,0 +1,21 @@
+<div>
+  <%= link_to 'Edit Animal', edit_animal_path(@animal) %>
+</div>
+<div>
+  <%= link_to 'Remove Animal', @animal, method: :delete, data: { confirm: 'Are you sure you want to remove this animal?' } %>
+</div>
+<div>
+  <%= @animal.breed.breed_name %>
+</div>
+<div>
+  <%= @animal.name %>
+</div>
+<div>
+  <%= @animal.registration %>
+</div>
+<div>
+  <%= @animal.registration_type %>
+</div>
+<div>
+  <%= @animal.owner.first_name %>
+</div>

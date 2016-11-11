@@ -12,6 +12,10 @@ class AnimalsController < ApplicationController
     @animal = Animal.new
   end
 
+  def edit
+    @animal = Animal.find(params[:id])
+  end
+
   def create
     @animal = Animal.new(animal_params)
 

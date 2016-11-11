@@ -26,6 +26,12 @@ class AnimalsController < ApplicationController
     end
   end
 
+  def destroy
+    @animal = Animal.find(params[:id])
+    @animal.destroy
+    redirect_to Animal
+  end
+
   protected
 
   def animal_params

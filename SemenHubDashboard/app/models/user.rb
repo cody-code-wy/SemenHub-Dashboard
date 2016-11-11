@@ -11,4 +11,8 @@ class User < ApplicationRecord
   validates_presence_of :first_name, :last_name, :email, :phone_primary
 
   validates_uniqueness_of :email
+
+  def to_s
+    "#{first_name} #{last_name}"
+  end
 end

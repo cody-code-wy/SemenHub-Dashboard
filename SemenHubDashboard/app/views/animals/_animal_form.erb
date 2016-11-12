@@ -13,11 +13,42 @@
     </div>
     <div>
       <%= a.label :owner, get_field_errors(@animal, :owner) %>
-      <%= a.collection_select :owner, User.all, :to_s, :to_s, :include_blank => true %>
+      <%= a.collection_select :owner, User.all, :id, :to_s, include_blank: true %>
     </div>
     <div>
-      <%= a.label :breed, get_field_errors(@animal, :breed) %>
-      <%= a.collection_select :breed, Breed.all, :to_s, :to_s, :include_blank => true %>
+      <%= a.fields_for :breed, @animal.breed do |breed| %>
+        <div>
+          <%= breed.label :breed_id, get_field_errors(@animal, :breed) %>
+          <%= breed.collection_select :breed_id, Breed.all, :breed_name, :breed_name %>
+        </div>
+      <% end %>
     </div>
     <%= a.submit %>
 <% end %>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+
+    $("#animal_breed_breed_id").customComboBox({
+
+      tipText : "Enter Custom Breed",
+
+      tipClass : "mytipclass",
+
+      allowed : /[A-Za-z0-9\$\.\s]/,
+
+      notallowed : /[\<\>\\]/,
+
+      index : 'first',
+    });
+
+    $("form").find('input').on('click',function(e) {
+      var sel = $(e.currentTarget).prev('select');
+      var name = sel.attr('name').toUpperCase();
+      var val = sel.find('option:selected').val();
+      $("#result").text(name+" combo box value is " + val);
+    });
+
+
+  });
+</script>

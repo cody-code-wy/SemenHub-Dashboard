@@ -3,6 +3,7 @@
   <thead>
   <tr>
     <th>Owner Profile</th>
+    <th>Animal Profile</th>
     <th>Breed</th>
     <th>Registration Type</th>
     <th>Registration</th>
@@ -13,6 +14,7 @@
   <% @animals.each do |animal| %>
       <tr>
         <td><%= link_to 'Owner Profile', animal.owner %></td>
+        <td><%= link_to 'Animal Profile', animal %></td>
         <td><%= animal.breed.breed_name %></td>
         <td><%= animal.registration_type %></td>
         <td><%= animal.registration %></td>

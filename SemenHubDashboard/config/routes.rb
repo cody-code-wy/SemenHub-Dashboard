@@ -4,4 +4,6 @@ Rails.application.routes.draw do
   resources :users
 
   resources :storage_facilities
+
+  resources :animals
 end

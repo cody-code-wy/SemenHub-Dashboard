@@ -1,0 +1,23 @@
+<%= link_to 'Add Animal', new_animal_path %>
+<table>
+  <thead>
+  <tr>
+    <th>Owner Profile</th>
+    <th>Breed</th>
+    <th>Registration Type</th>
+    <th>Registration</th>
+    <th>Name</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @animals.each do |animal| %>
+      <tr>
+        <td><%= link_to 'Owner Profile', animal.owner %></td>
+        <td><%= animal.breed.breed_name %></td>
+        <td><%= animal.registration_type %></td>
+        <td><%= animal.registration %></td>
+        <td><%= animal.name %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

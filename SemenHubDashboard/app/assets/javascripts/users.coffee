@@ -24,3 +24,29 @@ $(document).on 'turbolinks:load', ->
         payee_addr.show()
       else
         payee_addr.hide()
+
+  # Show
+
+  $('.edit-commission').on 'click', (event) ->
+    original = $('.commission > .percent').text()
+    $('.commission > .percent').text ''
+    $('<input type="text" name="commission-percent">').appendTo($('.commission > .percent')).val(original)
+    $('.edit-commission').hide()
+    save_button = $('<span>').addClass("save-commission").addClass("link").text 'Save'
+    save_button.appendTo($('.commission'))
+    save_button.on 'click', (event) ->
+      $.ajax
+        url: window.location.href + "/commission"
+        dataType: "json"
+        type: "POST"
+        data: {commission_percent: $('input[name="commission-percent"]').val()}
+        error: (xhr, textStatus, error) -> 
+          alert "an error occured \"" + error + "\""
+        success: (data, textStatus, xhr) ->
+          $('input[name="commission-percent"]').remove()
+          $('.save-commission').remove()
+          $('.reset-commission').remove()
+          $('.cancel-button').remove()
+          $('.edit-commission').show()
+          $('.commission > .percent').text(data.commission_percent)
+

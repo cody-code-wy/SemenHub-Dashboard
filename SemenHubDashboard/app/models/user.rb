@@ -15,4 +15,8 @@ class User < ApplicationRecord
   def get_name
     "#{first_name} #{last_name}"
   end
+
+  def commission
+    super || Commission.new(user: self, commission_percent: 10) # Default value
+  end
 end

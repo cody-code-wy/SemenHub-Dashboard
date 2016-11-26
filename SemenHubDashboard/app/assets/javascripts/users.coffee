@@ -33,6 +33,7 @@ $(document).on 'turbolinks:load', ->
     $('<input type="text" name="commission-percent">').appendTo($('.commission > .percent')).val(original)
     $('.edit-commission').hide()
     save_button = $('<span>').addClass("save-commission").addClass("link").text 'Save'
+    cancel_button = $('<span>').addClass("cancel-button").addClass("link").text 'Cancel'
     save_button.appendTo($('.commission'))
     save_button.on 'click', (event) ->
       $.ajax
@@ -49,4 +50,12 @@ $(document).on 'turbolinks:load', ->
           $('.cancel-button').remove()
           $('.edit-commission').show()
           $('.commission > .percent').text(data.commission_percent)
+    cancel_button.appendTo($('.commission'))
+    cancel_button.on 'click', (event) ->
+      $('.save-commission').remove()
+      $('.reset-commission').remove()
+      $('.cancel-button').remove()
+      $('input[name="commission-percent"]')
+      $('.edit-commission').show()
+      $('.commission > .percent').text(original)
 

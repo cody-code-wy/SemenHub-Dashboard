@@ -33,6 +33,7 @@ $(document).on 'turbolinks:load', ->
     $('<input type="text" name="commission-percent">').appendTo($('.commission > .percent')).val(original)
     $('.edit-commission').hide()
     save_button = $('<span>').addClass("save-commission").addClass("link").text 'Save'
+    reset_button = $('<span>').addClass("reset-commission").addClass("link").text 'Use Default'
     cancel_button = $('<span>').addClass("cancel-button").addClass("link").text 'Cancel'
     save_button.appendTo($('.commission'))
     save_button.on 'click', (event) ->
@@ -42,6 +43,21 @@ $(document).on 'turbolinks:load', ->
         type: "POST"
         data: {commission_percent: $('input[name="commission-percent"]').val()}
         error: (xhr, textStatus, error) -> 
+          alert "an error occured \"" + error + "\""
+        success: (data, textStatus, xhr) ->
+          $('input[name="commission-percent"]').remove()
+          $('.save-commission').remove()
+          $('.reset-commission').remove()
+          $('.cancel-button').remove()
+          $('.edit-commission').show()
+          $('.commission > .percent').text(data.commission_percent)
+    reset_button.appendTo($('.commission'))
+    reset_button.on 'click', (event) ->
+      $.ajax
+        url: window.location.href + "/commission"
+        dataType: "json"
+        type: "DELETE"
+        error: (xhr, textStatus, error) ->
           alert "an error occured \"" + error + "\""
         success: (data, textStatus, xhr) ->
           $('input[name="commission-percent"]').remove()

@@ -23,6 +23,13 @@ class CommissionsController < ApplicationController
     end
   end
 
+  def destroy #API
+    @user = User.find(params[:user])
+    @user.commission.destroy
+    @user = User.find(params[:user]) #Allows AR to get a new instance, so default commission can exist
+    render json: @user.commission
+  end
+
   private
 
   def commission_params

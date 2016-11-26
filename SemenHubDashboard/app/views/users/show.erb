@@ -7,8 +7,8 @@
 <div>
   <%= link_to "delete", @user, method: :delete, data: { confirm: "Are you sure you want to delete #{@user.first_name}'s account?" } %>
 </div>
-<div>
-  <%= @user.commission ? @user.commission.commission_percent : "10" %>% Commission 
+<div class="commission">
+  <span class="percent"><%= @user.commission.commission_percent %></span>% Commission
 </div>
 <div>
   <%= @user.first_name %>

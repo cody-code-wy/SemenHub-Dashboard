@@ -10,4 +10,6 @@ Rails.application.routes.draw do
   resources :registrations
 
   resources :inventory_transactions, except: :destroy
+
+  get '/commissions', to: 'commissions#index'
 end

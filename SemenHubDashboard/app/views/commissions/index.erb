@@ -1,0 +1,23 @@
+<table>
+  <% @groups.each do |group| %>
+    <tr>
+      <td>
+        <%= group.commission_percent %>%
+      </td>
+      <% @users[group.commission_percent].each do |user| %>
+        <td>
+          <%= link_to "#{user.first_name} #{user.last_name}", user %>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+  <tr>
+    <td>Default (10%)</td>
+    <% @defaults.each do |user| %>
+      <td>
+        <%= link_to "#{user.first_name} #{user.last_name}", user %>
+      </td>
+    <% end %>
+  </tr>
+</table>
+

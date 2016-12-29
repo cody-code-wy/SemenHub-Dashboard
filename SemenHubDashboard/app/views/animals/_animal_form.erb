@@ -25,30 +25,3 @@
     </div>
     <%= a.submit %>
 <% end %>
-
-<script type="text/javascript">
-  $(document).ready(function() {
-
-    $("#animal_breed_breed_id").customComboBox({
-
-      tipText : "Enter Custom Breed",
-
-      tipClass : "mytipclass",
-
-      allowed : /[A-Za-z0-9\$\.\s]/,
-
-      notallowed : /[\<\>\\]/,
-
-      index : 'first',
-    });
-
-    $("form").find('input').on('click',function(e) {
-      var sel = $(e.currentTarget).prev('select');
-      var name = sel.attr('name').toUpperCase();
-      var val = sel.find('option:selected').val();
-      $("#result").text(name+" combo box value is " + val);
-    });
-
-
-  });
-</script>

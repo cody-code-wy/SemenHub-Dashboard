@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161228033756) do
+ActiveRecord::Schema.define(version: 20161229172327) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "line1"
@@ -27,11 +27,9 @@ ActiveRecord::Schema.define(version: 20161228033756) do
     t.string   "name"
     t.integer  "owner_id"
     t.integer  "breed_id"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
-    t.integer  "registration_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["breed_id"], name: "index_animals_on_breed_id"
-    t.index ["registration_id"], name: "index_animals_on_registration_id"
   end
 
   create_table "breeds", force: :cascade do |t|
@@ -106,6 +104,8 @@ ActiveRecord::Schema.define(version: 20161228033756) do
     t.integer "registrar_id"
     t.string  "registration"
     t.text    "note"
+    t.integer "animal_id"
+    t.index ["animal_id"], name: "index_registrations_on_animal_id"
     t.index ["registrar_id"], name: "index_registrations_on_registrar_id"
   end
 

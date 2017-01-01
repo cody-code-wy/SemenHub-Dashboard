@@ -15,13 +15,5 @@
       <%= a.label :owner, get_field_errors(@animal, :owner) %>
       <%= a.collection_select :owner, User.all, :id, :to_s, include_blank: true %>
     </div>
-    <div>
-      <%= a.fields_for :breed, @animal.breed do |breed| %>
-        <div>
-          <%= breed.label :breed_id, get_field_errors(@animal, :breed) %>
-          <%= breed.collection_select :breed_id, Breed.all, :breed_name, :breed_name %>
-        </div>
-      <% end %>
-    </div>
     <%= a.submit %>
 <% end %>

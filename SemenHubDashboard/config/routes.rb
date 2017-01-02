@@ -6,4 +6,7 @@ Rails.application.routes.draw do
   resources :storage_facilities
 
   resources :animals
+
+  resources :registrations
+  get 'registrations/:id/add_animal', to: 'registrations#add_animal'
 end

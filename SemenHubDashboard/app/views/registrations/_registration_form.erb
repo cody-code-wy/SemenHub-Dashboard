@@ -1,0 +1,17 @@
+<%= form_for @reg do |r| %>
+    <div>
+        <%= r.label :registrar %>
+        <%= r.collection_select :registrar_id, Registrar.all, :id, :name, include_blank: true %>
+    </div>
+    <div>
+        <%= r.label :registration %>
+        <%= r.text_field :registration %>
+    </div>
+    <div>
+        <%= r.label :note %>
+        <%= r.text_area :note %>
+    </div>
+    <div>
+        <%= r.submit %>
+    </div>
+<% end %>

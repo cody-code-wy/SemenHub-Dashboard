@@ -1,0 +1,20 @@
+<%= link_to 'Add Registration', new_registration_path %>
+<table>
+  <thead>
+  <tr>
+    <th>Registrar Link</th>
+    <th>Registrar Name</th>
+    <th>Registration</th>
+    <th>Note</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @regs.each do |reg| %>
+      <tr>
+        <td><%= link_to 'Registrar Profile', reg.registrar %></td>
+        <td><%= reg.registration %></td>
+        <td><%= reg.note %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

@@ -4,14 +4,6 @@
       <%= a.text_field :name %>
     </div>
     <div>
-      <%= a.label :registration, get_field_errors(@animal, :registration) %>
-      <%= a.text_field :registration %>
-    </div>
-    <div>
-      <%= a.label :registration_type, get_field_errors(@animal, :registration_type) %>
-      <%= a.text_field :registration_type %>
-    </div>
-    <div>
       <%= a.label :owner, get_field_errors(@animal, :owner) %>
       <%= a.collection_select :owner, User.all, :id, :to_s, include_blank: true %>
     </div>

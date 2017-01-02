@@ -1,6 +1,6 @@
 class Registration < ApplicationRecord
 
   belongs_to :registrar
-  has_many :animals
+  belongs_to :animal
 
 end

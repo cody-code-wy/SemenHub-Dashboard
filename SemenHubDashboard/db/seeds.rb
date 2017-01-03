@@ -262,3 +262,12 @@
 countries.each do |country_raw|
   Country.find_or_create_by(country_raw)
 end
+
+case Rails.env
+  when "development"
+    Address.find_or_create_by line1: "123 Test drive", postal_code: "H0H 0H0", city: "Testsville", region: "Testington", alpha_2: Country.find_by_alpha_2('us')
+    Breed.find_or_create_by breed_name: "Cow"
+    User.find_or_create_by first_name: "Testy", last_name: "Testson", email: "test@test.test", phone_primary: "1 555 555 5555", mailing_address: Address.first, billing_address: Address.first
+    Registrar.find_or_create_by breed: Breed.first, address: Address.first, name: "Test co", phone_primary: "1 555 555 5555", phone_secondary: "1 555 555 5555", email: "test@test.test", website: "test.test", note: "THIS IS FOR TESTING ONLY"
+    Animal.find_or_create_by name: "MooCow", owner: User.first
+end

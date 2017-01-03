@@ -1,0 +1,9 @@
+<%= form_tag do %>
+    <div>
+      <%= label_tag :q, "Select Animal To Add" %>
+      <%= collection_select :animal_id, :id, Animal.all, :id, :name, include_blank: false %>
+    </div>
+    <div>
+      <%= submit_tag "Add registration to animal" %>
+    </div>
+<% end %>

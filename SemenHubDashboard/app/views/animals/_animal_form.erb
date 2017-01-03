@@ -4,8 +4,12 @@
       <%= a.text_field :name %>
     </div>
     <div>
-      <%= a.label :owner, get_field_errors(@animal, :owner) %>
-      <%= a.collection_select :owner, User.all, :id, :to_s, include_blank: true %>
+      <%= a.label :owner_id, get_field_errors(@animal, :owner_id) %>
+      <%= a.collection_select :owner_id, User.all, :id, :get_name %>
+    </div>
+    <div>
+      <%= a.label :breed_id, get_field_errors(@animal, :breed_id) %>
+      <%= a.collection_select :breed_id, Breed.all, :id, :breed_name %>
     </div>
     <%= a.submit %>
 <% end %>

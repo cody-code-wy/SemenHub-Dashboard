@@ -12,7 +12,7 @@ class User < ApplicationRecord
 
   validates_uniqueness_of :email
 
-  def to_s
+  def get_name
     "#{first_name} #{last_name}"
   end
 end

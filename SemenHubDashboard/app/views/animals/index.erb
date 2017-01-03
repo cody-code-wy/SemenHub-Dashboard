@@ -5,7 +5,6 @@
     <th>Owner Profile</th>
     <th>Animal Profile</th>
     <th>Breed</th>
-    <th>Registration Type</th>
     <th>Registration</th>
     <th>Name</th>
   </tr>
@@ -13,10 +12,10 @@
   <tbody>
   <% @animals.each do |animal| %>
       <tr>
-        <td><%= link_to 'Owner Profile', animal.owner %></td>
+        <td><%= link_to animal.owner.get_name, animal.owner %></td>
         <td><%= link_to 'Animal Profile', animal %></td>
-        <td><%= animal.breed.breed_name %></td>
-        <td><%= animal.registration %></td>
+        <td><%= animal.breed.breed_name unless animal.breed.nil? %></td>
+        <td><%= animal.get_registrations %></td>
         <td><%= animal.name %></td>
       </tr>
   <% end %>

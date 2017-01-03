@@ -12,6 +12,7 @@
   <% @regs.each do |reg| %>
       <tr>
         <td></td>
+        <td><%= reg.registrar.name %></td>
         <td><%= reg.registration %></td>
         <td><%= reg.note %></td>
       </tr>

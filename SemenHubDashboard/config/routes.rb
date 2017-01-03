@@ -8,6 +8,4 @@ Rails.application.routes.draw do
   resources :animals
 
   resources :registrations
-  get 'registrations/:id/add_animal', to: 'registrations#add_animal'
-  post 'registrations/:id/add_animal', to: 'registrations#add_animal_post'
 end

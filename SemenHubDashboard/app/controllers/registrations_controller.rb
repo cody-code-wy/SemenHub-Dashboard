@@ -8,19 +8,6 @@ class RegistrationsController < ApplicationController
     @reg = Registration.find(params[:id])
   end
 
-  def add_animal
-    render :add_animal
-  end
-
-  def add_animal_post
-    animal = Animal.find(add_animal_params[:id])
-    registration = Registration.find(add_reg_params[:id])
-    registration.animal = animal unless animal.nil?
-    registration.save
-
-    redirect_to registration
-  end
-
   def new
     @reg = Registration.new
   end
@@ -37,16 +24,8 @@ class RegistrationsController < ApplicationController
 
   protected
 
-  def add_animal_params
-    params.require(:animal_id).permit(:id)
-  end
-
-  def add_reg_params
-    params.permit(:id)
-  end
-
   def reg_params
-    params.require(:registration).permit(:registrar_id, :registration, :note)
+    params.require(:registration).permit(:registrar_id, :animal_id, :registration, :note)
   end
 
 end

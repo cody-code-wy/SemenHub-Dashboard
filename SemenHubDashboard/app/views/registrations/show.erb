@@ -1,8 +1,17 @@
 <div>
   <div>
-    <%= @reg.registration %>
+    <%= link_to 'All Registartions', registration_path %>
   </div>
   <div>
-    <%= @reg.note %>
+    <%= link_to 'Edit', edit_registration_path(@reg) %>
+  </div>
+  <div>
+    Registrar: <!-- TODO add link to registrar -->
+  </div>
+  <div>
+    Registration: <%= @reg.registration %>
+  </div>
+  <div>
+    Note: <%= @reg.note %>
   </div>
 </div>

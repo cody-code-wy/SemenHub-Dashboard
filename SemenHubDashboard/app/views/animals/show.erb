@@ -5,14 +5,14 @@
   <%= link_to 'Remove Animal', @animal, method: :delete, data: { confirm: 'Are you sure you want to remove this animal?' } %>
 </div>
 <div>
-  <%= @animal.breed.breed_name unless @animal.breed.nil? %>
+  Breed: <%= @animal.breed.breed_name unless @animal.breed.nil? %>
 </div>
 <div>
-  <%= @animal.name %>
+  Name: <%= @animal.name %>
 </div>
 <div>
-  <!-- TODO show registrar list -->
+  Registration(s): <%= @animal.get_registrations %>
 </div>
 <div>
-  <%= "#{@animal.owner.first_name} #{@animal.owner.last_name}" %>
+  Owner Name: <%= "#{@animal.owner.first_name} #{@animal.owner.last_name}" %>
 </div>

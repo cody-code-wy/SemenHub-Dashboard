@@ -12,10 +12,14 @@ class RegistrationsController < ApplicationController
     @reg = Registration.new
   end
 
+  def edit
+    @reg = Registration.find(params[:id])
+  end
+
   def create
     @reg = Registration.new(reg_params)
 
-    if (@reg.save)
+    if @reg.save
       redirect_to @reg
     else
       render :new

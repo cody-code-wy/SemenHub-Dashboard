@@ -4,6 +4,9 @@
 <div>
   <%= link_to "delete", @facility, method: :delete, data: {confirm: 'Are you sure you want to delete this facility'} %>
 </div>
+<div>
+  Facility Name: <%= @facility.name %>
+</div>
 <%= render 'address_show', addr: @facility.address %>
 <div>
   Phone Number: <%= @facility.phone_number %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161229172327) do
+ActiveRecord::Schema.define(version: 20170105045311) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "line1"
@@ -139,6 +139,7 @@ ActiveRecord::Schema.define(version: 20161229172327) do
     t.integer  "address_id"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+    t.string   "name"
     t.index ["address_id"], name: "index_storage_facilities_on_address_id"
   end
 

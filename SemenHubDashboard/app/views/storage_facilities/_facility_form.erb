@@ -1,5 +1,9 @@
 <%= form_for @facility do |f| %>
     <div>
+      <%= f.label :name, get_field_errors(@facility, :name) %>
+      <%= f.text_field :name %>
+    </div>
+    <div>
       <%= f.label :phone_number, get_field_errors(@facility, :phone_number) %>
       <%= f.text_field :phone_number %>
     </div>

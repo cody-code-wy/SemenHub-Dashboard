@@ -12,7 +12,7 @@
   <tbody>
   <% @facilities.each do |facility| %>
       <tr>
-        <td><%= link_to "Show Profile", facility %></td>
+        <td><%= link_to facility.name, facility %></td>
         <td><%= facility.phone_number %></td>
         <td><%= facility.website %></td>
         <td><%= facility.storage_fee %></td>

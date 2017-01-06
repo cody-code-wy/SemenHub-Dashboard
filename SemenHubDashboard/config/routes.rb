@@ -8,4 +8,6 @@ Rails.application.routes.draw do
   resources :animals
 
   resources :registrations
+
+  resources :inventory_transactions, except: :destroy
 end

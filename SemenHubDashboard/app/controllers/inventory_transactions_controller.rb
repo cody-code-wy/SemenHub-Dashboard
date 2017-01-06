@@ -16,6 +16,10 @@ class InventoryTransactionsController < ApplicationController
     end
   end
 
+  def edit
+    @transaction = InventoryTransaction.find params[:id]
+  end
+
   protected
 
   def get_params

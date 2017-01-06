@@ -1,0 +1,31 @@
+<%= form_for @transaction do |t| %>
+    <div>
+      <%= t.label :quantity, get_field_errors(@transaction, :quantity) %>
+      <%= t.text_field :quantity %>
+    </div>
+    <div>
+      <%= t.label :private, get_field_errors(@transaction, :private) %>
+      <%= t.select(:private, options_for_select([['False', false], ['True', true]])) %>
+    </div>
+    <div>
+      <%= t.label :semen_type, get_field_errors(@transaction, :semen_type) %>
+      <%= t.select :semen_type, options_for_select([['Conventional', 0], ['Male Sexed', 1], ['Female Sexed', 2]]) %>
+    </div>
+    <%= t.label :price_per_unit, get_field_errors(@transaction, :price_per_unit) %>
+    <%= t.text_field :price_per_unit %>
+    <div>
+      <%= t.label :semen_count, get_field_errors(@transaction, :semen_count) %>
+      <%= t.select :semen_count, options_for_select([['2.1', 0], ['5.0', 1]]) %>
+    </div>
+    <div>
+      <%= t.label :animal, get_field_errors(@transaction, :animal) %>
+      <%= t.collection_select :animal, Animal.all, :id, :get_drop_down_name %>
+    </div>
+    <div>
+      <%= t.label :storage_facility, get_field_errors(@transaction, :storageFacility) %>
+      <%= t.collection_select :storageFacility, StorageFacility.all, :id, :name %>
+    </div>
+    <div>
+      <%= t.submit %>
+    </div>
+<% end %>

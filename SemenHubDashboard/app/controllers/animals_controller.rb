@@ -28,6 +28,19 @@ class AnimalsController < ApplicationController
     end
   end
 
+  def update
+    @animal = Animal.find(params[:id])
+
+    @animal.update(animal_params)
+    put_data_in_animal
+
+    if @animal.save
+      redirect_to @animal
+    else
+      render :edit
+    end
+  end
+
   def destroy
     @animal = Animal.find(params[:id])
     @animal.destroy

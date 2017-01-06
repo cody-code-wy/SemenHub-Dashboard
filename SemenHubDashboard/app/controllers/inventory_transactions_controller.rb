@@ -20,6 +20,20 @@ class InventoryTransactionsController < ApplicationController
     @transaction = InventoryTransaction.find params[:id]
   end
 
+  def update
+    @transaction = InventoryTransaction.find params[:id]
+
+    @transaction.update get_params
+
+    put_data_in_transaction
+
+    if @transaction.save
+      redirect_to @transaction
+    else
+      render :edit
+    end
+  end
+
   protected
 
   def get_params

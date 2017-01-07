@@ -263,11 +263,12 @@ countries.each do |country_raw|
   Country.find_or_create_by(country_raw)
 end
 
+
+Registrar.find_or_create_by(breed: Breed.find_or_create_by(breed_name: "Longhorn"), address: Address.find_or_create_by(line1: "P.O. Box 4430", city: "Fort Worth", region: "Texas", alpha_2: 'us', postal_code: "76164"), name: "TLBAA", phone_primary: "817-625-6241", phone_secondary: "817-625-1388", website: "http://www.tlba.org", email: "tlbaa@tlbaa.org", note: "Secondary phone number is FAX")
+
+Registrar.find_or_create_by(breed: Breed.find_or_create_by(breed_name: "Longhorn"), address: Address.find_or_create_by(line1: "P.O. Box 2610", city: "Gren Rose", region: "Texas", alpha_2: 'us', postal_code: "76043"), name: "ITLA", phone_primary: "254-898-0157", website: "http://www.itla.com", email: "staff@itla.com")
+
 case Rails.env
   when "development"
-    Address.find_or_create_by line1: "123 Test drive", postal_code: "H0H 0H0", city: "Testsville", region: "Testington", alpha_2: Country.find_by_alpha_2('us').alpha_2
-    Breed.find_or_create_by breed_name: "Cow"
-    User.find_or_create_by first_name: "Testy", last_name: "Testson", email: "test@test.test", phone_primary: "1 555 555 5555", mailing_address: Address.first, billing_address: Address.first
-    Registrar.find_or_create_by breed: Breed.first, address: Address.first, name: "Test co", phone_primary: "1 555 555 5555", phone_secondary: "1 555 555 5555", email: "test@test.test", website: "test.test", note: "THIS IS FOR TESTING ONLY"
-    Animal.find_or_create_by name: "testCow", owner: User.first, breed: Breed.first
+    Animal.find_or_create_by(name: "testCow", breed: Breed.first, owner: User.find_or_create_by(first_name: "Testy", last_name: "Testson", email: "test@test.test", phone_primary: "1 555 555 5555", mailing_address: Address.first, billing_address: Address.find_or_create_by(line1: "123 Test drive", postal_code: "H0H 0H0", city: "Testsville", region: "Testington", alpha_2: 'us')))
 end

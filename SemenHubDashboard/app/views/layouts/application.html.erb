@@ -9,6 +9,15 @@
   </head>
 
   <body>
+    <div id="navbar">
+      <ul>
+        <li><%= link_to "User", User %></li>
+        <li><%= link_to "Storage Facilities", StorageFacility %></li>
+        <li><%= link_to "Animals", Animal %></li>
+        <li><%= link_to "Registrations", Registration %></li>
+        <li><%= link_to "Transactions", InventoryTransaction %></li>
+      </ul>
+    </div>
     <%= yield %>
   </body>
 </html>

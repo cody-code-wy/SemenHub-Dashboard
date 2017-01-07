@@ -2,21 +2,19 @@
 <table>
   <thead>
   <tr>
-    <th>Owner Profile</th>
-    <th>Animal Profile</th>
+    <th>Animal</th>
     <th>Breed</th>
     <th>Registration</th>
-    <th>Name</th>
+    <th>Owner</th>
   </tr>
   </thead>
   <tbody>
   <% @animals.each do |animal| %>
       <tr>
-        <td><%= link_to animal.owner.get_name, animal.owner %></td>
-        <td><%= link_to 'Animal Profile', animal %></td>
-        <td><%= animal.breed.breed_name unless animal.breed.nil? %></td>
+        <td><%= link_to animal.name, animal %></td>
+        <td><%= animal.breed ? animal.breed.breed_name : "Error: no breed" %></td>
         <td><%= animal.get_registrations %></td>
-        <td><%= animal.name %></td>
+        <td><%= link_to animal.owner.get_name, animal.owner %></td>
       </tr>
   <% end %>
   </tbody>

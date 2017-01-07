@@ -1,0 +1,31 @@
+<%= link_to 'Add Transaction', new_inventory_transaction_path %>
+<table>
+  <thead>
+  <tr>
+    <th></th>
+    <th>Quantity</th>
+    <th>Private</th>
+    <th>Semen Type</th>
+    <th>Price Per Unit</th>
+    <th>Semen Count</th>
+    <th>Animal Name</th>
+    <th>Animal Owner</th>
+    <th>Storage Facility</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @transactions.each do |t| %>
+    <tr>
+      <td><%= link_to "See Overview", inventory_transaction_path(t) %></td>
+      <td><%= t.quantity %></td>
+      <td><%= t.private %></td>
+      <td><%= t.semen_type %></td>
+      <td>$<%= t.price_per_unit %></td>
+      <td><%= t.semen_count %></td>
+      <td><%= t.animal.name %></td>
+      <td><%= t.animal.owner.get_name %></td>
+      <td><%= t.storageFacility.name %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

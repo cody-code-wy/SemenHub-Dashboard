@@ -1,5 +1,9 @@
 class InventoryTransactionsController < ApplicationController
 
+  def index
+    @transactions = InventoryTransaction.select('*, sum(quantity) as quantity').group(:private, :semen_type, :price_per_unit, :semen_count, :animal_id, :storageFacility_id)
+  end
+
   def new
     @transaction = InventoryTransaction.new
   end

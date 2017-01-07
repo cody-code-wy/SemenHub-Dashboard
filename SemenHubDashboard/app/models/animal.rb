@@ -9,13 +9,4 @@ class Animal < ApplicationRecord
     "#{name} - #{owner.first_name} #{owner.last_name}"
   end
 
-  def get_registrations
-    ret = ''
-    registrations.each do |r|
-      ret += r.registration
-      ret += ', ' unless r.equal? registrations.last
-    end
-    ret
-  end
-
 end

@@ -14,7 +14,10 @@
   Name: <%= @animal.name %>
 </div>
 <div>
-  Registration(s): <%= @animal.get_registrations %>
+  Registrations:
+  <% @animal.registrations.each do |registration| %>
+    <%= link_to registration.registration, registration %><%= "," unless @animal.registrations.last == registration %>
+  <% end %>
 </div>
 <div>
   Owner Name: <%= "#{@animal.owner.first_name} #{@animal.owner.last_name}" %>

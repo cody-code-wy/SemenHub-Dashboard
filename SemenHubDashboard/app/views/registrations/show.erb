@@ -5,8 +5,11 @@
   <div>
     <%= link_to 'Edit', edit_registration_path(@reg) %>
   </div>
-  <div>
+<%#  <div>
     Registrar: <!-- TODO add link to registrar -->
+</div> %>
+  <div>
+    Animal: <%= link_to @reg.animal.name, @reg.animal %>
   </div>
   <div>
     Registration: <%= @reg.registration %>

@@ -26,6 +26,10 @@
       <%= t.collection_select :storageFacility, StorageFacility.all, :id, :name %>
     </div>
     <div>
+      <%= t.label :seller, get_field_errors(@transaction, :seller) %>
+      <%= t.collection_select :seller, User.all, :id, :get_name %>
+    </div>
+    <div>
       <%= t.submit %>
     </div>
 <% end %>

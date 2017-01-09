@@ -10,6 +10,7 @@
       <th>Animal</th>
       <th>Animal Owner</th>
       <th>Storage Facility</th>
+      <th>Seller</th>
       <th></th>
     </tr>
   </thead>
@@ -19,8 +20,9 @@
       <td><%= ["Conventional","Male Sexed","Female Sexed"][@transaction.semen_type] %></td>
       <td><%= ["2.1","5.0"][@transaction.semen_count] %></td>
       <td><%= @transaction.animal.name %></td>
-      <td><%= @transaction.animal.owner.to_s %></td>
+      <td><%= @transaction.animal.owner.get_name %></td>
       <td><%= @transaction.storageFacility.name %></td>
+      <td><%= @transaction.seller.get_name %></td>
     </tr>
   </tbody>
 </table>

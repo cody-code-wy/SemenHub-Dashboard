@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170105045311) do
+ActiveRecord::Schema.define(version: 20170109030811) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "line1"
@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(version: 20170105045311) do
     t.integer  "storageFacility_id"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
+    t.integer  "seller_id"
     t.index ["animal_id"], name: "index_inventory_transactions_on_animal_id"
     t.index ["storageFacility_id"], name: "index_inventory_transactions_on_storageFacility_id"
   end

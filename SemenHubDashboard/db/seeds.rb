@@ -272,6 +272,8 @@ Registrar.find_or_create_by(breed: Breed.find_or_create_by(breed_name: "longhorn
 
 Registrar.find_or_create_by(breed: Breed.find_or_create_by(breed_name: "White Tail"), address: Address.find_or_create_by(line1: "P.O. Box PLACEHOLDER", city: "Place Holder", region: "Texas", alpha_2: 'us', postal_code: "76033"), name: "DNA# (White Tail)", phone_primary: "780-352-4321", website: "ph.werl.me", email: "contact@ph.werl.me")
 
+Registrar.find_or_create_by(breed: Breed.find_or_create_by(breed_name: "Longhorn"), address: Address.find_or_create_by(line1: "P.O. Box PLACEHOLDER", city: "Place Holder", region: "Texas", alpha_2: 'us', postal_code: "76032"), name: "TLCA", phone_primary: "780-362-4321", website: "http://holdplacer.space", email: "user@holdplacer.space")
+
 case Rails.env
   when "development"
     Animal.find_or_create_by(name: "testCow", breed: Breed.first, owner: User.find_or_create_by(first_name: "Testy", last_name: "Testson", email: "test@test.test", phone_primary: "1 555 555 5555", mailing_address: Address.first, billing_address: Address.find_or_create_by(line1: "123 Test drive", postal_code: "H0H 0H0", city: "Testsville", region: "Testington", alpha_2: 'us')))

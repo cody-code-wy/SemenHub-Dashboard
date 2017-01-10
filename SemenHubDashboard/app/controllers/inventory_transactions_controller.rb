@@ -53,13 +53,13 @@ class InventoryTransactionsController < ApplicationController
 
   def get_secondary_params
     params.require(:inventory_transaction).permit(
-      :animal, :storageFacility, :seller
+      :animal_id, :storageFacility_id, :seller_id
     )
   end
 
   def put_data_in_transaction
-    @transaction.animal = Animal.find(get_secondary_params[:animal])
-    @transaction.storageFacility = StorageFacility.find(get_secondary_params[:storageFacility])
-    @transaction.seller = User.find(get_secondary_params[:seller])
+    @transaction.animal = Animal.find(get_secondary_params[:animal_id])
+    @transaction.storageFacility = StorageFacility.find(get_secondary_params[:storageFacility_id])
+    @transaction.seller = User.find(get_secondary_params[:seller_id])
   end
 end

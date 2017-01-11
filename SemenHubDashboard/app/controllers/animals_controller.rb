@@ -6,6 +6,7 @@ class AnimalsController < ApplicationController
 
   def show
     @animal = Animal.find(params[:id])
+    @transactions = @animal.inventory_transactions.select('*, sum(quantity) as quantity').where("quantity > ?", 0).group(:private, :semen_type, :price_per_unit, :semen_count, :storageFacility_id, :seller_id)
   end
 
   def new

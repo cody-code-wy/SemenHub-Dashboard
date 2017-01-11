@@ -22,3 +22,33 @@
 <div>
   Owner Name: <%= "#{@animal.owner.first_name} #{@animal.owner.last_name}" %>
 </div>
+<div>
+  <table>
+    <thead>
+    <tr>
+      <th></th>
+      <th>Quantity</th>
+      <th>Private</th>
+      <th>Semen Type</th>
+      <th>Price Per Unit</th>
+      <th>Semen Count</th>
+      <th>Storage Facility</th>
+      <th>Seller</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @transactions.each do |t| %>
+        <tr>
+          <td><%= link_to "See Overview", inventory_transaction_path(t) %></td>
+          <td><%= t.quantity %></td>
+          <td><%= t.private %></td>
+          <td><%= ["Conventional","Male Sexed","Female Sexed"][t.semen_type] %></td>
+          <td>$<%= t.price_per_unit %></td>
+          <td><%= ["2.1","5.0"][t.semen_count] %></td>
+          <td><%= t.storageFacility.name %></td>
+          <td><%= t.seller.get_name %></td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>

@@ -1,7 +1,7 @@
 class InventoryTransactionsController < ApplicationController
 
   def index
-    @transactions = InventoryTransaction.select('*, sum(quantity) as quantity').group(:private, :semen_type, :price_per_unit, :semen_count, :animal_id, :storageFacility_id, :seller_id)
+    @transactions = InventoryTransaction.select('*, sum(quantity) as quantity').group(:private, :semen_type, :price_per_unit, :semen_count, :animal_id, :storageFacility_id, :seller_id, :cost_per_unit)
   end
 
   def new
@@ -10,7 +10,7 @@ class InventoryTransactionsController < ApplicationController
 
   def show
     @transaction = InventoryTransaction.find params[:id]
-    @transactions = InventoryTransaction.where(private: @transaction.private, semen_type: @transaction.semen_type, price_per_unit: @transaction.price_per_unit, semen_count: @transaction.semen_count, animal_id: @transaction.animal_id, storageFacility_id: @transaction.storageFacility_id, seller_id: @transaction.seller_id)
+    @transactions = InventoryTransaction.where(private: @transaction.private, semen_type: @transaction.semen_type, price_per_unit: @transaction.price_per_unit, semen_count: @transaction.semen_count, animal_id: @transaction.animal_id, storageFacility_id: @transaction.storageFacility_id, seller_id: @transaction.seller_id, cost_per_unit: @transaction.cost_per_unit)
   end
 
   def create

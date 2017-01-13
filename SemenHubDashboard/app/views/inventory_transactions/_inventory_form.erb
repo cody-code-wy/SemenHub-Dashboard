@@ -11,8 +11,18 @@
       <%= t.label :semen_type, get_field_errors(@transaction, :semen_type) %>
       <%= t.select :semen_type, options_for_select([['Conventional', 0], ['Male Sexed', 1], ['Female Sexed', 2]], @transaction.semen_type) %>
     </div>
+    <div>
       <%= t.label :price_per_unit, get_field_errors(@transaction, :price_per_unit) %>
       <%= t.text_field :price_per_unit %>
+    </div>
+    <div>
+      <%= t.label :use_commission %> <%# this field cannot have errors %>
+      <%= t.check_box :use_commission, checked: @transaction.cost_per_unit == nil %>
+    </div>
+    <div>
+      <%= t.label :cost_per_unit, get_field_errors(@transaction, :cost_per_unit) %>
+      <%= t.text_field :cost_per_unit %>
+    </div>
     <div>
       <%= t.label :semen_count, get_field_errors(@transaction, :semen_count) %>
       <%= t.select :semen_count, options_for_select([['2.1', 0], ['5.0', 1]], @transaction.semen_count) %>

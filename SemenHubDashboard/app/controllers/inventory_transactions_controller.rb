@@ -57,9 +57,15 @@ class InventoryTransactionsController < ApplicationController
     )
   end
 
+  def get_cost_per_unit
+    return nil if params.require(:inventory_transaction).permit(:use_commission)[:use_commission] == "1"
+    params.require(:inventory_transaction).permit(:cost_per_unit)[:cost_per_unit]
+  end
+
   def put_data_in_transaction
     @transaction.animal = Animal.find(get_secondary_params[:animal_id])
     @transaction.storageFacility = StorageFacility.find(get_secondary_params[:storageFacility_id])
     @transaction.seller = User.find(get_secondary_params[:seller_id])
+    @transaction.cost_per_unit = get_cost_per_unit
   end
 end

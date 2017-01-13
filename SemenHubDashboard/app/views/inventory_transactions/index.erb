@@ -7,6 +7,8 @@
       <th>Private</th>
       <th>Semen Type</th>
       <th>Price Per Unit</th>
+      <th>Cost Per Unit (effective)</th>
+      <th>Commission (effective)</th>
       <th>Semen Count</th>
       <th>Animal Name</th>
       <th>Animal Owner</th>
@@ -21,7 +23,8 @@
         <td><%= t.quantity %></td>
         <td><%= t.private %></td>
         <td><%= ["Conventional","Male Sexed","Female Sexed"][t.semen_type] %></td>
-        <td>$<%= t.price_per_unit %></td>
+        <td><%= number_to_currency(t.price_per_unit) %></td>
+        <%= render "cpu_commission", transaction: t%>
         <td><%= ["2.1","5.0"][t.semen_count] %></td>
         <td><%= t.animal.name %></td>
         <td><%= t.animal.owner.get_name %></td>

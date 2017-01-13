@@ -5,6 +5,8 @@
   <thead>
     <tr>
       <th>Price per unit</th>
+      <th>Cost per unit (effective)</th>
+      <th>Commission (effective)</th>
       <th>Semen type</th>
       <th>Semen count</th>
       <th>Animal</th>
@@ -17,6 +19,7 @@
   <tbody>
     <tr>
       <td><%= @transaction.price_per_unit %></td>
+      <%= render "cpu_commission", transaction: @transaction %>
       <td><%= ["Conventional","Male Sexed","Female Sexed"][@transaction.semen_type] %></td>
       <td><%= ["2.1","5.0"][@transaction.semen_count] %></td>
       <td><%= @transaction.animal.name %></td>

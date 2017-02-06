@@ -11,13 +11,15 @@
       <% end %>
     </tr>
   <% end %>
-  <tr>
-    <td>Default (10%)</td>
-    <% @defaults.each do |user| %>
-      <td>
-        <%= link_to "#{user.first_name} #{user.last_name}", user %>
-      </td>
-    <% end %>
-  </tr>
+  <% if @defaults.count > 0 %>
+    <tr>
+      <td>Default (10%)</td>
+      <% @defaults.each do |user| %>
+        <td>
+          <%= link_to "#{user.first_name} #{user.last_name}", user %>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
 </table>
 

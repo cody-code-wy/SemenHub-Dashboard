@@ -158,6 +158,9 @@ ActiveRecord::Schema.define(version: 20170113025310) do
     t.integer  "payee_address_id"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
+    t.index ["billing_address_id"], name: "index_users_on_billing_address_id", using: :btree
+    t.index ["mailing_address_id"], name: "index_users_on_mailing_address_id", using: :btree
+    t.index ["payee_address_id"], name: "index_users_on_payee_address_id", using: :btree
   end
 
 end

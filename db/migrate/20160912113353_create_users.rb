@@ -8,9 +8,12 @@ class CreateUsers < ActiveRecord::Migration[5.0]
       t.string :phone_primary
       t.string :phone_secondary
       t.string :website
-      t.integer :mailing_address_id
-      t.integer :billing_address_id
-      t.integer :payee_address_id
+      # t.integer :mailing_address_id
+      # t.integer :billing_address_id
+      # t.integer :payee_address_id
+      t.references :mailing_address, references: :address
+      t.references :billing_address, references: :address
+      t.references :payee_address, references: :address, null: true
 
       t.timestamps
     end

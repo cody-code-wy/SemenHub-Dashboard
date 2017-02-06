@@ -10,7 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170113025310) do
+ActiveRecord::Schema.define(version: 20170206192410) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "addresses", force: :cascade do |t|
     t.string   "line1"
@@ -27,9 +30,10 @@ ActiveRecord::Schema.define(version: 20170113025310) do
     t.string   "name"
     t.integer  "owner_id"
     t.integer  "breed_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["breed_id"], name: "index_animals_on_breed_id"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.string   "private_herd_number"
+    t.index ["breed_id"], name: "index_animals_on_breed_id", using: :btree
   end
 
   create_table "breeds", force: :cascade do |t|
@@ -43,7 +47,7 @@ ActiveRecord::Schema.define(version: 20170113025310) do
     t.integer  "user_id"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
-    t.index ["user_id"], name: "index_commissions_on_user_id"
+    t.index ["user_id"], name: "index_commissions_on_user_id", using: :btree
   end
 
   create_table "countries", force: :cascade do |t|
@@ -66,8 +70,8 @@ ActiveRecord::Schema.define(version: 20170113025310) do
     t.datetime "updated_at",         null: false
     t.integer  "seller_id"
     t.decimal  "cost_per_unit"
-    t.index ["animal_id"], name: "index_inventory_transactions_on_animal_id"
-    t.index ["storageFacility_id"], name: "index_inventory_transactions_on_storageFacility_id"
+    t.index ["animal_id"], name: "index_inventory_transactions_on_animal_id", using: :btree
+    t.index ["storageFacility_id"], name: "index_inventory_transactions_on_storageFacility_id", using: :btree
   end
 
   create_table "purchase_transactions", force: :cascade do |t|
@@ -75,8 +79,8 @@ ActiveRecord::Schema.define(version: 20170113025310) do
     t.integer  "inventoryTransaction_id"
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
-    t.index ["inventoryTransaction_id"], name: "index_purchase_transactions_on_inventoryTransaction_id"
-    t.index ["purchase_id"], name: "index_purchase_transactions_on_purchase_id"
+    t.index ["inventoryTransaction_id"], name: "index_purchase_transactions_on_inventoryTransaction_id", using: :btree
+    t.index ["purchase_id"], name: "index_purchase_transactions_on_purchase_id", using: :btree
   end
 
   create_table "purchases", force: :cascade do |t|
@@ -84,7 +88,7 @@ ActiveRecord::Schema.define(version: 20170113025310) do
     t.integer  "state"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_purchases_on_user_id"
+    t.index ["user_id"], name: "index_purchases_on_user_id", using: :btree
   end
 
   create_table "registrars", force: :cascade do |t|
@@ -98,8 +102,8 @@ ActiveRecord::Schema.define(version: 20170113025310) do
     t.text     "note"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
-    t.index ["address_id"], name: "index_registrars_on_address_id"
-    t.index ["breed_id"], name: "index_registrars_on_breed_id"
+    t.index ["address_id"], name: "index_registrars_on_address_id", using: :btree
+    t.index ["breed_id"], name: "index_registrars_on_breed_id", using: :btree
   end
 
   create_table "registrations", force: :cascade do |t|
@@ -107,8 +111,8 @@ ActiveRecord::Schema.define(version: 20170113025310) do
     t.string  "registration"
     t.text    "note"
     t.integer "animal_id"
-    t.index ["animal_id"], name: "index_registrations_on_animal_id"
-    t.index ["registrar_id"], name: "index_registrations_on_registrar_id"
+    t.index ["animal_id"], name: "index_registrations_on_animal_id", using: :btree
+    t.index ["registrar_id"], name: "index_registrations_on_registrar_id", using: :btree
   end
 
   create_table "shipments", force: :cascade do |t|
@@ -120,8 +124,8 @@ ActiveRecord::Schema.define(version: 20170113025310) do
     t.integer  "address_id"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
-    t.index ["address_id"], name: "index_shipments_on_address_id"
-    t.index ["purchase_id"], name: "index_shipments_on_purchase_id"
+    t.index ["address_id"], name: "index_shipments_on_address_id", using: :btree
+    t.index ["purchase_id"], name: "index_shipments_on_purchase_id", using: :btree
   end
 
   create_table "ships_tos", force: :cascade do |t|
@@ -129,8 +133,8 @@ ActiveRecord::Schema.define(version: 20170113025310) do
     t.integer  "inventoryTransaction_id"
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
-    t.index ["country_id"], name: "index_ships_tos_on_country_id"
-    t.index ["inventoryTransaction_id"], name: "index_ships_tos_on_inventoryTransaction_id"
+    t.index ["country_id"], name: "index_ships_tos_on_country_id", using: :btree
+    t.index ["inventoryTransaction_id"], name: "index_ships_tos_on_inventoryTransaction_id", using: :btree
   end
 
   create_table "storage_facilities", force: :cascade do |t|
@@ -142,7 +146,7 @@ ActiveRecord::Schema.define(version: 20170113025310) do
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.string   "name"
-    t.index ["address_id"], name: "index_storage_facilities_on_address_id"
+    t.index ["address_id"], name: "index_storage_facilities_on_address_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|

@@ -4,6 +4,10 @@
       <%= a.text_field :name %>
     </div>
     <div>
+      <%= a.label :private_herd_number, get_field_errors(@animal, :private_herd_number) %>
+      <%= a.text_field :private_herd_number %>
+    </div>
+    <div>
       <%= a.label :owner_id, get_field_errors(@animal, :owner_id) %>
       <%= a.collection_select :owner_id, User.all, :id, :get_name %>
     </div>

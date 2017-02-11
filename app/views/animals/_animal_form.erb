@@ -8,6 +8,10 @@
       <%= a.text_field :private_herd_number %>
     </div>
     <div>
+      <%= a.label :ai_certification, get_field_errors(@animal, :ai_certification) %>
+      <%= a.text_field :ai_certification %>
+    </div>
+    <div>
       <%= a.label :owner_id, get_field_errors(@animal, :owner_id) %>
       <%= a.collection_select :owner_id, User.all, :id, :get_name %>
     </div>

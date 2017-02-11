@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170211045434) do
+ActiveRecord::Schema.define(version: 20170211054144) do
+
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +35,7 @@ ActiveRecord::Schema.define(version: 20170211045434) do
     t.datetime "updated_at",          null: false
     t.string   "private_herd_number"
     t.string   "ai_certification"
+    t.string   "dna_number"
     t.index ["breed_id"], name: "index_animals_on_breed_id", using: :btree
   end
 

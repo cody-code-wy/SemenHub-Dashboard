@@ -23,6 +23,9 @@
   Owner Name: <%= "#{@animal.owner.first_name} #{@animal.owner.last_name}" %>
 </div>
 <div>
+  Private Herd Number: <%= @animal.private_herd_number ? @animal.private_herd_number : "N/A" %>
+</div>
+<div>
   <table>
     <thead>
     <tr>

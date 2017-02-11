@@ -3,6 +3,7 @@
   <thead>
   <tr>
     <th>Animal</th>
+    <th>Private Herd Number</th>
     <th>Breed</th>
     <th>Owner</th>
   </tr>
@@ -11,6 +12,7 @@
   <% @animals.each do |animal| %>
       <tr>
         <td><%= link_to animal.name, animal %></td>
+        <td><%= animal.private_herd_number ? animal.private_herd_number : "N/A" %></td>
         <td><%= animal.breed ? animal.breed.breed_name : "Error: no breed" %></td>
         <td><%= link_to animal.owner.get_name, animal.owner %></td>
       </tr>

@@ -12,6 +12,10 @@
       <%= a.text_field :ai_certification %>
     </div>
     <div>
+      <%= a.label :dna_number, get_field_errors(@animal, :dna_number) %>
+      <%= a.text_field :dna_number %>
+    </div>
+    <div>
       <%= a.label :owner_id, get_field_errors(@animal, :owner_id) %>
       <%= a.collection_select :owner_id, User.all, :id, :get_name %>
     </div>

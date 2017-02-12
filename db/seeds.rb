@@ -268,10 +268,6 @@ Registrar.find_or_create_by(breed: Breed.find_or_create_by(breed_name: "Longhorn
 
 Registrar.find_or_create_by(breed: Breed.find_or_create_by(breed_name: "Longhorn"), address: Address.find_or_create_by(line1: "P.O. Box 2610", city: "Gren Rose", region: "Texas", alpha_2: 'us', postal_code: "76043"), name: "ITLA", phone_primary: "254-898-0157", website: "http://www.itla.com", email: "staff@itla.com")
 
-Registrar.find_or_create_by(breed: Breed.find_or_create_by(breed_name: "longhorn"), address: Address.find_or_create_by(line1: "P.O. Box PLACEHOLDER", city: "Place Holder", region: "Texas", alpha_2: 'us', postal_code: "76031"), name: "DNA# (Longhorn)", phone_primary: "780-555-1234", website: "http://www.placeholder.com", email: "placeholder@placeholder.com")
-
-Registrar.find_or_create_by(breed: Breed.find_or_create_by(breed_name: "White Tail"), address: Address.find_or_create_by(line1: "P.O. Box PLACEHOLDER", city: "Place Holder", region: "Texas", alpha_2: 'us', postal_code: "76033"), name: "DNA# (White Tail)", phone_primary: "780-352-4321", website: "ph.werl.me", email: "contact@ph.werl.me")
-
 Registrar.find_or_create_by(breed: Breed.find_or_create_by(breed_name: "Longhorn"), address: Address.find_or_create_by(line1: "P.O. Box PLACEHOLDER", city: "Place Holder", region: "Texas", alpha_2: 'us', postal_code: "76032"), name: "TLCA", phone_primary: "780-362-4321", website: "http://holdplacer.space", email: "user@holdplacer.space")
 
 case Rails.env

@@ -67,13 +67,13 @@ ActiveRecord::Schema.define(version: 20170211054144) do
     t.decimal  "price_per_unit"
     t.integer  "semen_count"
     t.integer  "animal_id"
-    t.integer  "storageFacility_id"
+    t.integer  "storagefacility_id"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
     t.integer  "seller_id"
     t.decimal  "cost_per_unit"
     t.index ["animal_id"], name: "index_inventory_transactions_on_animal_id", using: :btree
-    t.index ["storageFacility_id"], name: "index_inventory_transactions_on_storageFacility_id", using: :btree
+    t.index ["storagefacility_id"], name: "index_inventory_transactions_on_storagefacility_id", using: :btree
   end
 
   create_table "purchase_transactions", force: :cascade do |t|
@@ -172,7 +172,7 @@ ActiveRecord::Schema.define(version: 20170211054144) do
   add_foreign_key "animals", "breeds"
   add_foreign_key "commissions", "users"
   add_foreign_key "inventory_transactions", "animals"
-  add_foreign_key "inventory_transactions", "storage_facilities", column: "storageFacility_id"
+  add_foreign_key "inventory_transactions", "storage_facilities", column: "storagefacility_id"
   add_foreign_key "purchase_transactions", "inventory_transactions", column: "inventoryTransaction_id"
   add_foreign_key "purchase_transactions", "purchases"
   add_foreign_key "purchases", "users"

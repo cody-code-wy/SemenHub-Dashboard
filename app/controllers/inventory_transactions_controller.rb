@@ -1,8 +1,7 @@
 class InventoryTransactionsController < ApplicationController
 
   def index
-    @transaction_agregate = InventoryTransaction.select("min(id) as id, sum(quantity) as quantity_sum").group(:private, :semen_type, :price_per_unit, :semen_count, :animal_id, :storagefacility_id, :seller_id, :cost_per_unit)
-    @transactions = @transaction_agregate.map{ |ta| InventoryTransaction.select("*, #{InventoryTransaction.sanitize ta.quantity_sum} as quantity").find(ta.id) }
+    @skus = Sku.all
   end
 
   def new

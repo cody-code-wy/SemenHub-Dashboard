@@ -1,6 +1,6 @@
 class Animal < ApplicationRecord
   has_many :registrations
-  has_many :inventory_transactions
+  has_many :skus
   belongs_to :owner, class_name: 'User'
   belongs_to :breed
 

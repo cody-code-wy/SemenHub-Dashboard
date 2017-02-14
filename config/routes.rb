@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'session/new'
+
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   get "/", to: "welcome#index"
   resources :users
@@ -24,6 +26,9 @@ Rails.application.routes.draw do
   post '/users/:user/commission', to: 'commissions#create' #API
   delete '/users/:user/commission', to: 'commissions#destroy' #API
 
+  get '/session/new', to: 'session#new'
+
   #errors
   match '/401', to: 'errors#unauthorised', via: :all
+
 end

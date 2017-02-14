@@ -1,4 +1,4 @@
-<% if @transaction.private %>
+<% if @sku.private %>
   <h3>Marked as private</h3>
 <% end %>
 <table>
@@ -18,14 +18,14 @@
   </thead>
   <tbody>
     <tr>
-      <td><%= @transaction.price_per_unit %></td>
-      <%= render "cpu_commission", transaction: @transaction %>
-      <td><%= ["Conventional","Male Sexed","Female Sexed"][@transaction.semen_type] %></td>
-      <td><%= ["2.1","5.0"][@transaction.semen_count] %></td>
-      <td><%= @transaction.animal.name %></td>
-      <td><%= @transaction.animal.owner.get_name %></td>
-      <td><%= @transaction.storageFacility.name %></td>
-      <td><%= @transaction.seller.get_name %></td>
+      <td><%= @sku.price_per_unit %></td>
+      <%= render "cpu_commission", transaction: @sku %>
+      <td><%= ["Conventional","Male Sexed","Female Sexed"][@sku.semen_type] %></td>
+      <td><%= ["2.1","5.0"][@sku.semen_count] %></td>
+      <td><%= @sku.animal.name %></td>
+      <td><%= @sku.animal.owner.get_name %></td>
+      <td><%= @sku.storagefacility.name %></td>
+      <td><%= @sku.seller.get_name %></td>
     </tr>
   </tbody>
 </table>
@@ -39,7 +39,7 @@ Transactions
     <th></th>
   </thead>
   <tbody>
-    <% @transactions.each do |transaction| %>
+    <% @sku.inventory_transaction.each do |transaction| %>
       <tr>
         <td><%= transaction.id %></td>
         <td><%= transaction.quantity %></td>

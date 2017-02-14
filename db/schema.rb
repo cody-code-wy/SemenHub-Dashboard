@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170211054144) do
+ActiveRecord::Schema.define(version: 20170213002804) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,18 +62,10 @@ ActiveRecord::Schema.define(version: 20170211054144) do
 
   create_table "inventory_transactions", force: :cascade do |t|
     t.integer  "quantity"
-    t.boolean  "private"
-    t.integer  "semen_type"
-    t.decimal  "price_per_unit"
-    t.integer  "semen_count"
-    t.integer  "animal_id"
-    t.integer  "storagefacility_id"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
-    t.integer  "seller_id"
-    t.decimal  "cost_per_unit"
-    t.index ["animal_id"], name: "index_inventory_transactions_on_animal_id", using: :btree
-    t.index ["storagefacility_id"], name: "index_inventory_transactions_on_storagefacility_id", using: :btree
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "sku_id"
+    t.index ["sku_id"], name: "index_inventory_transactions_on_sku_id", using: :btree
   end
 
   create_table "purchase_transactions", force: :cascade do |t|
@@ -139,6 +131,21 @@ ActiveRecord::Schema.define(version: 20170211054144) do
     t.index ["inventoryTransaction_id"], name: "index_ships_tos_on_inventoryTransaction_id", using: :btree
   end
 
+  create_table "skus", force: :cascade do |t|
+    t.boolean  "private"
+    t.integer  "semen_type"
+    t.decimal  "price_per_unit"
+    t.integer  "semen_count"
+    t.integer  "animal_id"
+    t.integer  "storagefacility_id"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.integer  "seller_id"
+    t.decimal  "cost_per_unit"
+    t.index ["animal_id"], name: "index_sku_on_animal_id", using: :btree
+    t.index ["storagefacility_id"], name: "index_sku_on_storagefacility_id", using: :btree
+  end
+
   create_table "storage_facilities", force: :cascade do |t|
     t.string   "phone_number"
     t.string   "website"
@@ -164,24 +171,7 @@ ActiveRecord::Schema.define(version: 20170211054144) do
     t.integer  "payee_address_id"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
-    t.index ["billing_address_id"], name: "index_users_on_billing_address_id", using: :btree
-    t.index ["mailing_address_id"], name: "index_users_on_mailing_address_id", using: :btree
-    t.index ["payee_address_id"], name: "index_users_on_payee_address_id", using: :btree
   end
 
-  add_foreign_key "animals", "breeds"
-  add_foreign_key "commissions", "users"
-  add_foreign_key "inventory_transactions", "animals"
-  add_foreign_key "inventory_transactions", "storage_facilities", column: "storagefacility_id"
-  add_foreign_key "purchase_transactions", "inventory_transactions", column: "inventoryTransaction_id"
-  add_foreign_key "purchase_transactions", "purchases"
-  add_foreign_key "purchases", "users"
-  add_foreign_key "registrars", "addresses"
-  add_foreign_key "registrars", "breeds"
-  add_foreign_key "registrations", "registrars"
-  add_foreign_key "shipments", "addresses"
-  add_foreign_key "shipments", "purchases"
-  add_foreign_key "ships_tos", "countries"
-  add_foreign_key "ships_tos", "inventory_transactions", column: "inventoryTransaction_id"
-  add_foreign_key "storage_facilities", "addresses"
+  add_foreign_key "inventory_transactions", "skus"
 end

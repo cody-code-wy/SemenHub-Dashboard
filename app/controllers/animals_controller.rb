@@ -6,8 +6,7 @@ class AnimalsController < ApplicationController
 
   def show
     @animal = Animal.find(params[:id])
-    @transactions_agregate = @animal.inventory_transactions.select('max(id) as id, sum(quantity) as quantity_sum').where("quantity > ?", 0).group(:private, :semen_type, :price_per_unit, :semen_count, :storageFacility_id, :seller_id)
-    @transactions = @transactions_agregate.map{ |ta| InventoryTransaction.select("*, #{Animal.sanitize ta.quantity_sum} as quantity").find(ta.id) }
+    @skus = Sku.where(animal: @animal)
   end
 
   def new

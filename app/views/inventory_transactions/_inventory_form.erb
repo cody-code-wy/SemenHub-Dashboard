@@ -1,45 +1,47 @@
-<%= form_for @transaction do |t| %>
+<%= form_for @transaction do |f| %>
     <div>
-      <%= t.label :quantity, get_field_errors(@transaction, :quantity) %>
-      <%= t.text_field :quantity %>
+      <%= f.label :quantity, get_field_errors(@transaction, :quantity) %>
+      <%= f.text_field :quantity %>
     </div>
+    <%= f.fields_for :sku, @transaction.sku do |sku| %>
+      <div>
+        <%= sku.label :private, get_field_errors(@transaction.sku, :private) %>
+        <%= sku.check_box :private %>
+      </div>
+      <div>
+        <%= sku.label :semen_type, get_field_errors(@transaction.sku, :semen_type) %>
+        <%= sku.select :semen_type, options_for_select([['Conventional', 0], ['Male Sexed', 1], ['Female Sexed', 2]], @transaction.sku.semen_type) %>
+      </div>
+      <div>
+        <%= sku.label :price_per_unit, get_field_errors(@transaction.sku, :price_per_unit) %>
+        <%= sku.text_field :price_per_unit %>
+      </div>
+      <div>
+        <%= sku.label :use_commission %> <%# this field cannot have errors %>
+        <%= sku.check_box :use_commission, checked: @transaction.sku.cost_per_unit == nil %>
+      </div>
+      <div>
+        <%= sku.label :cost_per_unit, get_field_errors(@transaction.sku, :cost_per_unit) %>
+        <%= sku.text_field :cost_per_unit %>
+      </div>
+      <div>
+        <%= sku.label :semen_count, get_field_errors(@transaction.sku, :semen_count) %>
+        <%= sku.select :semen_count, options_for_select([['2.1', 0], ['5.0', 1]], @transaction.sku.semen_count) %>
+      </div>
+      <div>
+        <%= sku.label :animal, get_field_errors(@transaction.sku, :animal) %>
+        <%= sku.collection_select :animal_id, Animal.all, :id, :get_drop_down_name %>
+      </div>
+      <div>
+        <%= sku.label :storage_facility, get_field_errors(@transaction.sku, :storagefacility) %>
+        <%= sku.collection_select :storagefacility_id, StorageFacility.all, :id, :name %>
+      </div>
+      <div>
+        <%= sku.label :seller, get_field_errors(@transaction.sku, :seller) %>
+        <%= sku.collection_select :seller_id, User.all, :id, :get_name %>
+      </div>
+    <% end %>
     <div>
-      <%= t.label :private, get_field_errors(@transaction, :private) %>
-      <%= t.check_box :private %>
-    </div>
-    <div>
-      <%= t.label :semen_type, get_field_errors(@transaction, :semen_type) %>
-      <%= t.select :semen_type, options_for_select([['Conventional', 0], ['Male Sexed', 1], ['Female Sexed', 2]], @transaction.semen_type) %>
-    </div>
-    <div>
-      <%= t.label :price_per_unit, get_field_errors(@transaction, :price_per_unit) %>
-      <%= t.text_field :price_per_unit %>
-    </div>
-    <div>
-      <%= t.label :use_commission %> <%# this field cannot have errors %>
-      <%= t.check_box :use_commission, checked: @transaction.cost_per_unit == nil %>
-    </div>
-    <div>
-      <%= t.label :cost_per_unit, get_field_errors(@transaction, :cost_per_unit) %>
-      <%= t.text_field :cost_per_unit %>
-    </div>
-    <div>
-      <%= t.label :semen_count, get_field_errors(@transaction, :semen_count) %>
-      <%= t.select :semen_count, options_for_select([['2.1', 0], ['5.0', 1]], @transaction.semen_count) %>
-    </div>
-    <div>
-      <%= t.label :animal, get_field_errors(@transaction, :animal) %>
-      <%= t.collection_select :animal_id, Animal.all, :id, :get_drop_down_name %>
-    </div>
-    <div>
-      <%= t.label :storage_facility, get_field_errors(@transaction, :storageFacility) %>
-      <%= t.collection_select :storageFacility_id, StorageFacility.all, :id, :name %>
-    </div>
-    <div>
-      <%= t.label :seller, get_field_errors(@transaction, :seller) %>
-      <%= t.collection_select :seller_id, User.all, :id, :get_name %>
-    </div>
-    <div>
-      <%= t.submit %>
+      <%= f.submit %>
     </div>
 <% end %>

@@ -1,26 +1,25 @@
 class InventoryTransactionsController < ApplicationController
 
   def index
-    @transaction_agregate = InventoryTransaction.select("min(id) as id, sum(quantity) as quantity_sum").group(:private, :semen_type, :price_per_unit, :semen_count, :animal_id, :storagefacility_id, :seller_id, :cost_per_unit)
-    @transactions = @transaction_agregate.map{ |ta| InventoryTransaction.select("*, #{InventoryTransaction.sanitize ta.quantity_sum} as quantity").find(ta.id) }
+    @skus = Sku.all
   end
 
   def new
     @transaction = InventoryTransaction.new
+    @transaction.sku = Sku.new
   end
 
   def show
-    @transaction = InventoryTransaction.find params[:id]
-    @transactions = InventoryTransaction.where(private: @transaction.private, semen_type: @transaction.semen_type, price_per_unit: @transaction.price_per_unit, semen_count: @transaction.semen_count, animal_id: @transaction.animal_id, storagefacility_id: @transaction.storagefacility_id, seller_id: @transaction.seller_id, cost_per_unit: @transaction.cost_per_unit)
+    @sku = Sku.find params[:id]
   end
 
   def create
     @transaction = InventoryTransaction.new(get_params)
 
-    put_data_in_transaction
+    @transaction.sku = Sku.find_or_initialize_by(get_sku_params)
 
-    if @transaction.save
-      redirect_to @transaction
+    if @transaction.save and @transaction.sku.valid?
+      redirect_to inventory_transaction_url id: @transaction.sku.id
     else
       render :new
     end
@@ -34,11 +33,10 @@ class InventoryTransactionsController < ApplicationController
     @transaction = InventoryTransaction.find params[:id]
 
     @transaction.update get_params
+    @transaction.sku = Sku.find_or_initialize_by(get_sku_params)
 
-    put_data_in_transaction
-
-    if @transaction.save
-      redirect_to @transaction
+    if @transaction.save and @transaction.sku.valid?
+      redirect_to inventory_transaction_url id: @transaction.sku.id
     else
       render :edit
     end
@@ -48,25 +46,21 @@ class InventoryTransactionsController < ApplicationController
 
   def get_params
     params.require(:inventory_transaction).permit(
-      :quantity, :private, :semen_type, :price_per_unit, :semen_count, :semen_count
+      :quantity
     )
   end
 
-  def get_secondary_params
-    params.require(:inventory_transaction).permit(
-      :animal_id, :storagefacility_id, :seller_id
-    )
+  def get_sku_params
+    sku_params = params.require(:inventory_transaction).require(:sku).permit(
+      :private, :semen_type, :price_per_unit, :semen_count, :animal_id, :storagefacility_id, :seller_id
+    ).merge({cost_per_unit: get_cost_per_unit}) #get the whole params
+    sku_params[:price_per_unit] = sku_params[:price_per_unit].to_i != 0 ? sku_params[:price_per_unit] : nil
+    sku_params
   end
 
   def get_cost_per_unit
-    return nil if params.require(:inventory_transaction).permit(:use_commission)[:use_commission] == "1"
-    params.require(:inventory_transaction).permit(:cost_per_unit)[:cost_per_unit]
+    return nil if params.require(:inventory_transaction).require(:sku).permit(:use_commission)[:use_commission] == "1"
+    params.require(:inventory_transaction).require(:sku).permit(:cost_per_unit)[:cost_per_unit]
   end
 
-  def put_data_in_transaction
-    @transaction.animal = Animal.find(get_secondary_params[:animal_id])
-    @transaction.storagefacility = StorageFacility.find(get_secondary_params[:storagefacility_id])
-    @transaction.seller = User.find(get_secondary_params[:seller_id])
-    @transaction.cost_per_unit = get_cost_per_unit
-  end
 end

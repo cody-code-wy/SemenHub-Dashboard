@@ -1,4 +1,7 @@
 class User < ApplicationRecord
+
+  has_secure_password
+
   belongs_to :billing_address, class_name: 'Address'
   belongs_to :mailing_address, class_name: 'Address'
   belongs_to :payee_address, class_name: 'Address', required: false

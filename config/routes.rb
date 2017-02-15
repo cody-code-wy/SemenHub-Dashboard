@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'cart/add'
+
   get 'session/new'
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
@@ -27,6 +29,8 @@ Rails.application.routes.draw do
   delete '/users/:user/commission', to: 'commissions#destroy' #API
 
   get '/session/new', to: 'session#new'
+  get '/cart/:session/add', to: 'cart#add'
+  get '/cart/:session', to: 'cart#show'
 
   #errors
   match '/401', to: 'errors#unauthorised', via: :all

@@ -1,0 +1,27 @@
+<% @animals.each do |a| %>
+  <div>
+    <%= link_to a.name, a %>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>SKU ID</th>
+        <th>price</th>
+        <th>Storage Facility</th>
+        <th>Quantity Available</th>
+        <th>Purchase Quantity</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% a.skus.select("min(skus.id) as id,array_agg(skus.id) as ids,price_per_unit,semen_type,semen_count,storagefacility_id,sum(quantity) as quantity").where(private: false).group(:price_per_unit,:semen_type,:semen_count,:storagefacility_id).joins(:inventory_transaction).each do |sku| %>
+        <% next if sku.quantity < 1 %>
+        <tr>
+          <td><%= sku.ids %></td>
+          <td><%= sku.price_per_unit %></td>
+          <td><%= sku.storagefacility.name %></td>
+          <td><%= sku.quantity %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

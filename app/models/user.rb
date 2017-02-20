@@ -27,4 +27,21 @@ class User < ApplicationRecord
   def commission
     super || Commission.new(user: self, commission_percent: 10) # Default value
   end
+
+  def superuser?
+    self.permissions.any? do |perm| perm.name.underscore.to_sym == :superuser end
+  end
+
+  def can? permission = nil
+    return true if superuser? or permission.nil?
+    self.permissions.any? do |perm| perm.name.underscore.to_sym == permission.to_s.underscore.to_sym end
+  end
+
+  def can_all? perms
+    perms.reduce(true) do |allow, perm| allow and self.can? perm end
+  end
+
+  def can_any? perms
+    perms.any? do |perm| self.can? perm end
+  end
 end

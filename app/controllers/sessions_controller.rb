@@ -1,4 +1,8 @@
 class SessionsController < ApplicationController
+  def secure
+    false
+  end
+
   def new
   end
 

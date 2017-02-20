@@ -1,5 +1,9 @@
 class UsersController < ApplicationController
 
+  def secure
+    ! ["new","create"].include?(params[:action])
+  end
+
   def index
     @users = User.all
   end

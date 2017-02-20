@@ -11,6 +11,8 @@ class User < ApplicationRecord
   has_many :purchases
   has_many :animals, foreign_key: 'owner_id'
   has_many :inventory_transactions, foreign_key: 'seller_id'
+  has_many :role_assignments
+  has_many :roles, through: :role_assignments
 
   validates_presence_of :first_name, :last_name, :email, :phone_primary
 

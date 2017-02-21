@@ -1,0 +1,6 @@
+<h1>You do not have permission to access this feature</h1>
+<% if current_user %>
+  <sub>Error: Permission Denied Error for User <%= current_user.id %>(<%= current_user.first_name %>,<%= current_user.last_name %>) if you belive this to be an error please contact customer support.</sub>
+<% else %>
+  <sub>This page is not available unless logged in.</sub>
+<% end %>

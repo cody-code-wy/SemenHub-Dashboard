@@ -18,4 +18,7 @@ Rails.application.routes.draw do
   get '/commissions', to: 'commissions#index'
   post '/users/:user/commission', to: 'commissions#create' #API
   delete '/users/:user/commission', to: 'commissions#destroy' #API
+
+  #errors
+  match '/401', to: 'errors#unauthorised', via: :all
 end

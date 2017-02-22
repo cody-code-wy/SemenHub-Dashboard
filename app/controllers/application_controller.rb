@@ -16,7 +16,13 @@ class ApplicationController < ActionController::Base
     true
   end
 
-  def authorize
-    redirect_to '/login' unless current_user
+  def perms
+    :superuser
   end
+
+  def authorize
+    return redirect_to '/login' unless current_user
+    return redirect_to '/401' unless perms.respond_to?(:each) ? current_user.can_all?(perms) : current_user.can?(perms)
+  end
+
 end

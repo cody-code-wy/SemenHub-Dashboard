@@ -21,7 +21,10 @@ class ApplicationController < ActionController::Base
   end
 
   def authorize
-    return redirect_to '/login' unless current_user
+    unless current_user
+      session[:login_redirect] = request.original_url if request.get?
+      return redirect_to '/login'
+    end
     return redirect_to '/401' unless perms.respond_to?(:each) ? current_user.can_all?(perms) : current_user.can?(perms)
   end
 

@@ -53,6 +53,19 @@ class UsersController < ApplicationController
     redirect_to User
   end
 
+  def editpassword
+    @user = User.find(params[:id])
+  end
+
+  def updatepassword
+    @user = User.find(params[:id])
+    if @user.update password_params
+      redirect_to @user
+    else
+      render :editpassword
+    end
+  end
+
   protected
 
   def put_address_in_user(user)
@@ -102,6 +115,10 @@ class UsersController < ApplicationController
     params.require(:user).permit(
       :first_name, :last_name, :spouse_name, :email, :phone_primary, :phone_secondary, :website, :password, :password_confirmation
     )
+  end
+
+  def password_params
+    params.require(:user).permit(:password, :password_params)
   end
 
   def mailing_address_params

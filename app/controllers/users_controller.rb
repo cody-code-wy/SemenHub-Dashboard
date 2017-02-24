@@ -22,6 +22,7 @@ class UsersController < ApplicationController
     put_address_in_user(@user)
 
     if @user.save
+      @user.roles << Role.find_by_name(:default)
       redirect_to @user
     else
       render :new
@@ -64,6 +65,19 @@ class UsersController < ApplicationController
     else
       render :editpassword
     end
+  end
+
+  def editrole
+    @user = User.find(params[:id])
+  end
+
+  def updaterole
+    @user = User.find(params[:id])
+    @user.roles.delete_all
+    role_params.each do |r|
+      @user.roles << Role.find_by_name(r)
+    end
+    redirect_to @user
   end
 
   protected
@@ -137,5 +151,9 @@ class UsersController < ApplicationController
     params.require(:user).require(:payee_address).permit(
       :line1, :line2, :postal_code, :city, :region, :alpha_2
     )
+  end
+
+  def role_params
+    params.permit(Role.all.map{|r| r.name})
   end
 end

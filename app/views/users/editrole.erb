@@ -1,0 +1,22 @@
+<%= form_tag do |f| %>
+  <% Role.all.each do |r| %>
+    <h3><%= check_box_tag r.name, 1, @user.roles.include?(r) %><%= r.name %></h3>
+    <table>
+      <thead>
+        <th>Permission</th>
+        <th>Description</th>
+      </thead>
+      <tbody>
+        <% r.permissions.each do |p| %>
+          <tr>
+            <td><%= p.name %></td>
+            <td><%= p.description %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <hr>
+  <% end %>
+  <%= submit_tag "Save Changes" %>
+  <%= link_to "Cancel", @user %>
+<% end %>

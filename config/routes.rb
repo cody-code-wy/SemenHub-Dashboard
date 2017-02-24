@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   get "/", to: "welcome#index"
   resources :users
+  get '/users/:id/roles', to: 'users#editrole'
+  post '/users/:id/roles', to: 'users#updaterole'
   get '/users/:id/password', to: 'users#editpassword'
   patch '/users/:id/password', to: 'users#updatepassword'
   get '/signup', to: 'users#new'

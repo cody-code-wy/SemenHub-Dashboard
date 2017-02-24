@@ -21,6 +21,38 @@
 <div>
   Spouse: <%= @user.spouse_name %>
 </div>
+<div class="roles">
+  <%= link_to "Edit user roles", action: :editrole %>
+  <% if @user.roles %>
+    <div class="instruction">
+      Hover to see permissions granted
+    </div>
+    <% @user.roles.each do |role| %>
+      <div class="role">
+        <h4><%= role.name %></h4>
+        <table>
+          <thead>
+            <th>Permission</th>
+            <th>Description</th>
+          </thead>
+          <tbody>
+            <% role.permissions.each do |perm| %>
+              <tr>
+                <td><%= perm.name %></td>
+                <td><%= perm.description %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="norole">
+      No Roles/Permissions
+    </div>
+  <% end %>
+</div>
+</div>
 <div>
   Primary Phone: <%= @user.phone_primary %>
   Other Phone: <%= @user.phone_secondary %>

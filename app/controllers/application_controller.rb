@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
   end
 
   def perms
-    :superuser
+    :"use_#{params[:controller]}_controller"
   end
 
   def authorize

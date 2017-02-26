@@ -11,12 +11,11 @@
   <body>
     <div id="navbar">
       <ul>
-        <li><%= link_to "User", User %></li>
-        <li><%= link_to "Commissions", Commission %></li>
-        <li><%= link_to "Storage Facilities", StorageFacility %></li>
-        <li><%= link_to "Animals", Animal %></li>
-        <li><%= link_to "Registrations", Registration %></li>
-        <li><%= link_to "Transactions", InventoryTransaction %></li>
+        <% [User, Commission, StorageFacility, Animal, Registration, InventoryTransaction].each do |model| %>
+          <% if current_user and current_user.can?(:"use_#{model.to_s.underscore.pluralize}_controller") %>
+            <li><%= link_to model.to_s.underscore.humanize.pluralize, model %></li>
+          <% end %>
+        <% end %>
       </ul>
     </div>
     <div id="user_management">

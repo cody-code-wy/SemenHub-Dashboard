@@ -1,7 +1,13 @@
 class UsersController < ApplicationController
 
   def secure
-    ! ["new","create"].include?(params[:action])
+    if ["new","create","profile"].include?(params[:action])
+      return false
+    end
+    if current_user and current_user.id.to_s == params[:id] and ["show","edit","update","editpassword","updatepassword"].include?(params[:action])
+      return false
+    end
+    true
   end
 
   def index
@@ -10,6 +16,11 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+  end
+
+  def profile
+    redirect_to current_user if current_user
+    redirect_to '/login' unless current_user
   end
 
   def new
@@ -49,6 +60,7 @@ class UsersController < ApplicationController
   end
 
   def destroy
+    return unless current_user.can? :delete_users
     @user = User.find(params[:id])
     @user.destroy
     redirect_to User

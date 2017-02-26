@@ -19,6 +19,16 @@
         <li><%= link_to "Transactions", InventoryTransaction %></li>
       </ul>
     </div>
+    <div id="user_management">
+      <% if current_user %>
+        <span id="welcome">Welcome <%= current_user.first_name %> <%= current_user.last_name %></span>
+        <%= link_to "Logout", '/logout' %>
+        <%= link_to "Profile", '/profile' %>
+      <% else %>
+        <%= link_to "Login", "/login" %>
+        <%= link_to "Register", controller: :users, action: :new %>
+      <% end %>
+    </div>
     <%= yield %>
   </body>
 </html>

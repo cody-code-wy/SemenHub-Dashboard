@@ -1,6 +1,6 @@
 class Fee < ApplicationRecord
   belongs_to :storage_facility
-  
+
   enum fee_type: {
     release: 0,
     handeling: 1,

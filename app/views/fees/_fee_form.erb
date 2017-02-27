@@ -1,0 +1,15 @@
+<%= form_for @fee do |f| %>
+  <div>
+    <%= f.label :price, get_field_errors(@fee, :cost) %>
+    <%= f.text_field :price %>
+  </div>
+  <div>
+    <%= f.label :fee_type, get_field_errors(@fee, :fee_type) %>
+    <%= f.select :fee_type, Fee.fee_types.keys %>
+  </div>
+  <div>
+    <%= f.label :storage_facility_id, get_field_errors(@fee, :storage_facility) %>
+    <%= f.collection_select :storage_facility_id, StorageFacility.all, :id, :name %>
+  </div>
+  <%= f.submit %>
+<% end %>

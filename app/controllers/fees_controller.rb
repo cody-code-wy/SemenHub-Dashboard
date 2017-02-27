@@ -51,6 +51,7 @@ class FeesController < ApplicationController
   def fee_params
     params.require(:fee).permit(
       :price, :fee_type, :storage_facility_id
+
     )
   end
 

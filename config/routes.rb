@@ -24,6 +24,8 @@ Rails.application.routes.draw do
 
   resources :inventory_transactions, except: :destroy
 
+  resources :fees
+
   get '/commissions', to: 'commissions#index'
   post '/users/:user/commission', to: 'commissions#create' #API
   delete '/users/:user/commission', to: 'commissions#destroy' #API

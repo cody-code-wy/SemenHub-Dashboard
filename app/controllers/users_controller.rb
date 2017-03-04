@@ -1,11 +1,26 @@
 class UsersController < ApplicationController
 
+  def secure
+    if ["new","create","profile"].include?(params[:action])
+      return false
+    end
+    if current_user and current_user.id.to_s == params[:id] and ["show","edit","update","editpassword","updatepassword"].include?(params[:action])
+      return false
+    end
+    true
+  end
+
   def index
     @users = User.all
   end
 
   def show
     @user = User.find(params[:id])
+  end
+
+  def profile
+    redirect_to current_user if current_user
+    redirect_to '/login' unless current_user
   end
 
   def new
@@ -18,6 +33,7 @@ class UsersController < ApplicationController
     put_address_in_user(@user)
 
     if @user.save
+      @user.roles << Role.find_by_name(:default)
       redirect_to @user
     else
       render :new
@@ -44,9 +60,36 @@ class UsersController < ApplicationController
   end
 
   def destroy
+    return unless current_user.can? :delete_users
     @user = User.find(params[:id])
     @user.destroy
     redirect_to User
+  end
+
+  def editpassword
+    @user = User.find(params[:id])
+  end
+
+  def updatepassword
+    @user = User.find(params[:id])
+    if @user.update password_params
+      redirect_to @user
+    else
+      render :editpassword
+    end
+  end
+
+  def editrole
+    @user = User.find(params[:id])
+  end
+
+  def updaterole
+    @user = User.find(params[:id])
+    @user.roles.delete_all
+    role_params.each do |r|
+      @user.roles << Role.find_by_name(r)
+    end
+    redirect_to @user
   end
 
   protected
@@ -96,8 +139,12 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(
-      :first_name, :last_name, :spouse_name, :email, :phone_primary, :phone_secondary, :website
+      :first_name, :last_name, :spouse_name, :email, :phone_primary, :phone_secondary, :website, :password, :password_confirmation
     )
+  end
+
+  def password_params
+    params.require(:user).permit(:password, :password_params)
   end
 
   def mailing_address_params
@@ -116,5 +163,9 @@ class UsersController < ApplicationController
     params.require(:user).require(:payee_address).permit(
       :line1, :line2, :postal_code, :city, :region, :alpha_2
     )
+  end
+
+  def role_params
+    params.permit(Role.all.map{|r| r.name})
   end
 end

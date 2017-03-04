@@ -16,3 +16,25 @@ $error_color: red;
   margin-right: 1em;
   color: blue;
 }
+
+.roles {
+  .role {
+    h4 {
+      margin-top: 0.25em;
+      margin-bottom: 0.75em;
+    }
+    table {
+      display: none;
+    }
+    &:hover {
+      table {
+        background-color: white;
+        border: 1px solid black;
+        margin-top: -0.5em;
+        padding: 1.5em;
+        display: table;
+        position: absolute;
+      }
+    }
+  }
+}

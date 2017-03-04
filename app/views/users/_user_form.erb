@@ -1,5 +1,19 @@
 <%= form_for @user do |f| %>
   <div>
+    <%= f.label :email, get_field_errors(@user, :email, "email address") %>
+    <%= f.text_field :email %>
+  </div>
+  <% if @user.new_record? %>
+    <div>
+      <%= f.label :password %>
+      <%= f.password_field :password %>
+    </div>
+    <div>
+      <%= f.label :password_confirmation %>
+      <%= f.password_field :password_confirmation %>
+    </div>
+  <% end %>
+  <div>
     <%= f.label :first_name, get_field_errors(@user, :first_name) %>
     <%= f.text_field :first_name %>
   </div>
@@ -11,10 +25,6 @@
     <%= f.label :spouse_name, get_field_errors(@user, :spouse_name) %>
     <%= f.text_field :spouse_name %>
     <%= f.label :spouse_name, "If you would like your spouse to be able to call SemenHub on your behalf" %>
-  </div>
-  <div>
-    <%= f.label :email, get_field_errors(@user, :email, "email address") %>
-    <%= f.text_field :email %>
   </div>
   <div>
     <%= f.label :phone_primary, "Phone number" %>

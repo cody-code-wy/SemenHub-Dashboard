@@ -1,22 +1,60 @@
 <div>
-  <%= link_to "All Users", users_path %>
-</div>
-<div>
   <%= link_to "edit", edit_user_path(@user) %>
 </div>
 <div>
+  <%= link_to "Change Password", action: :editpassword %>
+</div>
+<% if current_user.can? :delete_users %>
+<div>
   <%= link_to "delete", @user, method: :delete, data: { confirm: "Are you sure you want to delete #{@user.first_name}'s account?" } %>
 </div>
-<div class="commission">
-  <span class="percent"><%= @user.commission.commission_percent %></span>% Commission
-  <span class="edit-commission link">edit</span>
-</div>
+<% end %>
+<% if current_user.can? :change_commission %>
+  <div class="commission">
+    <span class="percent"><%= @user.commission.commission_percent %></span>% Commission
+    <span class="edit-commission link">edit</span>
+  </div>
+<% end %>
 <div>
   <%= @user.first_name %>
   <%= @user.last_name %>
 </div>
 <div>
   Spouse: <%= @user.spouse_name %>
+</div>
+<% if current_user.can? :change_roles %>
+  <div class="roles">
+    <%= link_to "Edit user roles", action: :editrole %>
+    <% if @user.roles %>
+      <div class="instruction">
+        Hover to see permissions granted
+      </div>
+      <% @user.roles.each do |role| %>
+        <div class="role">
+          <h4><%= role.name %></h4>
+          <table>
+            <thead>
+              <th>Permission</th>
+              <th>Description</th>
+            </thead>
+            <tbody>
+              <% role.permissions.each do |perm| %>
+                <tr>
+                  <td><%= perm.name %></td>
+                  <td><%= perm.description %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="norole">
+        No Roles/Permissions
+      </div>
+    <% end %>
+  </div>
+<% end %>
 </div>
 <div>
   Primary Phone: <%= @user.phone_primary %>

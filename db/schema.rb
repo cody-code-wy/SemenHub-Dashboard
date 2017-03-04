@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170213002804) do
+ActiveRecord::Schema.define(version: 20170220082941) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,6 +68,22 @@ ActiveRecord::Schema.define(version: 20170213002804) do
     t.index ["sku_id"], name: "index_inventory_transactions_on_sku_id", using: :btree
   end
 
+  create_table "permission_assignments", force: :cascade do |t|
+    t.integer  "role_id"
+    t.integer  "permission_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["permission_id"], name: "index_permission_assignments_on_permission_id", using: :btree
+    t.index ["role_id"], name: "index_permission_assignments_on_role_id", using: :btree
+  end
+
+  create_table "permissions", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
   create_table "purchase_transactions", force: :cascade do |t|
     t.integer  "purchase_id"
     t.integer  "inventoryTransaction_id"
@@ -107,6 +123,21 @@ ActiveRecord::Schema.define(version: 20170213002804) do
     t.integer "animal_id"
     t.index ["animal_id"], name: "index_registrations_on_animal_id", using: :btree
     t.index ["registrar_id"], name: "index_registrations_on_registrar_id", using: :btree
+  end
+
+  create_table "role_assignments", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "role_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["role_id"], name: "index_role_assignments_on_role_id", using: :btree
+    t.index ["user_id"], name: "index_role_assignments_on_user_id", using: :btree
+  end
+
+  create_table "roles", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "shipments", force: :cascade do |t|
@@ -171,7 +202,10 @@ ActiveRecord::Schema.define(version: 20170213002804) do
     t.integer  "payee_address_id"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
+    t.string   "password_digest"
   end
 
   add_foreign_key "inventory_transactions", "skus"
+  add_foreign_key "permission_assignments", "permissions"
+  add_foreign_key "permission_assignments", "roles"
 end

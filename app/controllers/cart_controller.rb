@@ -1,4 +1,9 @@
 class CartController < ApplicationController
+
+  def secure
+    false
+  end
+
   def add
     $redis.sadd params[:session], params[:animalid]
     $redis.expire params[:session], $redis_timeout

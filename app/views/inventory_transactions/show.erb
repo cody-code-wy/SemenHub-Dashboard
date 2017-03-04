@@ -20,8 +20,8 @@
     <tr>
       <td><%= @sku.price_per_unit %></td>
       <%= render "cpu_commission", transaction: @sku %>
-      <td><%= ["Conventional","Male Sexed","Female Sexed"][@sku.semen_type] %></td>
-      <td><%= ["2.1","5.0"][@sku.semen_count] %></td>
+      <td><%= @sku.semen_type %></td>
+      <td><%= @sku.semen_count %></td>
       <td><%= @sku.animal.name %></td>
       <td><%= @sku.animal.owner.get_name %></td>
       <td><%= @sku.storagefacility.name %></td>

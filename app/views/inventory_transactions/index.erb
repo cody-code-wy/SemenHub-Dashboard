@@ -22,10 +22,10 @@
         <td><%= link_to "See Overview", inventory_transaction_path(sku) %></td>
         <td><%= sku.inventory_transaction.sum(:quantity) %></td>
         <td><%= sku.private %></td>
-        <td><%= ["Conventional","Male Sexed","Female Sexed"][sku.semen_type] %></td>
+        <td><%= sku.semen_type %></td>
         <td><%= number_to_currency(sku.price_per_unit) %></td>
         <%= render "cpu_commission", transaction: sku%>
-        <td><%= ["2.1","5.0"][sku.semen_count] %></td>
+        <td><%= sku.semen_count %></td>
         <td><%= sku.animal.name %></td>
         <td><%= sku.animal.owner.get_name %></td>
         <td><%= sku.storagefacility.name %></td>

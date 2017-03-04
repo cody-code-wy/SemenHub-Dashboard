@@ -1,8 +1,8 @@
 <%# Assuming the order is cost_per_unit then commission %>
 <% if transaction.cost_per_unit %>
   <td><%= number_to_currency(transaction.cost_per_unit) %></td>
-  <td><%= "%.2f" % ((transaction.price_per_unit - transaction.cost_per_unit) / transaction.cost_per_unit * 100) %>%</td>
+  <td><%= "%.2f" % ((transaction.price_per_unit - transaction.cost_per_unit) / transaction.price_per_unit * 100) %>%</td>
 <% else %>
-  <td><%= number_to_currency(transaction.price_per_unit / (1 + (transaction.seller.commission.commission_percent / 100)) )%></td>
+  <td><%= number_to_currency(transaction.price_per_unit - (transaction.price_per_unit / transaction.seller.commission.commission_percent) )%></td>
   <td><%= "%.2f" % transaction.seller.commission.commission_percent %>%</td>
 <% end %>

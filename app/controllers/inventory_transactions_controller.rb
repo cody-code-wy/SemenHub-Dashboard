@@ -51,9 +51,10 @@ class InventoryTransactionsController < ApplicationController
   end
 
   def get_sku_params
+    sku_int_params = params.require(:inventory_transaction).require(:sku).permit(:semen_type, :semen_count).map{ |_,x| [_,x.to_i] }
     sku_params = params.require(:inventory_transaction).require(:sku).permit(
-      :private, :semen_type, :price_per_unit, :semen_count, :animal_id, :storagefacility_id, :seller_id
-    ).merge({cost_per_unit: get_cost_per_unit}) #get the whole params
+      :private, :price_per_unit, :animal_id, :storagefacility_id, :seller_id
+    ).merge({cost_per_unit: get_cost_per_unit}).merge(sku_int_params) #get the whole params
     sku_params[:price_per_unit] = sku_params[:price_per_unit].to_i != 0 ? sku_params[:price_per_unit] : nil
     sku_params
   end

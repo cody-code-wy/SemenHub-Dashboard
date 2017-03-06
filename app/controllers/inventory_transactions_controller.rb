@@ -2,6 +2,7 @@ class InventoryTransactionsController < ApplicationController
 
   def index
     @skus = Sku.all
+    @problems = Sku.joins(:inventory_transaction).group(:id).having("sum(quantity) < 0") #this shouldent happen
   end
 
   def new

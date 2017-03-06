@@ -1,0 +1,17 @@
+<div>
+  <div>
+    <%= link_to 'All fees', fees_path %>
+  </div>
+  <div>
+    <%= link_to 'Edit', edit_fee_path(@fee) %>
+  </div>
+  <div>
+    Cost: <%= @fee.price %>
+  </div>
+  <div>
+    Type: <%= @fee.fee_type %>
+  </div>
+  <div>
+    Facility: <%= link_to @fee.storage_facility.name, @fee.storage_facility %>
+  </div>
+</div>

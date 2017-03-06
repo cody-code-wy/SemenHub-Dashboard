@@ -1,6 +1,7 @@
 class InventoryTransaction < ApplicationRecord
- has_many :purchaseTransactions, foreign_key: 'inventoryTransaction_id' # Rails generates FK as 'inventory_transaction_id' but the migration created 'inventoryTransaction_id'
-  has_many :purchases, through: :purchaseTransactions
+ has_many :purchase_transactions
+  has_many :purchases, through: :purchase_transactions
+
   belongs_to :sku
 
   has_many :shipsTo, foreign_key: 'inventoryTransaction_id'

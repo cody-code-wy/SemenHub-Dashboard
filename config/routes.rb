@@ -31,6 +31,7 @@ Rails.application.routes.draw do
   get '/session/new', to: 'session#new'
   get '/cart/:session/add', to: 'cart#add'
   get '/cart/:session', to: 'cart#show'
+  post '/cart/:session', to: 'cart#checkout'
 
   #errors
   match '/401', to: 'errors#unauthorised', via: :all

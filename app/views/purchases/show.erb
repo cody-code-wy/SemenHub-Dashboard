@@ -1,0 +1,30 @@
+<table>
+  <thead>
+    <tr>
+      <th>SKU ID</th>
+      <th>Semen Count</th>
+      <th>Semen Type</th>
+      <th>Storage Facility</th>
+      <th>price per unit</th>
+      <th>Order Quantity</th>
+      <th>Cost</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @purchase.inventory_transactions.each do |trans| %>
+      <tr>
+        <td><%= trans.sku.id %></td>
+        <td><%= trans.sku.semen_count %></td>
+        <td><%= trans.sku.semen_type %></td>
+        <td><%= trans.sku.storagefacility.name %></td>
+        <td><%= trans.sku.price_per_unit %></td>
+        <td><%= -trans.quantity %></td>
+        <td><%= -trans.quantity * trans.sku.price_per_unit %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<div class="total">
+  Total: <%= @purchase.total %>
+</div>
+<%= render @partial if @partial %>

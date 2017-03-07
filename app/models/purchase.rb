@@ -6,4 +6,10 @@ class Purchase < ApplicationRecord
   has_many :skus, through: :inventory_transactions
 
   enum state: ["problem", "created", "invoiced", "paid", "preparing for shipment", "shipped", "delivered", "canceled", "refunded"]
+
+  def total
+    inventory_transactions.reduce(0) do |sum,trans|
+      sum + -(trans.quantity * trans.sku.price_per_unit)
+    end
+  end
 end

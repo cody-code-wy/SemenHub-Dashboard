@@ -1,0 +1,21 @@
+<%= link_to 'Add Fee', new_fee_path %>
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th>Facility</th>
+      <th>Price</th>
+      <th>Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @fees.each do |f| %>
+      <tr>
+        <td><%= link_to 'View', f %></td>
+        <td><%= link_to f.storage_facility.name, f.storage_facility %></td>
+        <td>$<%= f.price %></td>
+        <td><%= f.fee_type %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

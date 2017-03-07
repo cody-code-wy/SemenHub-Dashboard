@@ -60,6 +60,15 @@ ActiveRecord::Schema.define(version: 20170305020836) do
     t.datetime "updated_at",                        null: false
   end
 
+  create_table "fees", force: :cascade do |t|
+    t.decimal  "price"
+    t.integer  "fee_type"
+    t.integer  "storage_facility_id"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.index ["storage_facility_id"], name: "index_fees_on_storage_facility_id", using: :btree
+  end
+
   create_table "inventory_transactions", force: :cascade do |t|
     t.integer  "quantity"
     t.datetime "created_at", null: false
@@ -210,6 +219,7 @@ ActiveRecord::Schema.define(version: 20170305020836) do
 
   add_foreign_key "animals", "breeds"
   add_foreign_key "commissions", "users"
+  add_foreign_key "fees", "storage_facilities"
   add_foreign_key "inventory_transactions", "skus"
   add_foreign_key "permission_assignments", "permissions"
   add_foreign_key "permission_assignments", "roles"

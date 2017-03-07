@@ -6,6 +6,10 @@ ruby '2.3.1'
 gem 'rails', '~> 5.0.0'
 # Use posgresql as the database for Active Record
 gem 'pg'
+# Use Redis for in memory cart management
+gem 'redis'
+# Use hiredis for improved speed when working with redis
+gem 'hiredis'
 # Use Puma as the app server
 gem 'puma', '~> 3.0'
 # Use SCSS for stylesheets

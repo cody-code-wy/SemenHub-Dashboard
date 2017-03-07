@@ -32,6 +32,8 @@ Rails.application.routes.draw do
 
   resources :skus
 
+  resources :purchases
+
   get '/commissions', to: 'commissions#index'
   post '/users/:user/commission', to: 'commissions#create' #API
   delete '/users/:user/commission', to: 'commissions#destroy' #API

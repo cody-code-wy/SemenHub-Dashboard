@@ -51,9 +51,9 @@
           <td><%= link_to "See Overview", inventory_transaction_path(t) %></td>
           <td><%= t.inventory_transaction.sum(:quantity) %></td>
           <td><%= t.private %></td>
-          <td><%= ["Conventional","Male Sexed","Female Sexed"][t.semen_type] %></td>
+          <td><%= t.semen_type %></td>
           <td>$<%= t.price_per_unit %></td>
-          <td><%= ["2.1","5.0"][t.semen_count] %></td>
+          <td><%= t.semen_count %></td>
           <td><%= t.storagefacility.name %></td>
           <td><%= t.seller.get_name %></td>
         </tr>

@@ -11,7 +11,7 @@
   <tbody>
     <% @fees.each do |f| %>
       <tr>
-        <td><%= link_to 'Edit', f %></td>
+        <td><%= link_to 'View', f %></td>
         <td><%= link_to f.storage_facility.name, f.storage_facility %></td>
         <td>$<%= f.price %></td>
         <td><%= f.fee_type %></td>

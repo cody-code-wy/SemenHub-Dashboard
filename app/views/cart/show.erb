@@ -25,7 +25,7 @@
             <% a.skus.select("min(skus.id) as id,array_agg(skus.id) as ids,price_per_unit,semen_type,semen_count,storagefacility_id,sum(quantity) as sum_quantity").where(private: false).group(:price_per_unit,:semen_type,:semen_count,:storagefacility_id).joins(:inventory_transaction).each do |sku| %>
               <% next if sku.sum_quantity < 1 %>
               <tr>
-                <td><%= sku.ids %></td>
+                <td><%= sku.ids.first %></td>
                 <td><%= sku.price_per_unit %></td>
                 <td><%= sku.semen_count %></td>
                 <td><%= sku.semen_type %></td>

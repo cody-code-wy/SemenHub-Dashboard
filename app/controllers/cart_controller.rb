@@ -11,7 +11,7 @@ class CartController < ApplicationController
   end
 
   def show
-    @animals = Animal.find($redis.smembers params[:session])
+    @animals = Animal.where(id: $redis.smembers(params[:session]))
   end
 
   def checkout
@@ -35,7 +35,7 @@ class CartController < ApplicationController
       end
     end
 
-    render json: purchase
+    redirect_to purchase
   end
 
   protected

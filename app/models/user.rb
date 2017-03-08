@@ -54,4 +54,8 @@ class User < ApplicationRecord
   def can_any? perms
     perms.any? do |perm| self.can? perm end
   end
+
+  def temp_pass?
+    return temp_pass
+  end
 end

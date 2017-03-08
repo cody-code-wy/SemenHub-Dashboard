@@ -13,4 +13,11 @@ class Purchase < ApplicationRecord
       sum + -(trans.quantity * trans.sku.price_per_unit)
     end
   end
+
+  def fees_total
+    storagefacilities.uniq.reduce(0) do |sum,storage|
+      sum + storage.fees.reduce(0){ |sum,fee| sum + fee.price }
+    end
+  end
+  
 end

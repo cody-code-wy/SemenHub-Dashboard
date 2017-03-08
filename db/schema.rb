@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170307131651) do
+ActiveRecord::Schema.define(version: 20170308204140) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -207,16 +207,30 @@ ActiveRecord::Schema.define(version: 20170307131651) do
     t.integer  "mailing_address_id"
     t.integer  "billing_address_id"
     t.integer  "payee_address_id"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.string   "password_digest"
+    t.boolean  "temp_pass",          default: false
     t.index ["billing_address_id"], name: "index_users_on_billing_address_id", using: :btree
     t.index ["mailing_address_id"], name: "index_users_on_mailing_address_id", using: :btree
     t.index ["payee_address_id"], name: "index_users_on_payee_address_id", using: :btree
   end
 
+  add_foreign_key "animals", "breeds"
+  add_foreign_key "commissions", "users"
   add_foreign_key "fees", "storage_facilities"
   add_foreign_key "inventory_transactions", "skus"
   add_foreign_key "permission_assignments", "permissions"
   add_foreign_key "permission_assignments", "roles"
+  add_foreign_key "purchase_transactions", "inventory_transactions"
+  add_foreign_key "purchase_transactions", "purchases"
+  add_foreign_key "purchases", "users"
+  add_foreign_key "registrars", "addresses"
+  add_foreign_key "registrars", "breeds"
+  add_foreign_key "registrations", "registrars"
+  add_foreign_key "shipments", "addresses"
+  add_foreign_key "shipments", "purchases"
+  add_foreign_key "ships_tos", "countries"
+  add_foreign_key "ships_tos", "inventory_transactions", column: "inventoryTransaction_id"
+  add_foreign_key "storage_facilities", "addresses"
 end

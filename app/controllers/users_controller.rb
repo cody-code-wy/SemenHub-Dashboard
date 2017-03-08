@@ -92,6 +92,10 @@ class UsersController < ApplicationController
     redirect_to @user
   end
 
+  def createtemppassword
+
+  end
+
   protected
 
   def put_address_in_user(user)
@@ -167,5 +171,10 @@ class UsersController < ApplicationController
 
   def role_params
     params.permit(Role.all.map{|r| r.name})
+  end
+
+  def rand_pass
+    o = [('a'..'z'), ('A'..'Z'), ('1'..'0')].map(&:to_a).flatten
+    string = (0...10).map { o[rand(o.length)] }.join
   end
 end

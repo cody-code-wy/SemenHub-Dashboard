@@ -72,6 +72,7 @@ class UsersController < ApplicationController
 
   def updatepassword
     @user = User.find(params[:id])
+    @user.temp_pass = false
     if @user.update password_params
       redirect_to @user
     else
@@ -93,7 +94,12 @@ class UsersController < ApplicationController
   end
 
   def createtemppassword
+    @temp_pass = rand_pass
+    @user = User.find(params[:id])
+    @user.update(password: @temp_pass)
+    @user.temp_pass = true
 
+    render :temp_password
   end
 
   protected

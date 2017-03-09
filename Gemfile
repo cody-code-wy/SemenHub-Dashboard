@@ -3,6 +3,8 @@ ruby '2.3.1'
 
 # Dot Env for devel and test
 gem 'dotenv-rails', groups: [:development, :test]
+# RestClient gem for setup of SMTP services
+gem 'rest-client'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.0.0'
 # Use posgresql as the database for Active Record

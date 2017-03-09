@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   post '/users/:id/roles', to: 'users#updaterole'
   get '/users/:id/password', to: 'users#editpassword'
   patch '/users/:id/password', to: 'users#updatepassword'
+  get '/users/:id/temppass', to: 'users#createtemppassword'
   get '/profile', to: 'users#profile'
   get '/signup', to: 'users#new'
   get '/login', to: 'sessions#new'

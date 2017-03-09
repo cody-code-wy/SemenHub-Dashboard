@@ -72,7 +72,7 @@ class UsersController < ApplicationController
 
   def updatepassword
     @user = User.find(params[:id])
-    if @user.update password_params
+    if @user.update password_params.merge({temp_pass: false})
       redirect_to @user
     else
       render :editpassword
@@ -90,6 +90,16 @@ class UsersController < ApplicationController
       @user.roles << Role.find_by_name(r)
     end
     redirect_to @user
+  end
+
+  def createtemppassword
+    @temp_pass = rand_pass
+    @user = User.find(params[:id])
+    @user.update(password: @temp_pass, temp_pass: true)
+
+    TempPassMailer.send_temp_pass(@user,@temp_pass).deliver_later
+
+    render :temp_password
   end
 
   protected
@@ -167,5 +177,10 @@ class UsersController < ApplicationController
 
   def role_params
     params.permit(Role.all.map{|r| r.name})
+  end
+
+  def rand_pass
+    o = [('a'..'z'), ('A'..'Z'), ('1'..'0')].map(&:to_a).flatten
+    string = (0...10).map { o[rand(o.length)] }.join
   end
 end

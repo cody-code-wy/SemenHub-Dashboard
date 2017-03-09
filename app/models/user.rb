@@ -1,3 +1,11 @@
+class EmailValidator < ActiveModel::EachValidator
+  def validate_each(record, attribute, value)
+    unless value =~ /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
+      record.errors[attribute] << (options[:message] || "is not an email")
+    end
+  end
+end
+
 class User < ApplicationRecord
 
   has_secure_password
@@ -16,7 +24,9 @@ class User < ApplicationRecord
   has_many :permission_assignments, through: :roles
   has_many :permissions, through: :permission_assignments
 
-  validates_presence_of :first_name, :last_name, :email, :phone_primary
+  validates :email, presence: true, email: true
+
+  validates_presence_of :first_name, :last_name, :phone_primary
 
   validates_uniqueness_of :email
 
@@ -43,5 +53,9 @@ class User < ApplicationRecord
 
   def can_any? perms
     perms.any? do |perm| self.can? perm end
+  end
+
+  def temp_pass?
+    return temp_pass
   end
 end

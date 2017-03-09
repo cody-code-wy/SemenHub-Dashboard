@@ -72,8 +72,7 @@ class UsersController < ApplicationController
 
   def updatepassword
     @user = User.find(params[:id])
-    @user.temp_pass = false
-    if @user.update password_params
+    if @user.update password_params.merge({temp_pass: false})
       redirect_to @user
     else
       render :editpassword
@@ -96,8 +95,9 @@ class UsersController < ApplicationController
   def createtemppassword
     @temp_pass = rand_pass
     @user = User.find(params[:id])
-    @user.update(password: @temp_pass)
-    @user.temp_pass = true
+    @user.update(password: @temp_pass, temp_pass: true)
+
+    TempPassMailer.send_temp_pass(@user,@temp_pass).deliver_later
 
     render :temp_password
   end

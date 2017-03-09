@@ -5,6 +5,7 @@
     <th>Profile</th>
     <th>Location</th>
     <th>Phone Number</th>
+    <th>Email</th>
     <th>Website</th>
   </tr>
   </thead>
@@ -14,6 +15,7 @@
         <td><%= link_to facility.name, facility %></td>
         <td><%= facility.address.get_location %></td>
         <td><%= facility.phone_number %></td>
+        <td><%= facility.email %></td>
         <td><%= facility.website %></td>
       </tr>
   <% end %>

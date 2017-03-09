@@ -1,0 +1,21 @@
+<div>
+  Hello <%= @user.get_name %>
+</div>
+<div>
+  A semenhub administrator has set a temporary password for your account.
+</div>
+<div>
+  To login use the following information.
+  <p>
+  Username: <%= @user.email %>
+  </p>
+  <p>
+  password: <%= @temp_pass %>
+  </p>
+</div>
+<div>
+  You can login at <a href="https://www.semenhub.shop/login">semenhub.shop</a> to view your orders, or adjust inventory for sale.
+</div>
+<div>
+  You will automatically be prompted to change your password
+</div>

@@ -8,6 +8,9 @@ class Purchase < ApplicationRecord
 
   enum state: ["problem", "created", "invoiced", "paid", "preparing for shipment", "shipped", "delivered", "canceled", "refunded"]
 
+  #shipping info
+  shipping = {diameter: 41, height: 61, weight: 18144, straws_per: 10}
+
   def total
     transaction_total + fees_total
   end

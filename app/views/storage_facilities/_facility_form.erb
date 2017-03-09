@@ -8,6 +8,10 @@
       <%= f.text_field :phone_number %>
     </div>
     <div>
+      <%= f.label :email, get_field_errors(@facility, :email) %>
+      <%= f.text_field :email %>
+    </div>
+    <div>
       <%=	f.label :website, get_field_errors(@facility, :website) %>
       <%= f.text_field :website %>
     </div>

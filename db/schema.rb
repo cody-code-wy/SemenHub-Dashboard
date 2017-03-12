@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170309210042) do
+ActiveRecord::Schema.define(version: 20170312195237) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,7 +33,6 @@ ActiveRecord::Schema.define(version: 20170309210042) do
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
     t.string   "private_herd_number"
-    t.string   "ai_certification"
     t.string   "dna_number"
     t.index ["breed_id"], name: "index_animals_on_breed_id", using: :btree
   end
@@ -126,10 +125,12 @@ ActiveRecord::Schema.define(version: 20170309210042) do
   end
 
   create_table "registrations", force: :cascade do |t|
-    t.integer "registrar_id"
-    t.string  "registration"
-    t.text    "note"
-    t.integer "animal_id"
+    t.integer  "registrar_id"
+    t.string   "registration"
+    t.text     "note"
+    t.integer  "animal_id"
+    t.datetime "created_at",   default: '2017-03-12 20:06:57', null: false
+    t.datetime "updated_at",   default: '2017-03-12 20:06:57', null: false
     t.index ["animal_id"], name: "index_registrations_on_animal_id", using: :btree
     t.index ["registrar_id"], name: "index_registrations_on_registrar_id", using: :btree
   end
@@ -212,26 +213,10 @@ ActiveRecord::Schema.define(version: 20170309210042) do
     t.datetime "updated_at",                         null: false
     t.string   "password_digest"
     t.boolean  "temp_pass",          default: false
-    t.index ["billing_address_id"], name: "index_users_on_billing_address_id", using: :btree
-    t.index ["mailing_address_id"], name: "index_users_on_mailing_address_id", using: :btree
-    t.index ["payee_address_id"], name: "index_users_on_payee_address_id", using: :btree
   end
 
-  add_foreign_key "animals", "breeds"
-  add_foreign_key "commissions", "users"
   add_foreign_key "fees", "storage_facilities"
   add_foreign_key "inventory_transactions", "skus"
   add_foreign_key "permission_assignments", "permissions"
   add_foreign_key "permission_assignments", "roles"
-  add_foreign_key "purchase_transactions", "inventory_transactions"
-  add_foreign_key "purchase_transactions", "purchases"
-  add_foreign_key "purchases", "users"
-  add_foreign_key "registrars", "addresses"
-  add_foreign_key "registrars", "breeds"
-  add_foreign_key "registrations", "registrars"
-  add_foreign_key "shipments", "addresses"
-  add_foreign_key "shipments", "purchases"
-  add_foreign_key "ships_tos", "countries"
-  add_foreign_key "ships_tos", "inventory_transactions", column: "inventoryTransaction_id"
-  add_foreign_key "storage_facilities", "addresses"
 end

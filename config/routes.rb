@@ -27,6 +27,8 @@ Rails.application.routes.draw do
 
   resources :fees
 
+  resources :breeds
+
   get '/commissions', to: 'commissions#index'
   post '/users/:user/commission', to: 'commissions#create' #API
   delete '/users/:user/commission', to: 'commissions#destroy' #API

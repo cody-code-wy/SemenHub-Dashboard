@@ -2,6 +2,7 @@ class AnimalsController < ApplicationController
 
   def index
     @animals = Animal.all
+    @breeds = Breed.all
   end
 
   def show

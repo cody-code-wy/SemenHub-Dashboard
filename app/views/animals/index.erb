@@ -1,23 +1,40 @@
 <%= link_to 'Add Animal', new_animal_path %>
-<table>
-  <thead>
-  <tr>
-    <th>Animal</th>
-    <th>Private Herd Number</th>
-    <th>DNA Number</th>
-    <th>Breed</th>
-    <th>Owner</th>
-  </tr>
-  </thead>
-  <tbody>
-  <% @animals.each do |animal| %>
-      <tr>
-        <td><%= link_to animal.name, animal %></td>
-        <td><%= animal.private_herd_number ? animal.private_herd_number : "N/A" %></td>
-        <td><%= animal.dna_number ? animal.dna_number : "N/A" %></td>
-        <td><%= animal.breed ? animal.breed.breed_name : "Error: no breed" %></td>
-        <td><%= link_to animal.owner.get_name, animal.owner %></td>
-      </tr>
+<ul>
+  <% @breeds.each do |breed| %>
+    <li><a href="#<%= "go-to-#{breed.breed_name.parameterize}" %>"><%= breed.breed_name %></a></li>
   <% end %>
-  </tbody>
-</table>
+</ul>
+<% @breeds.each do |breed| %>
+  <% @registrars = breed.registrars %>
+  <h2 id="<%= "go-to-#{breed.breed_name.parameterize}" %>" ><%= breed.breed_name %></h2>
+  <a href="#top">Top of page</a>
+  <table>
+    <thead>
+    <tr>
+      <th>Animal</th>
+      <th>Private Herd Number</th>
+      <th>DNA Number</th>
+      <% @registrars.each do |registrar| %>
+        <th><%= registrar.name %> registration</th>
+        <th><%= registrar.name %> AI Certification</th>
+      <% end %>
+      <th>Owner</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @animals.where(breed: breed).each do |animal| %>
+        <tr>
+          <td><%= link_to animal.name, animal %></td>
+          <td><%= animal.private_herd_number ? animal.private_herd_number : "" %></td>
+          <td><%= animal.dna_number ? animal.dna_number : "" %></td>
+          <% @registrars.each do |registrar| %>
+            <% registration = animal.registrations.where(registrar: registrar) %>
+            <td><%= humanize_registrations_registration registration %></td>
+            <td><%= humanize_registrations_ai_certification registration%></td>
+          <% end %>
+          <td><%= link_to animal.owner.get_name, animal.owner %></td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% end %>

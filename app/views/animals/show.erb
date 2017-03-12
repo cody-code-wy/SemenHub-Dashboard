@@ -35,7 +35,7 @@
   <table>
     <thead>
     <tr>
-      <th></th>
+      <th>Sku</th>
       <th>Quantity</th>
       <th>Private</th>
       <th>Semen Type</th>
@@ -48,7 +48,7 @@
     <tbody>
     <% @skus.each do |t| %>
         <tr>
-          <td><%= link_to "See Overview", inventory_transaction_path(t) %></td>
+          <td><%= link_to "SKU #{t.id}", inventory_transaction_path(t) %></td>
           <td><%= t.inventory_transaction.sum(:quantity) %></td>
           <td><%= t.private %></td>
           <td><%= t.semen_type %></td>

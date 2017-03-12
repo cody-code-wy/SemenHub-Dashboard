@@ -5,6 +5,7 @@
     <th>Registrar</th>
     <th class="nosort">Registration Info</th>
     <th>Registration</th>
+    <th>AI Certification</th>
     <th>Note</th>
   </tr>
   </thead>
@@ -14,6 +15,7 @@
         <td><%= reg.registrar.name %></td>
         <td><%= link_to 'Information', reg %></td>
         <td><%= reg.registration %></td>
+        <td><%= reg.ai_certification %></td>
         <td><%= reg.note %></td>
       </tr>
   <% end %>

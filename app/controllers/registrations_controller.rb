@@ -26,10 +26,20 @@ class RegistrationsController < ApplicationController
     end
   end
 
+  def update
+    @reg = Registration.find(params[:id])
+
+    if @reg.update(reg_params)
+      redirect_to @reg
+    else
+      render :edit
+    end
+  end
+
   protected
 
   def reg_params
-    params.require(:registration).permit(:registrar_id, :animal_id, :registration, :note)
+    params.require(:registration).permit(:registrar_id, :animal_id, :registration, :ai_certification, :note)
   end
 
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170312195237) do
+ActiveRecord::Schema.define(version: 20170312210208) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -129,8 +129,9 @@ ActiveRecord::Schema.define(version: 20170312195237) do
     t.string   "registration"
     t.text     "note"
     t.integer  "animal_id"
-    t.datetime "created_at",   default: '2017-03-12 20:06:57', null: false
-    t.datetime "updated_at",   default: '2017-03-12 20:06:57', null: false
+    t.datetime "created_at",       default: '2017-03-12 20:06:57', null: false
+    t.datetime "updated_at",       default: '2017-03-12 20:06:57', null: false
+    t.string   "ai_certification"
     t.index ["animal_id"], name: "index_registrations_on_animal_id", using: :btree
     t.index ["registrar_id"], name: "index_registrations_on_registrar_id", using: :btree
   end

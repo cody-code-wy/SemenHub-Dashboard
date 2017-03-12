@@ -1,7 +1,7 @@
 <% if @sku.private %>
   <h3>Marked as private</h3>
 <% end %>
-<table>
+<table class="nosort">
   <thead>
     <tr>
       <th>Price per unit</th>
@@ -36,7 +36,7 @@ Transactions
     <th>Quantity</th>
     <th>Created at</th>
     <th>Updated at</th>
-    <th></th>
+    <th class="nosort"></th>
   </thead>
   <tbody>
     <% @sku.inventory_transaction.each do |transaction| %>

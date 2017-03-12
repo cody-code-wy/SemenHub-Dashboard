@@ -22,7 +22,7 @@
   <tbody>
     <% @skus.each do |sku| %>
       <tr>
-        <td><%= link_to "View SKU #{sku.id} details", inventory_transaction_path(sku) %></td>
+        <td><%= link_to "SKU #{sku.id}", inventory_transaction_path(sku) %></td>
         <td><%= sku.inventory_transaction.sum(:quantity) %></td>
         <td><%= sku.private %></td>
         <td><%= sku.semen_type %></td>

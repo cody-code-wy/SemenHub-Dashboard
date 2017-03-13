@@ -8,10 +8,6 @@
       <%= a.text_field :private_herd_number %>
     </div>
     <div>
-      <%= a.label :ai_certification, get_field_errors(@animal, :ai_certification) %>
-      <%= a.text_field :ai_certification %>
-    </div>
-    <div>
       <%= a.label :dna_number, get_field_errors(@animal, :dna_number) %>
       <%= a.text_field :dna_number %>
     </div>
@@ -22,6 +18,9 @@
     <div>
       <%= a.label :breed_id, get_field_errors(@animal, :breed_id) %>
       <%= a.collection_select :breed_id, Breed.all, :id, :breed_name %>
+    </div>
+    <div id="registryinfo">
+      <!-- empty for JS --!>
     </div>
     <%= a.submit %>
 <% end %>

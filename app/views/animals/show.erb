@@ -14,24 +14,39 @@
   Name: <%= @animal.name %>
 </div>
 <div>
-  Registrations:
-  <% @animal.registrations.each do |registration| %>
-    <%= link_to registration.registration, registration %><%= "," unless @animal.registrations.last == registration %>
-  <% end %>
-</div>
-<div>
   Owner Name: <%= "#{@animal.owner.first_name} #{@animal.owner.last_name}" %>
 </div>
 <div>
   Private Herd Number: <%= @animal.private_herd_number ? @animal.private_herd_number : "N/A" %>
-  <div>
-    Ai Certification: <%= @animal.ai_certification ? @animal.ai_certification : "N/A" %>
-  </div>
 </div>
 <div>
   DNA Number: <%= @animal.dna_number ? @animal.dna_number : "N/A" %>
 </div>
 <div>
+  Registrations
+  <table>
+    <thead>
+      <tr>
+        <th>Registrar</th>
+        <th>Registration</th>
+        <th>AI Certification</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @animal.registrations.each do |registration| %>
+        <tr>
+          <td><%= registration.registrar.name %></td>
+          <td><%= link_to registration.registration, registration %></td>
+          <td><%= registration.ai_certification %></td>
+          <td><%= registration.note %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<div>
+  all stock
   <table>
     <thead>
     <tr>
@@ -49,7 +64,7 @@
     <% @skus.each do |t| %>
         <tr>
           <td><%= link_to "SKU #{t.id}", inventory_transaction_path(t) %></td>
-          <td><%= t.inventory_transaction.sum(:quantity) %></td>
+          <td><%= t.quantity %></td>
           <td><%= t.private %></td>
           <td><%= t.semen_type %></td>
           <td>$<%= t.price_per_unit %></td>

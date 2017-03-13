@@ -41,15 +41,15 @@
   </div>
   <div>
     <%= f.label :animal %>
-    <%= f.collection_select :animal_id, Animal.all, :id, :get_drop_down_name %>
+    <%= f.collection_select :animal_id, Animal.all.order(:name), :id, :get_drop_down_name %>
   </div>
   <div>
     <%= f.label :storage_facility %>
-    <%= f.collection_select :storagefacility_id, StorageFacility.all, :id, :name %>
+    <%= f.collection_select :storagefacility_id, StorageFacility.all.order(:name), :id, :name %>
   </div>
   <div>
     <%= f.label :seller %>
-    <%= f.collection_select :seller_id, User.all, :id, :get_name %>
+    <%= f.collection_select :seller_id, User.all.order(:first_name), :id, :get_name %>
   </div>
     <% unless defined? nosubmit %>
     <div class="actions">

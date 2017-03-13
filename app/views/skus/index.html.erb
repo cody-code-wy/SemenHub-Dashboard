@@ -7,7 +7,7 @@
 <table>
   <thead>
     <tr>
-      <th colspan="2" class="nosort"></th>
+      <th colspan="3" class="nosort"></th>
       <th>Sku number</th>
       <th>Quantity</th>
       <th>Private</th>
@@ -28,6 +28,7 @@
       <tr>
         <td><%= link_to 'Show', sku %></td>
         <td><%= link_to 'Edit', edit_sku_path(sku) %></td>
+        <td><%= link_to 'Add Transaction', new_inventory_transaction_path(sku_id: sku.id) %></td>
         <td><%= sku.id %></td>
         <td><%= sku.quantity %></td>
         <td><%= sku.private %></td>

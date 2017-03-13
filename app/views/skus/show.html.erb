@@ -2,6 +2,7 @@
 
 <%= link_to 'Edit', edit_sku_path(@sku) %> |
 <%= link_to 'Back', skus_path %>
+<%= link_to 'Add Transaction', new_inventory_transaction_path(sku_id: @sku.id) %>
 
 <% if @sku.private %>
   <h3>Marked as private</h3>

@@ -4,6 +4,7 @@
     <th colspan=3 class="nosort"></th>
     <th>quantity</th>
     <th>Sku</th>
+    <th>Animal</th>
     <th>Updated</th>
     <th>Created</th>
   </thead>
@@ -15,6 +16,7 @@
         <td><%= link_to "Destroy", transaction, method: :delete, data: { confirm: "Are you sure?" } %></td>
         <td><%= transaction.quantity %></td>
         <td><%= link_to transaction.sku.id, transaction.sku %></td>
+        <td><%= link_to transaction.sku.animal.name, transaction.sku.animal %></td>
         <td><%= transaction.updated_at %></td>
         <td><%= transaction.created_at %></td>
       </tr>

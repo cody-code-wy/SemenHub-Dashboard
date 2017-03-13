@@ -18,7 +18,7 @@ class InventoryTransactionsController < ApplicationController
   end
 
   def create
-    @transaction.new(get_params.merge(sku: get_sku))
+    @transaction = InventoryTransaction.new(get_params.merge(sku: get_sku))
     if @transaction.save and @transaction.sku.valid?
       redirect_to @transaction
     else

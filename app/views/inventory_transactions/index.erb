@@ -9,10 +9,11 @@
       <th>Quantity</th>
       <th>Private</th>
       <th>Semen Type</th>
+      <th>Semen Count</th>
+      <th>Cane code</th>
       <th>Price Per Unit</th>
       <th>Cost Per Unit (effective)</th>
       <th>Commission (effective)</th>
-      <th>Semen Count</th>
       <th>Animal Name</th>
       <th>Animal Owner</th>
       <th>Storage Facility</th>
@@ -26,9 +27,10 @@
         <td><%= sku.inventory_transaction.sum(:quantity) %></td>
         <td><%= sku.private %></td>
         <td><%= sku.semen_type %></td>
+        <td><%= sku.semen_count %></td>
+        <td><%= sku.cane_code %></td>
         <td><%= number_to_currency(sku.price_per_unit) %></td>
         <%= render "cpu_commission", transaction: sku%>
-        <td><%= sku.semen_count %></td>
         <td><%= sku.animal.name %></td>
         <td><%= sku.animal.owner.get_name %></td>
         <td><%= sku.storagefacility.name %></td>

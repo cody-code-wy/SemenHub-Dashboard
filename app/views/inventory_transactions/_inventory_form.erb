@@ -13,6 +13,14 @@
         <%= sku.select :semen_type, options_for_select(Sku.semen_types, @transaction.sku.semen_type) %>
       </div>
       <div>
+        <%= sku.label :semen_count, get_field_errors(@transaction.sku, :semen_count) %>
+        <%= sku.select :semen_count, options_for_select(Sku.semen_counts, @transaction.sku.semen_count) %>
+      </div>
+      <div>
+        <%= sku.label :cane_code, get_field_errors(@transaction.sku, :cane_code) %>
+        <%= sku.text_field :cane_code %>
+      </div>
+      <div>
         <%= sku.label :price_per_unit, get_field_errors(@transaction.sku, :price_per_unit) %>
         <%= sku.text_field :price_per_unit %>
       </div>
@@ -23,10 +31,6 @@
       <div>
         <%= sku.label :cost_per_unit, get_field_errors(@transaction.sku, :cost_per_unit) %>
         <%= sku.text_field :cost_per_unit %>
-      </div>
-      <div>
-        <%= sku.label :semen_count, get_field_errors(@transaction.sku, :semen_count) %>
-        <%= sku.select :semen_count, options_for_select(Sku.semen_counts, @transaction.sku.semen_count) %>
       </div>
       <div>
         <%= sku.label :animal, get_field_errors(@transaction.sku, :animal) %>

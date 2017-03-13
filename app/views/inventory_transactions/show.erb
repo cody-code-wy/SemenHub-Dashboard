@@ -9,6 +9,7 @@
       <th>Commission (effective)</th>
       <th>Semen type</th>
       <th>Semen count</th>
+      <th>Cane Code</th>
       <th>Animal</th>
       <th>Animal Owner</th>
       <th>Storage Facility</th>
@@ -22,6 +23,7 @@
       <%= render "cpu_commission", transaction: @sku %>
       <td><%= @sku.semen_type %></td>
       <td><%= @sku.semen_count %></td>
+      <td><%= @sku.cane_code %></td>
       <td><%= @sku.animal.name %></td>
       <td><%= @sku.animal.owner.get_name %></td>
       <td><%= @sku.storagefacility.name %></td>

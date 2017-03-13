@@ -1,0 +1,57 @@
+<%= form_for(sku) do |f| %>
+  <% if sku.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(sku.errors.count, "error") %> prohibited this sku from being saved:</h2>
+
+      <ul>
+      <% sku.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.label :private %>
+    <%= f.check_box :private %>
+  </div>
+  <div>
+    <%= f.label :semen_type %>
+    <%= f.select :semen_type, options_for_select(Sku.semen_types.keys.to_a, sku.semen_type) %>
+  </div>
+  <div>
+    <%= f.label :semen_count %>
+    <%= f.select :semen_count, options_for_select(Sku.semen_counts.keys.to_a, sku.semen_type) %>
+  </div>
+  <div>
+    <%= f.label :cane_code %>
+    <%= f.text_field :cane_code %>
+  </div>
+  <div>
+    <%= f.label :price_per_unit %>
+    <%= f.number_field :price_per_unit %>
+  </div>
+  <div>
+    <%= f.label :use_commission %>
+    <%= f.check_box :use_commission, checked: sku.cost_per_unit == nil %>
+  </div>
+  <div>
+    <%= f.label :cost_per_unit %>
+    <%= f.number_field :cost_per_unit %>
+  </div>
+  <div>
+    <%= f.label :animal %>
+    <%= f.collection_select :animal_id, Animal.all, :id, :get_drop_down_name %>
+  </div>
+  <div>
+    <%= f.label :storage_facility %>
+    <%= f.collection_select :storagefacility_id, StorageFacility.all, :id, :name %>
+  </div>
+  <div>
+    <%= f.label :seller %>
+    <%= f.collection_select :seller_id, User.all, :id, :get_name %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

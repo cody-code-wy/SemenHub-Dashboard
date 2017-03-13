@@ -1,0 +1,8 @@
+<%# Assuming the order is cost_per_unit then commission %>
+<% if sku.cost_per_unit %>
+  <td><%= number_to_currency(sku.cost_per_unit) %></td>
+  <td><%= "%.2f" % ((sku.price_per_unit - sku.cost_per_unit) / sku.price_per_unit * 100) %>%</td>
+<% else %>
+  <td><%= number_to_currency(sku.price_per_unit - (sku.price_per_unit / sku.seller.commission.commission_percent) )%></td>
+  <td><%= "%.2f" % sku.seller.commission.commission_percent %>%</td>
+<% end %>

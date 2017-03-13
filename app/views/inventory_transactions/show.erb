@@ -1,52 +1,20 @@
-<% if @sku.private %>
-  <h3>Marked as private</h3>
-<% end %>
+<%= link_to "back", InventoryTransaction %>
+<%= link_to "edit", edit_inventory_transaction_path(@transaction) %>
 <table class="nosort">
   <thead>
-    <tr>
-      <th>Price per unit</th>
-      <th>Cost per unit (effective)</th>
-      <th>Commission (effective)</th>
-      <th>Semen type</th>
-      <th>Semen count</th>
-      <th>Animal</th>
-      <th>Animal Owner</th>
-      <th>Storage Facility</th>
-      <th>Seller</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><%= @sku.price_per_unit %></td>
-      <%= render "cpu_commission", transaction: @sku %>
-      <td><%= @sku.semen_type %></td>
-      <td><%= @sku.semen_count %></td>
-      <td><%= @sku.animal.name %></td>
-      <td><%= @sku.animal.owner.get_name %></td>
-      <td><%= @sku.storagefacility.name %></td>
-      <td><%= @sku.seller.get_name %></td>
-    </tr>
-  </tbody>
-</table>
-Transactions
-<table>
-  <thead>
     <th>Transaction ID</th>
+    <th>Sku</th>
     <th>Quantity</th>
     <th>Created at</th>
     <th>Updated at</th>
-    <th class="nosort"></th>
   </thead>
   <tbody>
-    <% @sku.inventory_transaction.each do |transaction| %>
-      <tr>
-        <td><%= transaction.id %></td>
-        <td><%= transaction.quantity %></td>
-        <td><%= transaction.created_at %></td>
-        <td><%= transaction.updated_at %></td>
-        <td><%= link_to "edit", edit_inventory_transaction_path(transaction) %></td>
-      </tr>
-    <% end %>
+    <tr>
+      <td><%= @transaction.id %></td>
+      <td><%= link_to @transaction.sku.id, @transaction.sku %></td>
+      <td><%= @transaction.quantity %></td>
+      <td><%= @transaction.created_at %></td>
+      <td><%= @transaction.updated_at %></td>
+    </tr>
   </tbody>
 </table>

@@ -1,0 +1,50 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Skus</h1>
+
+<%= link_to "New", new_sku_path %>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3" class="nosort"></th>
+      <th>Sku number</th>
+      <th>Quantity</th>
+      <th>Private</th>
+      <th>Semen type</th>
+      <th>Semen Count</th>
+      <th>Cane code</th>
+      <th>Price Per Unit</th>
+      <th>Cost Per Unit</th>
+      <th>Commission</th>
+      <th>Animal name</th>
+      <th>Storage Facility</th>
+      <th>Seller</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @skus.each do |sku| %>
+      <tr>
+        <td><%= link_to 'Show', sku %></td>
+        <td><%= link_to 'Edit', edit_sku_path(sku) %></td>
+        <td><%= link_to 'Add Transaction', new_inventory_transaction_path(sku_id: sku.id) %></td>
+        <td><%= sku.id %></td>
+        <td><%= sku.quantity %></td>
+        <td><%= sku.private %></td>
+        <td><%= sku.semen_type %></td>
+        <td><%= sku.semen_count %></td>
+        <td><%= sku.cane_code %></td>
+        <td><%= sku.price_per_unit %></td>
+        <%= render "cpu_commission", sku: sku %>
+        <td><%= sku.animal.name %></td>
+        <td><%= sku.storagefacility.name %></td>
+        <td><%= sku.seller.get_name %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Sku', new_sku_path %>

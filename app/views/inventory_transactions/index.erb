@@ -1,38 +1,22 @@
-<%= link_to 'Add Transaction', new_inventory_transaction_path %>
-<% unless @problems.empty? %>
-  <div>Problems detected with SKU <%= @problems.reduce(""){|out,sku| out << sku.id.to_s << ',' }.chomp(',') %></div>
-<% end %>
+<%= link_to "New", new_inventory_transaction_path %>
 <table>
   <thead>
-    <tr>
-      <th>SKU Number</th>
-      <th>Quantity</th>
-      <th>Private</th>
-      <th>Semen Type</th>
-      <th>Price Per Unit</th>
-      <th>Cost Per Unit (effective)</th>
-      <th>Commission (effective)</th>
-      <th>Semen Count</th>
-      <th>Animal Name</th>
-      <th>Animal Owner</th>
-      <th>Storage Facility</th>
-      <th>Seller</th>
-    </tr>
+    <th colspan=3 class="nosort"></th>
+    <th>quantity</th>
+    <th>Sku</th>
+    <th>Updated</th>
+    <th>Created</th>
   </thead>
   <tbody>
-    <% @skus.each do |sku| %>
+    <% @transactions.order(updated_at: :desc).each do |transaction| %>
       <tr>
-        <td><%= link_to "SKU #{sku.id}", inventory_transaction_path(sku) %></td>
-        <td><%= sku.inventory_transaction.sum(:quantity) %></td>
-        <td><%= sku.private %></td>
-        <td><%= sku.semen_type %></td>
-        <td><%= number_to_currency(sku.price_per_unit) %></td>
-        <%= render "cpu_commission", transaction: sku%>
-        <td><%= sku.semen_count %></td>
-        <td><%= sku.animal.name %></td>
-        <td><%= sku.animal.owner.get_name %></td>
-        <td><%= sku.storagefacility.name %></td>
-        <td><%= sku.seller.get_name %></td>
+        <td><%= link_to "Show", transaction %></td>
+        <td><%= link_to "Edit", edit_inventory_transaction_path(transaction) %></td>
+        <td><%= link_to "Destroy", transaction, method: :delete, data: { confirm: "Are you sure?" } %></td>
+        <td><%= transaction.quantity %></td>
+        <td><%= link_to transaction.sku.id, transaction.sku %></td>
+        <td><%= transaction.updated_at %></td>
+        <td><%= transaction.created_at %></td>
       </tr>
     <% end %>
   </tbody>

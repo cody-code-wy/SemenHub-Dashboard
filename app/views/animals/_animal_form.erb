@@ -19,5 +19,8 @@
       <%= a.label :breed_id, get_field_errors(@animal, :breed_id) %>
       <%= a.collection_select :breed_id, Breed.all, :id, :breed_name %>
     </div>
+    <div id="registryinfo">
+      <!-- empty for JS --!>
+    </div>
     <%= a.submit %>
 <% end %>

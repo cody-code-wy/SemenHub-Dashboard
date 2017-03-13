@@ -22,6 +22,7 @@ class AnimalsController < ApplicationController
     @animal = Animal.new(animal_params)
 
     put_data_in_animal
+    put_registrations
 
     if @animal.save
       redirect_to @animal
@@ -35,6 +36,7 @@ class AnimalsController < ApplicationController
 
     @animal.update(animal_params)
     put_data_in_animal
+    put_registrations
 
     if @animal.save
       redirect_to @animal
@@ -59,6 +61,23 @@ class AnimalsController < ApplicationController
     params.require(:animal).permit(
       :name, :owner_id, :breed_id, :private_herd_number, :dna_number
     )
+  end
+
+  def registration_params (registrar)
+    params.require(:registrations).require(registrar.name.parameterize).permit(:registration, :ai_certification).merge({registrar: registrar})
+  end
+
+  def put_registrations
+    @animal.breed.registrars.each do |registrar|
+      registration = @animal.registrations.where(registrar: registrar).first #there should only be one!
+      registration ||= Registration.new()
+      registration.assign_attributes registration_params(registrar)
+      unless registration.registration.empty? && registration.ai_certification.empty?
+        @animal.registrations << registration
+      else
+        registration.destroy!
+      end
+    end
   end
 
 end

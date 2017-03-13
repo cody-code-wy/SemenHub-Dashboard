@@ -3,48 +3,15 @@
       <%= f.label :quantity, get_field_errors(@transaction, :quantity) %>
       <%= f.text_field :quantity %>
     </div>
-    <%= f.fields_for :sku, @transaction.sku do |sku| %>
-      <div>
-        <%= sku.label :private, get_field_errors(@transaction.sku, :private) %>
-        <%= sku.check_box :private %>
-      </div>
-      <div>
-        <%= sku.label :semen_type, get_field_errors(@transaction.sku, :semen_type) %>
-        <%= sku.select :semen_type, options_for_select(Sku.semen_types, @transaction.sku.semen_type) %>
-      </div>
-      <div>
-        <%= sku.label :semen_count, get_field_errors(@transaction.sku, :semen_count) %>
-        <%= sku.select :semen_count, options_for_select(Sku.semen_counts, @transaction.sku.semen_count) %>
-      </div>
-      <div>
-        <%= sku.label :cane_code, get_field_errors(@transaction.sku, :cane_code) %>
-        <%= sku.text_field :cane_code %>
-      </div>
-      <div>
-        <%= sku.label :price_per_unit, get_field_errors(@transaction.sku, :price_per_unit) %>
-        <%= sku.text_field :price_per_unit %>
-      </div>
-      <div>
-        <%= sku.label :use_commission %> <%# this field cannot have errors %>
-        <%= sku.check_box :use_commission, checked: @transaction.sku.cost_per_unit == nil %>
-      </div>
-      <div>
-        <%= sku.label :cost_per_unit, get_field_errors(@transaction.sku, :cost_per_unit) %>
-        <%= sku.text_field :cost_per_unit %>
-      </div>
-      <div>
-        <%= sku.label :animal, get_field_errors(@transaction.sku, :animal) %>
-        <%= sku.collection_select :animal_id, Animal.all, :id, :get_drop_down_name %>
-      </div>
-      <div>
-        <%= sku.label :storage_facility, get_field_errors(@transaction.sku, :storagefacility) %>
-        <%= sku.collection_select :storagefacility_id, StorageFacility.all, :id, :name %>
-      </div>
-      <div>
-        <%= sku.label :seller, get_field_errors(@transaction.sku, :seller) %>
-        <%= sku.collection_select :seller_id, User.all, :id, :get_name %>
-      </div>
-    <% end %>
+    <em>Sku properties!</em>
+    <p>These fields are used to select the appropiate SKU for this transaction, if no matching SKU is found a new one will be made.
+      <% if @transaction.sku and @transaction.sku.id %>
+        If you are trying to change the SKU's properties for all transactions attached you should <%= link_to "edit this SKU", edit_sku_path(@transaction.sku) %> instead.
+      <% end %>
+    </p>
+
+    <%= render 'skus/form', sku: @transaction.sku, f: f, nosubmit: true, fieldsfor: true %>
+
     <div>
       <%= f.submit %>
     </div>

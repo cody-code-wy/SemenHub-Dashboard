@@ -1,26 +1,26 @@
 class InventoryTransactionsController < ApplicationController
 
   def index
-    @skus = Sku.all
-    @problems = Sku.joins(:inventory_transaction).group(:id).having("sum(quantity) < 0") #this shouldent happen
+    @transactions = InventoryTransaction.all
   end
 
   def new
     @transaction = InventoryTransaction.new
-    @transaction.sku = Sku.new
+    if params[:sku_id]
+      @transaction.sku = Sku.find(params[:sku_id])
+    else
+      @transaction.sku = Sku.new
+    end
   end
 
   def show
-    @sku = Sku.find params[:id]
+    @transaction = InventoryTransaction.find(params[:id])
   end
 
   def create
-    @transaction = InventoryTransaction.new(get_params)
-
-    @transaction.sku = Sku.find_or_initialize_by(get_sku_params)
-
+    @transaction.new(get_params.merge(sku: get_sku))
     if @transaction.save and @transaction.sku.valid?
-      redirect_to inventory_transaction_url id: @transaction.sku.id
+      redirect_to @transaction
     else
       render :new
     end
@@ -32,12 +32,9 @@ class InventoryTransactionsController < ApplicationController
 
   def update
     @transaction = InventoryTransaction.find params[:id]
-
-    @transaction.update get_params
-    @transaction.sku = Sku.find_or_initialize_by(get_sku_params)
-
+    @transaction.update(get_params.merge(sku: get_sku))
     if @transaction.save and @transaction.sku.valid?
-      redirect_to inventory_transaction_url id: @transaction.sku.id
+      redirect_to @transaction
     else
       render :edit
     end
@@ -46,23 +43,13 @@ class InventoryTransactionsController < ApplicationController
   protected
 
   def get_params
-    params.require(:inventory_transaction).permit(
-      :quantity
-    )
+    params.require(:inventory_transaction).permit(:quantity)
   end
 
-  def get_sku_params
-    sku_int_params = params.require(:inventory_transaction).require(:sku).permit(:semen_type, :semen_count).map{ |_,x| [_,x.to_i] }
-    sku_params = params.require(:inventory_transaction).require(:sku).permit(
-      :private, :cane_code, :price_per_unit, :animal_id, :storagefacility_id, :seller_id
-    ).merge({cost_per_unit: get_cost_per_unit}).merge(sku_int_params) #get the whole params
-    sku_params[:price_per_unit] = sku_params[:price_per_unit].to_i != 0 ? sku_params[:price_per_unit] : nil
-    sku_params
-  end
-
-  def get_cost_per_unit
-    return nil if params.require(:inventory_transaction).require(:sku).permit(:use_commission)[:use_commission] == "1"
-    params.require(:inventory_transaction).require(:sku).permit(:cost_per_unit)[:cost_per_unit]
+  def get_sku
+    sku_params = params.require(:inventory_transaction).require(:sku).permit(:private, :semen_type, :semen_count, :price_per_unit, :animal_id, :storagefacility_id, :seller_id, :cost_per_unit, :cane_code)
+    sku_params.transform_values! { |value| value == "" ? nil : value }
+    Sku.find_or_create_by(sku_params)
   end
 
 end

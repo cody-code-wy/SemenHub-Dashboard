@@ -47,7 +47,7 @@ class InventoryTransactionsController < ApplicationController
   end
 
   def get_sku
-    sku_params = params.require(:inventory_transaction).require(:sku).permit(:private, :semen_type, :semen_count, :price_per_unit, :animal_id, :storagefacility_id, :seller_id, :cost_per_unit, :cane_code)
+    sku_params = params.require(:inventory_transaction).require(:sku).permit(:private, :semen_type, :semen_count, :price_per_unit, :animal_id, :storagefacility_id, :seller_id, :cost_per_unit, :cane_code, :has_percent)
     sku_params.transform_values! { |value| value == "" ? nil : value }
     Sku.find_or_create_by(sku_params)
   end

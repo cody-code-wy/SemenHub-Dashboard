@@ -69,6 +69,6 @@ class SkusController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def sku_params
-      params.require(:sku).permit(:private, :semen_type, :semen_count, :price_per_unit, :animal_id, :storagefacility_id, :seller_id, :cost_per_unit, :cane_code)
+      params.require(:sku).permit(:private, :semen_type, :semen_count, :price_per_unit, :animal_id, :storagefacility_id, :seller_id, :cost_per_unit, :cane_code, :has_percent)
     end
 end

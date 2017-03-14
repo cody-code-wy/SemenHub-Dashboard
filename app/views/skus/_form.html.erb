@@ -32,12 +32,32 @@
     <%= f.number_field :price_per_unit %>
   </div>
   <div>
-    <%= f.label :use_commission %>
-    <%= f.check_box :use_commission, checked: sku.cost_per_unit == nil %>
-  </div>
-  <div>
-    <%= f.label :cost_per_unit %>
-    <%= f.number_field :cost_per_unit %>
+    <%= f.label :commission_selector %>
+    <div>
+      User Commission: <%= f.radio_button :commission_selector, :user_commission, checked: sku.cost_per_unit.nil? %>
+    </div>
+    <div>
+      Custom Commission: <%= f.radio_button :commission_selector, :custom_commission, checked: (sku.has_percent and not sku.cost_per_unit.nil?) %>
+    </div>
+    <div>
+      Cost Per Unit: <%= f.radio_button :commission_selector, :cost_per_unit, checked: (sku.cost_per_unit and not sku.has_percent) %>
+    </div>
+    <div>
+      <table class="nofilter" id="commission_table" style="display: none; width: 0px;">
+        <thead>
+          <tr>
+            <th class="nosort">Commission</th>
+            <th class="nosort">Cost Per Unit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="commission"><input type="number" id="sku_commission">%</td>
+            <td class="cost per unit"><%= f.number_field :cost_per_unit %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
   <div>
     <%= f.label :animal %>
@@ -51,6 +71,7 @@
     <%= f.label :seller %>
     <%= f.collection_select :seller_id, User.all.order(:first_name), :id, :get_name %>
   </div>
+  <%= f.hidden_field :has_percent, value: false %>
     <% unless defined? nosubmit %>
     <div class="actions">
       <%= f.submit %>

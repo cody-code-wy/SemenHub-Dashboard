@@ -3,6 +3,6 @@
   <td><%= number_to_currency(sku.cost_per_unit) %></td>
   <td><%= "%.2f" % ((sku.price_per_unit - sku.cost_per_unit) / sku.price_per_unit * 100) %>%</td>
 <% else %>
-  <td><%= number_to_currency(sku.price_per_unit - (sku.price_per_unit / sku.seller.commission.commission_percent) )%></td>
+  <td><%= number_to_currency(sku.price_per_unit - (sku.price_per_unit * (sku.seller.commission.commission_percent / 100))) %></td>
   <td><%= "%.2f" % sku.seller.commission.commission_percent %>%</td>
 <% end %>

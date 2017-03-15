@@ -1,5 +1,7 @@
 class AnimalsController < ApplicationController
 
+  protect_from_forgery except: :js
+
   def index
     @animals = Animal.all.preload(:owner, :registrations)
     @breeds = Breed.all.preload(:registrars)
@@ -8,6 +10,10 @@ class AnimalsController < ApplicationController
   def show
     @animal = Animal.find(params[:id])
     @skus = Sku.where(animal: @animal)
+  end
+
+  def js
+    @animal = Animal.find(params[:id])
   end
 
   def new

@@ -19,6 +19,7 @@
         <th><%= registrar.name %> AI Certification</th>
       <% end %>
       <th>Owner</th>
+      <th class="nosort">Add To Cart Code</th>
     </tr>
     </thead>
     <tbody>
@@ -33,7 +34,8 @@
             <td><%= humanize_registrations_registration registration %></td>
             <td><%= humanize_registrations_ai_certification registration%></td>
           <% end %>
-          <td><%= link_to animal.owner.get_name, animal.owner %></td>
+            <td><%= link_to animal.owner.get_name, animal.owner %></td>
+            <td><code class="html" id="animal<%= animal.id %>script"> &lt;script src="http://semenhub.shop/animals/<%= animal.id %>/js"&gt;&lt;/script&gt; </code><button class="btn" data-clipboard-target="#animal<%= animal.id %>script">Copy to Clipboard</button></td>
         </tr>
       <% end %>
     <% end %>

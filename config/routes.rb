@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   resources :storage_facilities
 
   resources :animals
+  get '/animals/:id/js', to: 'animals#js'
 
   resources :registrations
 

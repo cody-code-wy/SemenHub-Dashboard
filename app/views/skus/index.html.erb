@@ -26,23 +26,25 @@
 
   <tbody>
     <% @skus.each do |sku| %>
-      <tr>
-        <td><%= link_to 'Show', sku %></td>
-        <td><%= link_to 'Edit', edit_sku_path(sku) %></td>
-        <td><%= link_to 'Destroy', sku, method: :delete, data: { confirm: "This will delete this SKU and all associated transactions!\n\nThis will disrupt orders containing this SKU!\n\nOnly delete SKUs that have never been used!" } %></td>
-        <td><%= link_to 'Add Transaction', new_inventory_transaction_path(sku_id: sku.id) %></td>
-        <td><%= sku.id %></td>
-        <td><%= sku.quantity %></td>
-        <td><%= sku.private %></td>
-        <td><%= sku.semen_type %></td>
-        <td><%= sku.semen_count %></td>
-        <td><%= sku.cane_code %></td>
-        <td><%= sku.price_per_unit %></td>
-        <%= render "cpu_commission", sku: sku %>
-        <td><%= sku.animal.name %></td>
-        <td><%= sku.storagefacility.name %></td>
-        <td><%= sku.seller.get_name %></td>
-      </tr>
+      <% cache sku do %>
+        <tr>
+          <td><%= link_to 'Show', sku %></td>
+          <td><%= link_to 'Edit', edit_sku_path(sku) %></td>
+          <td><%= link_to 'Destroy', sku, method: :delete, data: { confirm: "This will delete this SKU and all associated transactions!\n\nThis will disrupt orders containing this SKU!\n\nOnly delete SKUs that have never been used!" } %></td>
+          <td><%= link_to 'Add Transaction', new_inventory_transaction_path(sku_id: sku.id) %></td>
+          <td><%= sku.id %></td>
+          <td><%= sku.quantity_agg %></td>
+          <td><%= sku.private %></td>
+          <td><%= sku.semen_type %></td>
+          <td><%= sku.semen_count %></td>
+          <td><%= sku.cane_code %></td>
+          <td><%= sku.price_per_unit %></td>
+          <%= render "cpu_commission", sku: sku%>
+          <td><%= sku.animal.name %></td>
+          <td><%= sku.storagefacility.name %></td>
+          <td><%= sku.seller.get_name %></td>
+        </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>

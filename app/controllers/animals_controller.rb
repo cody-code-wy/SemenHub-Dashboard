@@ -1,8 +1,8 @@
 class AnimalsController < ApplicationController
 
   def index
-    @animals = Animal.all
-    @breeds = Breed.all
+    @animals = Animal.all.preload(:owner, :registrations)
+    @breeds = Breed.all.preload(:registrars)
   end
 
   def show

@@ -23,6 +23,7 @@
     </thead>
     <tbody>
     <% @animals.where(breed: breed).each do |animal| %>
+      <% cache animal do %>
         <tr>
           <td><%= link_to animal.name, animal %></td>
           <td><%= animal.private_herd_number ? animal.private_herd_number : "" %></td>
@@ -34,6 +35,7 @@
           <% end %>
           <td><%= link_to animal.owner.get_name, animal.owner %></td>
         </tr>
+      <% end %>
     <% end %>
     </tbody>
   </table>

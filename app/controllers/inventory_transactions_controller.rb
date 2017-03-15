@@ -1,7 +1,7 @@
 class InventoryTransactionsController < ApplicationController
 
   def index
-    @transactions = InventoryTransaction.all
+    @transactions = InventoryTransaction.all.preload(sku: :animal)
   end
 
   def new

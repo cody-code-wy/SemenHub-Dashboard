@@ -52,7 +52,7 @@ class StorageFacilitiesController < ApplicationController
   protected
 
   def facility_params
-    params.require(:storage_facility).permit(:phone_number, :website, :name, :email)
+    params.require(:storage_facility).permit(:phone_number, :website, :name, :email, :shipping_provider)
   end
 
   def address_params

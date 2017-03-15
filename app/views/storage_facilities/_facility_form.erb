@@ -16,6 +16,10 @@
       <%= f.text_field :website %>
     </div>
     <div>
+      <%= f.label :shipping_provider, get_field_errors(@facility, :shipping_provider) %>
+      <%= f.select :shipping_provider, StorageFacility.shipping_providers.keys %>
+    </div>
+    <div>
       <%= f.label :mailing_address %>
       <%= f.fields_for :mailing_address, @facility.address do |addr| %>
           <%= render "address", addr: addr, model: @facility.address %>

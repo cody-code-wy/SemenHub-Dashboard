@@ -4,7 +4,8 @@ class SkusController < ApplicationController
   # GET /skus
   # GET /skus.json
   def index
-    @skus = Sku.all
+    @skus = Sku.select("#{Sku.table_name}.*, sum(quantity) as quantity_agg").joins(:inventory_transaction).group(:id).preload(:animal,:inventory_transaction,:storagefacility,seller: :commission)
+ # @skus = Sku.select("#{Sku.table_name}.*, sum(quantity) as quantity_agg").joins(:inventory_transaction).group(:id).includes(:seller)
   end
 
   # GET /skus/1

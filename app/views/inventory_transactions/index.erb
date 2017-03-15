@@ -10,16 +10,18 @@
   </thead>
   <tbody>
     <% @transactions.order(updated_at: :desc).each do |transaction| %>
-      <tr>
-        <td><%= link_to "Show", transaction %></td>
-        <td><%= link_to "Edit", edit_inventory_transaction_path(transaction) %></td>
-        <td><%= link_to "Destroy", transaction, method: :delete, data: { confirm: "Are you sure?" } %></td>
-        <td><%= transaction.quantity %></td>
-        <td><%= link_to transaction.sku.id, transaction.sku %></td>
-        <td><%= link_to transaction.sku.animal.name, transaction.sku.animal %></td>
-        <td><%= transaction.updated_at %></td>
-        <td><%= transaction.created_at %></td>
-      </tr>
+      <% cache transaction do %>
+        <tr>
+          <td><%= link_to "Show", transaction %></td>
+          <td><%= link_to "Edit", edit_inventory_transaction_path(transaction) %></td>
+          <td><%= link_to "Destroy", transaction, method: :delete, data: { confirm: "Are you sure?" } %></td>
+          <td><%= transaction.quantity %></td>
+          <td><%= link_to transaction.sku.id, transaction.sku %></td>
+          <td><%= link_to transaction.sku.animal.name, transaction.sku.animal %></td>
+          <td><%= transaction.updated_at %></td>
+          <td><%= transaction.created_at %></td>
+        </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>

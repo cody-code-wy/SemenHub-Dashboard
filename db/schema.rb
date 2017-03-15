@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170313155352) do
+ActiveRecord::Schema.define(version: 20170315025035) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -129,8 +129,8 @@ ActiveRecord::Schema.define(version: 20170313155352) do
     t.string   "registration"
     t.text     "note"
     t.integer  "animal_id"
-    t.datetime "created_at",       default: '2017-03-12 20:06:57', null: false
-    t.datetime "updated_at",       default: '2017-03-12 20:06:57', null: false
+    t.datetime "created_at",       default: '2017-03-13 02:08:10', null: false
+    t.datetime "updated_at",       default: '2017-03-13 02:08:10', null: false
     t.string   "ai_certification"
     t.index ["animal_id"], name: "index_registrations_on_animal_id", using: :btree
     t.index ["registrar_id"], name: "index_registrations_on_registrar_id", using: :btree
@@ -194,10 +194,11 @@ ActiveRecord::Schema.define(version: 20170313155352) do
     t.string   "phone_number"
     t.string   "website"
     t.integer  "address_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
     t.string   "name"
     t.string   "email"
+    t.integer  "shipping_provider"
     t.index ["address_id"], name: "index_storage_facilities_on_address_id", using: :btree
   end
 
@@ -216,6 +217,9 @@ ActiveRecord::Schema.define(version: 20170313155352) do
     t.datetime "updated_at",                         null: false
     t.string   "password_digest"
     t.boolean  "temp_pass",          default: false
+    t.index ["billing_address_id"], name: "index_users_on_billing_address_id", using: :btree
+    t.index ["mailing_address_id"], name: "index_users_on_mailing_address_id", using: :btree
+    t.index ["payee_address_id"], name: "index_users_on_payee_address_id", using: :btree
   end
 
   add_foreign_key "fees", "storage_facilities"

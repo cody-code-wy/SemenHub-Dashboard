@@ -28,4 +28,13 @@ class Address < ApplicationRecord
     get_validator_response(name).valid?
   end
 
+  def get_shipping_location
+    ActiveShipping::Location.new(
+      country: alpha_2,
+      state: region,
+      city: city,
+      zip: postal_code
+    )
+  end
+
 end

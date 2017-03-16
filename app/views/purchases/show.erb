@@ -27,6 +27,26 @@ Order Items
     <% end %>
   </tbody>
 </table>
+Storage Facility Fees and shipping
+<table>
+  <thead>
+    <th>Storage Facility</th>
+    <th>Fee Type</th>
+    <th>Fee Cost</th>
+  </thead>
+  <tbody>
+    <% @purchase.storagefacilities.uniq.each do |storage| %>
+      <% storage.fees.each do |fee| %>
+        <tr>
+          <td><%= storage.name %></td>
+          <td><%= fee.fee_type %></td>
+          <td><%= fee.price %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+
 <div class="total">
   Total: <%= @purchase.total %>
 </div>

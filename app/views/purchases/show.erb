@@ -1,7 +1,9 @@
+Order Items
 <table>
   <thead>
     <tr>
       <th>SKU ID</th>
+      <th>Animal name</th>
       <th>Semen Count</th>
       <th>Semen Type</th>
       <th>Storage Facility</th>
@@ -14,6 +16,7 @@
     <% @purchase.inventory_transactions.each do |trans| %>
       <tr>
         <td><%= trans.sku.id %></td>
+        <td><%= trans.sku.animal.name %></td>
         <td><%= trans.sku.semen_count %></td>
         <td><%= trans.sku.semen_type %></td>
         <td><%= trans.sku.storagefacility.name %></td>

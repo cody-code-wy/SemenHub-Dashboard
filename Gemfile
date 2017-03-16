@@ -38,6 +38,8 @@ gem 'jbuilder', '~> 2.5'
 gem 'bcrypt', '~> 3.1.7'
 # UPS Street level address validator
 gem 'address_validator', github: 'robhurring/address-validator'
+# Use Active Shipping
+gem 'active_shipping'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

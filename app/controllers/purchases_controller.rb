@@ -17,6 +17,10 @@ class PurchasesController < ApplicationController
     @partial = @purchase.state if lookup_context.exists?(@purchase.state, _prefixes, true)
   end
 
+  def index
+    @purchases = Purchase.all
+  end
+
   def get_address
     @purchase = Purchase.find(params[:id])
     @storage = StorageFacility.find_by_address_id(params[:shipment][:address_id])

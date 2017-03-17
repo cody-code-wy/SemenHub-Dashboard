@@ -43,7 +43,7 @@ Storage Facility Fees and shipping
           <td><%= fee.price %></td>
         </tr>
       <% end %>
-      <% if @purchase.shipment %>
+      <% if @purchase.shipment.id %>
         <% unless @purchase.shipment.address == storage.address %>
           <tr>
             <td><%= storage.name %></td>

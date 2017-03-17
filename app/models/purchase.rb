@@ -30,7 +30,7 @@ class Purchase < ApplicationRecord
   end
 
   def shipping_fees
-    return 0 unless shipment
+    return 0 unless shipment.id
     @sf = StorageFacility.find_by_address_id(shipment.address_id)
     storagefacilities.uniq.reduce(0) do |sum,storage|
       return sum if storage.address == shipment.address

@@ -20,6 +20,10 @@
       <%= f.select :shipping_provider, StorageFacility.shipping_providers.keys %>
     </div>
     <div>
+      <%= f.label :straws_per_shipment %>
+      <%= f.number_field :straws_per_shipment %>
+    </div>
+    <div>
       <%= f.label :mailing_address %>
       <%= f.fields_for :mailing_address, @facility.address do |addr| %>
           <%= render "address", addr: addr, model: @facility.address %>

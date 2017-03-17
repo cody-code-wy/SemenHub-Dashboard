@@ -7,7 +7,7 @@ class StorageFacility < ApplicationRecord
     'FedEx': 1
   }
 
-  validates_presence_of :phone_number, :website, :name, :shipping_provider
+  validates_presence_of :phone_number, :website, :name, :shipping_provider, :straws_per_shipment
   validates :email, presence: true, email: true
 
   def get_packages(semen_count, semen_per_container=straws_per_shipment)

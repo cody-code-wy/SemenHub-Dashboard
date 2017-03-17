@@ -40,6 +40,8 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'address_validator', github: 'robhurring/address-validator'
 # Use Active Shipping
 gem 'active_shipping'
+# Use Authorize.net
+gem 'authorizenet'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

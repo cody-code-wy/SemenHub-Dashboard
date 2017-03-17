@@ -1,8 +1,4 @@
 Rails.application.routes.draw do
-  get 'cart/add'
-
-  get 'session/new'
-
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   get "/", to: "welcome#index"
   resources :users
@@ -31,6 +27,10 @@ Rails.application.routes.draw do
   resources :breeds
 
   resources :skus
+
+  resources :purchases
+
+  post '/purchases/:id/payment', to: "purchases#recipt"
 
   get '/commissions', to: 'commissions#index'
   post '/users/:user/commission', to: 'commissions#create' #API

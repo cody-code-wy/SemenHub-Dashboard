@@ -4,6 +4,29 @@ class Purchase < ApplicationRecord
   has_many :purchase_transactions
   has_many :inventory_transactions, through: :purchase_transactions
   has_many :skus, through: :inventory_transactions
+  has_many :storagefacilities, through: :skus
+
+  has_one :shipment
 
   enum state: ["problem", "created", "invoiced", "paid", "preparing for shipment", "shipped", "delivered", "canceled", "refunded"]
+
+  #shipping info
+  shipping = {diameter: 41, height: 61, weight: 18144, straws_per: 10}
+
+  def total
+    transaction_total + fees_total
+  end
+
+  def transaction_total
+    inventory_transactions.reduce(0) do |sum,trans|
+      sum + -(trans.quantity * trans.sku.price_per_unit)
+    end
+  end
+
+  def fees_total
+    storagefacilities.uniq.reduce(0) do |sum,storage|
+      sum + storage.fees.reduce(0){ |sum,fee| sum + fee.price }
+    end
+  end
+  
 end

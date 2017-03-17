@@ -1,4 +1,5 @@
 class CartController < ApplicationController
+  protect_from_forgery except: :add
 
   def secure
     params[:action] != 'add'
@@ -7,7 +8,7 @@ class CartController < ApplicationController
   def add
     $redis.sadd params[:session], params[:animalid]
     $redis.expire params[:session], $redis_timeout
-    render json: $redis.smembers(params[:session])
+    render json: $redis.smembers(params[:session]), callback: params[:callback]
   end
 
   def show

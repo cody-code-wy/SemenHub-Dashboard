@@ -12,7 +12,7 @@
   <body <%= "data-params-id=#{params[:id]}" if params.has_key?(:id) %> <%= "data-params-controller=#{params[:controller]}" if params.has_key?(:controller) %> <%= "data-params-action=#{params[:action]}" if params.has_key?(:action) %> >
     <div id="navbar">
       <ul>
-        <% [User, Commission, StorageFacility, Animal, Breed, Registration, Sku, InventoryTransaction, Fee].each do |model| %>
+        <% [User, Commission, StorageFacility, Animal, Breed, Registration, Sku, InventoryTransaction, Fee, Purchase].each do |model| %>
           <% if current_user and current_user.can?(:"use_#{model.to_s.underscore.pluralize}_controller") %>
             <li><%= link_to model.to_s.underscore.humanize.pluralize, model %></li>
           <% end %>

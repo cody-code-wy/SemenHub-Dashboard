@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Purchases</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Purchase Number</th>
+      <th>User</th>
+      <th>State</th>
+      <th>Total</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @purchases.each do |purchase| %>
+      <% cache purchase do %>
+        <tr>
+          <td><%= link_to purchase.id, purchase %></td>
+          <td><%= purchase.user.get_name %></td>
+          <td><%= purchase.state %></td>
+          <td><%= purchase.total %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>

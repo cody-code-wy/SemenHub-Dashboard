@@ -34,7 +34,7 @@ class CartController < ApplicationController
         # TODO warn the user somehow
       end
     end
-
+    $redis.del(params[:cart_id])
     redirect_to purchase
   end
 

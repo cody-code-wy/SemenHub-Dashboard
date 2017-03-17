@@ -3,11 +3,8 @@ class PurchasesController < ApplicationController
   helper :authorize_net
   protect_from_forgery except: :recipt
 
-  def secure
-    not (["recipt"].include?(params[:action]))
-  end
   def perms
-    return super unless ["show"].include?(params[:action])
+    return super unless ["show", "get_address", "recipt"].include?(params[:action])
     :purchase
   end
 

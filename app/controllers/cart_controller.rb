@@ -5,6 +5,10 @@ class CartController < ApplicationController
     params[:action] != 'add'
   end
 
+  def perms
+    :purchase
+  end
+
   def add
     $redis.sadd params[:session], params[:animalid]
     $redis.expire params[:session], $redis_timeout

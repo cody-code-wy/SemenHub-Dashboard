@@ -30,6 +30,6 @@ $(document).on 'turbolinks:load', ->
   parameterize = (str) ->
     str.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')
 
-  getBreeds()
+  getBreeds() if $('#animal_breed_id').length > 0
 
   $('#animal_breed_id').on 'change', getBreeds

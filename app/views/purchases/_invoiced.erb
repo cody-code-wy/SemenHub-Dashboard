@@ -1,0 +1,10 @@
+<%= form_tag url_for(action: :recipt) do %>
+  <%= label_tag 'amount', "Total: #{number_to_currency(@purchase.total)}" %>
+  <%= label_tag 'card_num', 'Credit Card Number'%>
+  <%= text_field_tag 'card_num' %>
+  <%= label_tag 'exp_date', 'Expiration Date (MMYY)'%>
+  <%= text_field_tag 'exp_date' %>
+  <%= label_tag 'ccv', 'CCV or Security Code' %>
+  <%= text_field_tag 'ccv' %>
+  <%= submit_tag 'Purchase'%>
+<% end %>

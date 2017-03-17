@@ -46,6 +46,7 @@ class PurchasesController < ApplicationController
     if response.messages.resultCode == AuthorizeNet::API::MessageTypeEnum::Ok
       puts "Successful charge (auth + capture) (authorization code: #{response.transactionResponse.authCode}) (transaction ID: #{response.transactionResponse.transId})"
       @purchase.paid!
+      ReceiptMailer.send_receipt(current_user, @purchase).deliver_later
       redirect_to @purchase
     else
       render text: "ERROR: #{response.messages.messages[0].text}"

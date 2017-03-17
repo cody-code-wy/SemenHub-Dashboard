@@ -4,6 +4,7 @@
   </div>
 <% else %>
   <%= form_tag do %>
+    <%= hidden_field_tag :cart_id, params[:session] %>
     <%= fields_for :skus do |skus| %>
       <% @animals.each do |a| %>
         <div>

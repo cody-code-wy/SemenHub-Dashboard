@@ -34,7 +34,8 @@ class UsersController < ApplicationController
 
     if @user.save
       @user.roles << Role.find_by_name(:default)
-      redirect_to @user
+      session[:user_id] ||= @user.id
+      redirect_to session[:login_redirect] ? session[:login_redirect] : @user
     else
       render :new
     end

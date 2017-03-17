@@ -20,7 +20,7 @@ class StorageFacility < ApplicationRecord
     packages
   end
 
-  def get_shipping_price(semen_count, destination, semen_per_container=traws_per_shipment)
+  def get_shipping_price(semen_count, destination, semen_per_container=straws_per_shipment)
     location = destination.get_shipping_location if destination.respond_to? :get_shipping_location
     location = destination.address.get_shipping_location if destination.respond_to? :address
     return unless location

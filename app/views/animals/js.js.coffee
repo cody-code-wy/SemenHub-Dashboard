@@ -10,4 +10,4 @@ $(document).ready ->
     link = $('<a>Add To Cart</a>').addClass('btn').addClass('btn-default').attr('style','display: inline-block;').insertAfter($('#amsweb_pagemodule_AnimalDetail_tColLinks > .t-row:first-of-type a:last-of-type'))
     link.on 'click', ->
       link.attr('disabled','') #UniqueUser cookie is from HiredHands website, I am stealing it for my own uses....
-      get = $.ajax({url: "https://semenhub.shop/cart/" + encodeURIComponent(Cookies.get("UniqueUser")) + "/add?animalid=3", dataType: "jsonp", jsonpCallback: "window.added_to_cart"})
+      get = $.ajax({url: "https://semenhub.shop/cart/" + encodeURIComponent(Cookies.get("UniqueUser")) + "/add?animalid=<%= @animal.id %>", dataType: "jsonp", jsonpCallback: "window.added_to_cart"})

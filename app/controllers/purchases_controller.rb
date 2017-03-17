@@ -49,7 +49,8 @@ class PurchasesController < ApplicationController
       ReceiptMailer.send_receipt(current_user, @purchase).deliver_later
       redirect_to @purchase
     else
-      render text: "ERROR: #{response.messages.messages[0].text}"
+      flash[:alert] = 'There was a problem processing your card. Please check the entered values and try again.'
+      redirect_to @purchase
     end
   end
 

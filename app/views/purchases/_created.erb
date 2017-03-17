@@ -1,0 +1,5 @@
+<%= form_for @purchase.shipment, url: @purchase do |f| %>
+  <%= f.label :address_id, "Storage Facility To Ship To" %>
+  <%= f.collection_select :address_id, StorageFacility.all, :address_id, :name %>
+  <%= f.submit %>
+<% end %>

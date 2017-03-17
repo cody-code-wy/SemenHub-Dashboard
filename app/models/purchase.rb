@@ -14,7 +14,7 @@ class Purchase < ApplicationRecord
   shipping = {diameter: 41, height: 61, weight: 18144, straws_per: 10}
 
   def total
-    transaction_total + fees_total
+    transaction_total + fees_total + shipping_fees
   end
 
   def transaction_total
@@ -27,6 +27,17 @@ class Purchase < ApplicationRecord
     storagefacilities.uniq.reduce(0) do |sum,storage|
       sum + storage.fees.reduce(0){ |sum,fee| sum + fee.price }
     end
+  end
+
+  def shipping_fees
+    return 0 unless shipment
+    @sf = StorageFacility.find_by_address_id(shipment.address_id)
+    storagefacilities.uniq.reduce(0) do |sum,storage|
+      return sum if storage.address == shipment.address
+      quantity = -inventory_transactions.where(sku: Sku.where(storagefacility: storage)).sum(:quantity)
+      puts "processing #{quantity} items from #{storage.name}"
+      sum + storage.get_shipping_price(quantity, shipment)
+    end.to_f / 100
   end
   
 end

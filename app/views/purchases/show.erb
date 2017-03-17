@@ -43,6 +43,15 @@ Storage Facility Fees and shipping
           <td><%= fee.price %></td>
         </tr>
       <% end %>
+      <% if @purchase.shipment %>
+        <% unless @purchase.shipment.address == storage.address %>
+          <tr>
+            <td><%= storage.name %></td>
+            <td>Shipping via <%= storage.shipping_provider %></td>
+            <td><%= storage.get_shipping_price(-1 * @purchase.inventory_transactions.where(sku: Sku.where(storagefacility: storage)).sum(:quantity),@purchase.shipment).to_f / 100 %></td>
+          </tr>
+        <% end %>
+      <% end %>
     <% end %>
   </tbody>
 </table>

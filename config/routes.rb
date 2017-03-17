@@ -30,6 +30,8 @@ Rails.application.routes.draw do
 
   resources :purchases
 
+  post '/purchases/:id', to: "purchases#get_address"
+
   post '/purchases/:id/payment', to: "purchases#recipt"
 
   get '/commissions', to: 'commissions#index'

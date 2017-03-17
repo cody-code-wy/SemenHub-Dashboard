@@ -10,7 +10,7 @@ class StorageFacility < ApplicationRecord
   validates_presence_of :phone_number, :website, :name, :shipping_provider
   validates :email, presence: true, email: true
 
-  def get_packages(semen_count, semen_per_container=100)
+  def get_packages(semen_count, semen_per_container=straws_per_shipment)
     packages = []
     (semen_count/semen_per_container.to_f).ceil.times {
     packages << ActiveShipping::Package.new(18144,               #Weight (Grams)
@@ -20,7 +20,7 @@ class StorageFacility < ApplicationRecord
     packages
   end
 
-  def get_shipping_price(semen_count, destination, semen_per_container=100)
+  def get_shipping_price(semen_count, destination, semen_per_container=traws_per_shipment)
     location = destination.get_shipping_location if destination.respond_to? :get_shipping_location
     location = destination.address.get_shipping_location if destination.respond_to? :address
     return unless location

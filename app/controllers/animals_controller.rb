@@ -2,6 +2,10 @@ class AnimalsController < ApplicationController
 
   protect_from_forgery except: :js
 
+  def secure
+    not (["js"].include?(params[:action]))
+  end
+
   def index
     @animals = Animal.all.preload(:owner, :registrations)
     @breeds = Breed.all.preload(:registrars)

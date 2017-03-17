@@ -17,7 +17,7 @@ class PurchasesController < ApplicationController
     @partial = @purchase.state if lookup_context.exists?(@purchase.state, _prefixes, true)
   end
 
-  def update
+  def get_address
     @purchase = Purchase.find(params[:id])
     @storage = StorageFacility.find_by_address_id(params[:shipment][:address_id])
     @purchase.shipment = Shipment.new(address: @storage.address, account_name: current_user.get_name )

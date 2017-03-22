@@ -5,6 +5,7 @@ class Purchase < ApplicationRecord
   has_many :inventory_transactions, through: :purchase_transactions
   has_many :skus, through: :inventory_transactions
   has_many :storagefacilities, through: :skus
+  has_many :line_items
 
   has_one :shipment
 
@@ -12,6 +13,15 @@ class Purchase < ApplicationRecord
 
   #shipping info
   shipping = {diameter: 41, height: 61, weight: 18144, straws_per: 10}
+
+  def create_line_items
+    storagefacilities.uniq.each do |storage|
+      storage.fees.each do |fee|
+        line_items << LineItem.new(name: "#{storage.name} #{fee.fee_type} fee", value: fee.price )
+      end
+    end
+    line_items
+  end
 
   def total
     transaction_total + fees_total + shipping_fees

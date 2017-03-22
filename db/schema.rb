@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170320211116) do
+ActiveRecord::Schema.define(version: 20170322211613) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,6 +75,15 @@ ActiveRecord::Schema.define(version: 20170320211116) do
     t.datetime "updated_at", null: false
     t.integer  "sku_id"
     t.index ["sku_id"], name: "index_inventory_transactions_on_sku_id", using: :btree
+  end
+
+  create_table "line_items", force: :cascade do |t|
+    t.string   "name"
+    t.decimal  "value"
+    t.integer  "purchase_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["purchase_id"], name: "index_line_items_on_purchase_id", using: :btree
   end
 
   create_table "permission_assignments", force: :cascade do |t|
@@ -154,11 +163,12 @@ ActiveRecord::Schema.define(version: 20170320211116) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "settings", force: :cascade do |t|
-    t.integer  "setting"
+  create_table "settings", id: false, force: :cascade do |t|
+    t.integer  "setting",    null: false
     t.string   "value"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["setting"], name: "index_settings_on_setting", unique: true, using: :btree
   end
 
   create_table "shipments", force: :cascade do |t|

@@ -13,7 +13,7 @@
     <div id="navbar">
       <ul>
         <li><a href="http://semenhub.com">Back to SemenHub.com</a></li>
-        <% [User, Commission, StorageFacility, Animal, Breed, Registration, Sku, InventoryTransaction, Fee, Purchase].each do |model| %>
+        <% [User, Commission, StorageFacility, Animal, Breed, Registration, Sku, InventoryTransaction, Fee, Purchase, Setting].each do |model| %>
           <% if current_user and current_user.can?(:"use_#{model.to_s.underscore.pluralize}_controller") %>
             <li><%= link_to model.to_s.underscore.humanize.pluralize, model %></li>
           <% end %>

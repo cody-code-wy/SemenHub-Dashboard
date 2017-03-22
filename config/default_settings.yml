@@ -1,0 +1,4 @@
+add_to_cart_buttons_enabled: "true"
+checkout_button_enabled: "true"
+remote_account_access_buttons_enabled: "true"
+credit_card_processing_enabled: "true"

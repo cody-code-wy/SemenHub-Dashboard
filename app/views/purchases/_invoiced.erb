@@ -1,10 +1,14 @@
-<%= form_tag url_for(action: :recipt) do %>
-  <%= label_tag 'amount', "Total: #{number_to_currency(@purchase.total)}" %>
-  <%= label_tag 'card_num', 'Credit Card Number'%>
-  <%= text_field_tag 'card_num' %>
-  <%= label_tag 'exp_date', 'Expiration Date (MMYY)'%>
-  <%= text_field_tag 'exp_date' %>
-  <%= label_tag 'ccv', 'CCV or Security Code' %>
-  <%= text_field_tag 'ccv' %>
-  <%= submit_tag 'Purchase'%>
+<% if Setting.get_setting(:credit_card_processing_enabled).value == "true" %>
+  <%= form_tag url_for(action: :recipt) do %>
+    <%= label_tag 'amount', "Total: #{number_to_currency(@purchase.total)}" %>
+    <%= label_tag 'card_num', 'Credit Card Number'%>
+    <%= text_field_tag 'card_num' %>
+    <%= label_tag 'exp_date', 'Expiration Date (MMYY)'%>
+    <%= text_field_tag 'exp_date' %>
+    <%= label_tag 'ccv', 'CCV or Security Code' %>
+    <%= text_field_tag 'ccv' %>
+    <%= submit_tag 'Purchase'%>
+  <% end %>
+<% else %>
+  <div>Credit Card payments are temporarily disabled. Please check back later or call the site administrator to pay for you order. We apologize for any inconvenience.</div>
 <% end %>

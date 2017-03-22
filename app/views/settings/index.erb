@@ -1,0 +1,8 @@
+<%= form_tag do %>
+  <%= fields_for :settings do |ff| %>
+    <% Setting.settings.keys.each do |setting| %>
+      <%= render 'setting', setting: @settings.get_setting(setting), form: ff %>
+    <% end %>
+  <% end %>
+  <%= submit_tag 'save' %>
+<% end %>

@@ -24,7 +24,7 @@ class Purchase < ApplicationRecord
   end
 
   def total
-    transaction_total + fees_total + shipping_fees
+    return transaction_total + line_items_total unless state == "created"
   end
 
   def transaction_total
@@ -39,15 +39,21 @@ class Purchase < ApplicationRecord
     end
   end
 
-  def shipping_fees
-    return 0 unless shipment and shipment.id
-    @sf = StorageFacility.find_by_address_id(shipment.address_id)
-    storagefacilities.uniq.reduce(0) do |sum,storage|
-      return sum if storage.address == shipment.address
-      quantity = -inventory_transactions.where(sku: Sku.where(storagefacility: storage)).sum(:quantity)
-      puts "processing #{quantity} items from #{storage.name}"
-      sum + storage.get_shipping_price(quantity, shipment)
-    end.to_f / 100
+  def line_items_total
+    line_items.reduce(0) do |sum,line_item|
+      sum + line_item.value
+    end
   end
+
+  # def shipping_fees
+  #   return 0 unless shipment and shipment.id
+  #   @sf = StorageFacility.find_by_address_id(shipment.address_id)
+  #   storagefacilities.uniq.reduce(0) do |sum,storage|
+  #     return sum if storage.address == shipment.address
+  #     quantity = -inventory_transactions.where(sku: Sku.where(storagefacility: storage)).sum(:quantity)
+  #     puts "processing #{quantity} items from #{storage.name}"
+  #     sum + storage.get_shipping_price(quantity, shipment)
+  #   end.to_f / 100
+  # end
   
 end

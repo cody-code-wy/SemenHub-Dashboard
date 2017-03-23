@@ -27,34 +27,30 @@ Order Items
   <% end %>
   </tbody>
 </table>
-Storage Facility Fees and shipping
+Other Line Items (Fees, Shipping, Reimbursments, Adjustments)
 <table>
   <thead>
-  <th>Storage Facility</th>
-  <th>Fee Type</th>
-  <th>Fee Cost</th>
+    <tr>
+      <th>Line Item</th>
+      <%# <th>Notes</th> %>
+      <th>Cost</th>
+      <% if current_user.can?(:adjust_line_items) %>
+        <th></th>
+      <% end %>
   </thead>
   <tbody>
-  <% @purchase.storagefacilities.uniq.each do |storage| %>
-      <% storage.fees.each do |fee| %>
-          <tr>
-            <td><%= storage.name %></td>
-            <td><%= fee.fee_type %></td>
-            <td><%= fee.price %></td>
-          </tr>
-      <% end %>
-      <% if @purchase.shipment.id %>
-          <% unless @purchase.shipment.address == storage.address %>
-              <tr>
-                <td><%= storage.name %></td>
-                <td>Shipping via <%= storage.shipping_provider %></td>
-                <td><%= storage.get_shipping_price(-1 * @purchase.inventory_transactions.where(sku: Sku.where(storagefacility: storage)).sum(:quantity),@purchase.shipment).to_f / 100 %></td>
-              </tr>
-          <% end %>
-      <% end %>
-  <% end %>
+    <% @purchase.line_items.each do |line_item| %>
+      <tr>
+        <td><%= line_item.name %></td>
+        <td><%= line_item.value %></td>
+      </tr>
+    <% end %>
   </tbody>
 </table>
+<% if current_user.can?(:add_line_items) %>
+  <%= link_to "new line item", new_purchase_line_item_url(purchase_id: params[:id]) %>
+<% end %>
+
 
 <div class="total">
   Total: <%= @purchase.total %>

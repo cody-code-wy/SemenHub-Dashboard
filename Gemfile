@@ -42,6 +42,8 @@ gem 'address_validator', github: 'robhurring/address-validator'
 gem 'active_shipping'
 # Use Authorize.net
 gem 'authorizenet'
+# use Cookie-js
+gem 'js_cookie_rails'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

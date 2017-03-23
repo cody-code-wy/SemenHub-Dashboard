@@ -29,7 +29,7 @@ Rails.application.routes.draw do
   resources :skus
 
   resources :purchases do
-    resources :line_items
+    resources :line_items, except: :index
   end
 
   post '/purchases/:id', to: "purchases#get_address"

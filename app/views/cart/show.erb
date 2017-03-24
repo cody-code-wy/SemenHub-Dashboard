@@ -38,6 +38,10 @@
           </tbody>
         </table>
       <% end %>
+      <% if current_user.can? :assign_purchase_to_user %>
+        <%= label :user_id, :assign_to_user %>
+        <%= collection_select :purchase, :user_id, User.all.order(:first_name), :id, :get_name, selected: current_user.id %>
+      <% end %>
     <% end %>
     <%= submit_tag "Checkout" %>
   <% end %>

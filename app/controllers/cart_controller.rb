@@ -20,7 +20,7 @@ class CartController < ApplicationController
   end
 
   def checkout
-    purchase = Purchase.create(user: current_user, state: "created")
+    purchase = Purchase.create(user: get_user , state: "created")
     get_sku_params.each do |a|
       skus = a[0].similar
       count = a[1]
@@ -44,6 +44,11 @@ class CartController < ApplicationController
   end
 
   protected
+
+  def get_user
+    return current_user unless current_user.can?(:assign_purchase_to_user) and params[:purchase][:user_id]
+    User.find(params.require(:purchase).require(:user_id))
+  end
 
   def get_sku_params
     params.require(:skus).permit!.to_h.map{|k,v| [Sku.find(k), v.to_i]}.delete_if { |a| a[1] == 0  }

@@ -1,0 +1,11 @@
+<%= form_for [@purchase, @line_item] do |f| %>
+  <div>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+  <div>
+    <%= f.label :value %>
+    <%= f.number_field :value %>
+  </div>
+  <%= f.submit %>
+<% end %>

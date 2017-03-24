@@ -33,3 +33,7 @@ $(document).on 'turbolinks:load', ->
   getBreeds() if $('#animal_breed_id').length > 0
 
   $('#animal_breed_id').on 'change', getBreeds
+
+  $('.add_to_order').on 'click', ->
+    $.ajax('/cart/' + encodeURIComponent(Cookies.get("UniqueUser")) + "/add?animalid=" + $(this).data('animal')).success ->
+      alert('Added to cart')

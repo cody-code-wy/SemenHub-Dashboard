@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   before_action do 
     authorize if secure
     update_pass unless performed?
+    cookies[:UniqueUser] ||= {value: SecureRandom.uuid, expires: Time.now + 43200}
   end
 
   helper_method :current_user, :secure, :perms

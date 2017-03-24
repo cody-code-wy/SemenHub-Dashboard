@@ -18,6 +18,9 @@
             <li><%= link_to model.to_s.underscore.humanize.pluralize, model %></li>
           <% end %>
         <% end %>
+        <% if current_user and current_user.can?(:backend_order) %>
+          <li><%= link_to "Create Order", "/cart/#{cookies[:UniqueUser]}"%></li>
+        <% end %>
       </ul>
     </div>
     <div id="user_management">

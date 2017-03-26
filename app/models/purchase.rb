@@ -9,7 +9,7 @@ class Purchase < ApplicationRecord
 
   has_one :shipment
 
-  enum state: ["problem", "created", "invoiced", "paid", "preparing for shipment", "shipped", "delivered", "canceled", "refunded"]
+  enum state: ["problem", "created", "invoiced", "paid", "preparing for shipment", "shipped", "delivered", "canceled", "refunded", "administrative"]
 
   #shipping info
   shipping = {diameter: 41, height: 61, weight: 18144, straws_per: 10}
@@ -24,7 +24,7 @@ class Purchase < ApplicationRecord
   end
 
   def total
-    return transaction_total + line_items_total unless state == "created"
+    transaction_total + line_items_total
   end
 
   def transaction_total

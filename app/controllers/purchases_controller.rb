@@ -44,7 +44,6 @@ class PurchasesController < ApplicationController
       puts "Successful charge (auth + capture) (authorization code: #{response.transactionResponse.authCode}) (transaction ID: #{response.transactionResponse.transId})"
       @purchase.update(authorization_code: response.transactionResponse.authCode, transaction_id: response.transactionResponse.transId)
       @purchase.paid!
-      ReceiptMailer.send_receipt(current_user, @purchase).deliver_later
       redirect_to @purchase
     else
       flash[:alert] = 'There was a problem processing your card. Please check the entered values and try again.'

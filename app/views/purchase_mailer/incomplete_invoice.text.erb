@@ -1,0 +1,11 @@
+This is not a completed invoice, and should not be paid!
+
+Your order requires special considerations, some fees, such as shipping costs, could not be automatically calculated. You will receive a completed invoice once your oder has been cleared for payment.
+
+
+<%= render 'invoice_transactions' %>
+<%= render 'invoice_totals' %>
+
+Do not pay! This is not an invoice!
+
+Your order number is <%= @purchase.id %>

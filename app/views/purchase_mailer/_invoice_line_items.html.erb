@@ -1,0 +1,17 @@
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Cost</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @purchase.line_items.each do |line| %>
+      <tr>
+        <td><%= line.name %></td>
+        <td><%= line.value %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

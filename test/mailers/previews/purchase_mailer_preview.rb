@@ -5,4 +5,8 @@ class PurchaseMailerPreview < ActionMailer::Preview
     PurchaseMailer.incomplete_invoice(Purchase.last)
   end
 
+  def invoice
+    PurchaseMailer.invoice(Purchase.last)
+  end
+
 end

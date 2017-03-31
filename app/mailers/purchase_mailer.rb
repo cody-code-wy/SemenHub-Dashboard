@@ -11,4 +11,9 @@ class PurchaseMailer < ApplicationMailer
     @purchase = purchase
     mail(to: @purchase.user.email, subject: 'Your SemenHub Invoice')
   end
+
+  def receipt(purchase)
+    @purchase = purchase
+    mail(to: @purchase.user.email, subject: 'Your SemenHub Receipt')
+  end
 end

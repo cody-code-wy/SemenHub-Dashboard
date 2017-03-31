@@ -9,4 +9,8 @@ class PurchaseMailerPreview < ActionMailer::Preview
     PurchaseMailer.invoice(Purchase.last)
   end
 
+  def receipt
+    PurchaseMailer.receipt(Purchase.last)
+  end
+
 end

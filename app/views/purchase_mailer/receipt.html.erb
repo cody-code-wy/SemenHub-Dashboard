@@ -1,0 +1,10 @@
+<h2>Thank you for your order</h2>
+<br\>
+<span>We will ship your order as soon as possible. You will recieve a followup email with your tracking information.</span>
+
+<%= render 'invoice_transactions' %>
+
+<%= render 'invoice_line_items' %>
+<%= render 'invoice_totals' %>
+
+Your order number is <%= @purchase.id %>

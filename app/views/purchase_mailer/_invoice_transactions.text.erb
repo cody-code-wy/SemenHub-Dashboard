@@ -1,4 +1,0 @@
-------------------
-<% @purchase.inventory_transactions.each do |trans| %>
-  SKU#<%= trans.sku.id %> ( <%= trans.sku.animal.name %> ) <%= -trans.quantity %> Straws @ $<%= trans.sku.price_per_unit %> ---- $<%= -trans.quantity * trans.sku.price_per_unit %>
-<% end %>

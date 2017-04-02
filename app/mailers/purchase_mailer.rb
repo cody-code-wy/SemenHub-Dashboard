@@ -22,4 +22,5 @@ class PurchaseMailer < ApplicationMailer
     @purchase = purchase
     mail(to: @purchase.user.email, subject: 'Your SemenHub Receipt')
   end
+
 end

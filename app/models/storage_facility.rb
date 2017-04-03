@@ -1,6 +1,7 @@
 class StorageFacility < ApplicationRecord
   belongs_to :address
   has_many :fees
+  has_many :skus, foreign_key: 'storagefacility_id'
 
   enum shipping_provider: {
     'UPS': 0,

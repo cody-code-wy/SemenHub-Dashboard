@@ -4,6 +4,7 @@ class Purchase < ApplicationRecord
   has_many :purchase_transactions
   has_many :inventory_transactions, through: :purchase_transactions
   has_many :skus, through: :inventory_transactions
+  has_many :sellers, through: :skus
   has_many :storagefacilities, through: :skus
   has_many :line_items
 

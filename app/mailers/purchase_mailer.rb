@@ -1,5 +1,5 @@
 class PurchaseMailer < ApplicationMailer
-  default from: 'default@semenhub.shop'
+  default from: 'semenhub@gmail.com'
   layout 'mailer'
 
 

@@ -44,6 +44,10 @@ gem 'active_shipping'
 gem 'authorizenet'
 # use Cookie-js
 gem 'js_cookie_rails'
+# use premalier css mailer awesome thing
+gem 'premailer-rails'
+# nokogiri... required by premailer
+gem 'nokogiri'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

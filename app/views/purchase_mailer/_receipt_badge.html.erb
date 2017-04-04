@@ -1,0 +1,21 @@
+<div class="badge right">
+  <div class="type">
+    Receipt
+  </div>
+  <table>
+    <tbody>
+      <tr>
+        <td>Date:</td>
+        <td><%= Date.today %></td>
+      </tr>
+      <tr>
+        <td>Invoice #</td>
+        <td><%= @purchase.id %></td>
+      </tr>
+      <tr>
+        <td>Customer ID</td>
+        <td><%= @purchase.user.id %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

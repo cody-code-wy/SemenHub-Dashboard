@@ -1,10 +1,9 @@
-<h2>Thank you for your order</h2>
-<br\>
-<span>We will ship your order as soon as possible. You will recieve a followup email with your tracking information.</span>
+<%= render 'header', badge: 'receipt_badge' %>
 
-<%= render 'invoice_transactions' %>
+<div class="raw-content">
+  <h2>Thank you for your order</h2>
+  <div>We will ship your order as soon as possible. You will recieve a followup email with your tracking information.</div>
 
-<%= render 'invoice_line_items' %>
-<%= render 'invoice_totals' %>
-
-Your order number is <%= @purchase.id %>
+  <div>Keep this receipts for your records </div>
+</div>
+<%= render 'invoice_template' %>

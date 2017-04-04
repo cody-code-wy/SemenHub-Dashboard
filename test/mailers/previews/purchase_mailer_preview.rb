@@ -2,19 +2,23 @@
 class PurchaseMailerPreview < ActionMailer::Preview
 
   def administrative_notice
-    PurchaseMailer.administrative_notice(Purchase.last)
+    mail = PurchaseMailer.administrative_notice(Purchase.last)
+    Premailer::Rails::Hook.perform(mail)
   end
 
   def incomplete_invoice
-    PurchaseMailer.incomplete_invoice(Purchase.last)
+    mail = PurchaseMailer.incomplete_invoice(Purchase.last)
+    Premailer::Rails::Hook.perform(mail)
   end
 
   def invoice
-    PurchaseMailer.invoice(Purchase.last)
+    mail = PurchaseMailer.invoice(Purchase.last)
+    Premailer::Rails::Hook.perform(mail)
   end
 
   def receipt
-    PurchaseMailer.receipt(Purchase.last)
+    mail = PurchaseMailer.receipt(Purchase.last)
+    Premailer::Rails::Hook.perform(mail)
   end
 
 end

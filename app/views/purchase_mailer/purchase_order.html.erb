@@ -1,0 +1,39 @@
+<%= render 'header', badge: 'purchase_order_badge' %>
+<table>
+  <thead>
+    <tr>
+      <th>SKU Number</th>
+      <th>Animal</th>
+      <th>Semen Type</th>
+      <th>Semen Count</th>
+      <th>Cane Code</th>
+      <th>Storage Facility</th>
+      <th>Cost Per Straw</th>
+      <th>Number of Straws</th>
+      <th>subtotal</th>
+      <th>Commission rate</th>
+      <th>Commission</th>
+      <th>Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @order_items.each do |trans| %>
+      <tr>
+        <td><%= trans.sku.id %></td>
+        <td><%= trans.sku.animal.name %></td>
+        <td><%= trans.sku.semen_type %></td>
+        <td><%= trans.sku.semen_count %></td>
+        <td><%= trans.sku.cane_code %></td>
+        <td><%= trans.sku.storagefacility.name %></td>
+        <td><%= number_to_currency(trans.sku.price_per_unit) %></td>
+        <td><%= -trans.quantity %></td>
+        <td><%= -trans.quantity * trans.sku.price_per_unit %></td>
+        <td><%= "%.2f" % trans.sku.get_commission %>%</td>
+        <td><%= number_to_currency((trans.sku.price_per_unit - trans.sku.get_cost_per_unit) * -trans.quantity) %></td>
+        <td><%= number_to_currency(trans.sku.get_cost_per_unit * -trans.quantity) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= render 'purchase_order_totals' %>

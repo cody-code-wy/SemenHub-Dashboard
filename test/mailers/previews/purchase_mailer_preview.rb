@@ -21,4 +21,9 @@ class PurchaseMailerPreview < ActionMailer::Preview
     Premailer::Rails::Hook.perform(mail)
   end
 
+  def purchase_order
+    mail = PurchaseMailer.purchase_order(Purchase.last, Purchase.last.sellers.first)
+    Premailer::Rails::Hook.perform(mail)
+  end
+
 end

@@ -1,0 +1,21 @@
+<div class="badge right">
+  <div class="type">
+    Purchase Order
+  </div>
+  <table>
+    <tbody>
+      <tr>
+        <td>Date:</td>
+        <td><%= Date.today %></div>
+      </tr>
+      <tr>
+        <td>PO #</td>
+        <td><%= @purchase.id %>-<%= @order_items.map(&:sku).map(&:id).join(".")%></td>
+      </tr>
+      <tr>
+        <td>Seller #</td>
+        <td><%= @seller.id %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

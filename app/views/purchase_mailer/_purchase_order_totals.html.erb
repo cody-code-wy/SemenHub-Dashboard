@@ -1,0 +1,9 @@
+<table class="total">
+  <thead>
+    <th colspan=2>Total</th>
+  </thead>
+  <tbody>
+    <td>Total</td>
+    <td><%= number_to_currency(@order_items.reduce(0) {|sum,item| -item.quantity * item.sku.get_cost_per_unit + sum }) %></td>
+  </tbody>
+</table>

@@ -3,6 +3,37 @@
     <%= content_tag :h2, msg, class: name %>
 <% end -%>
 
+<div>
+  Purchase Number: <%= @purchase.id %>
+</div>
+<div>
+  User: <%= @purchase.user.get_name %>
+</div>
+<div>
+  Purchase State: <%= @purchase.state %>
+</div>
+<div>
+  Destination Address
+  <div>
+    <%= @purchase.shipment.account_name %>
+  </div>
+  <div>
+    <%= @purchase.shipment.location_name %>
+  </div>
+  <div>
+    <%= @purchase.shipment.address.line1 %>
+  </div>
+  <div>
+    <%= @purchase.shipment.address.line2 %>
+  </div>
+  <div>
+    <%= @purchase.shipment.address.city %>, <%= @purchase.shipment.address.region %> <%= @purchase.shipment.address.postal_code %>
+  </div>
+  <div>
+    <%= @purchase.shipment.address.country.name %>
+  </div>
+</div>
+
 <%= render 'invoice' %>
 <div>
   <%= render @partial if @partial %>

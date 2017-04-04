@@ -1,0 +1,78 @@
+<%= render 'header', badge: 'shipping_order_badge' %>
+<div class="block raw-content">
+  <table class="address left">
+    <thead>
+      <tr>
+        <th>Ship To</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Attn/Acct: <%= @purchase.shipment.account_name %></td>
+      </tr>
+      <tr>
+        <td><%= @purchase.shipment.location_name %></td>
+      </tr>
+      <tr class="line1">
+        <td><%= @purchase.shipment.address.line1 %></td>
+      </tr>
+      <tr>
+        <td><%= @purchase.shipment.address.line2 %></td>
+      </tr>
+      <tr>
+        <td><%= @purchase.shipment.address.city %>, <%= @purchase.shipment.address.region %> <%= @purchase.shipment.address.postal_code %></td>
+      </tr>
+      <tr>
+        <td><%= @purchase.shipment.address.country.name %></td>
+      </tr>
+    </tbody>
+  </table>
+  <table class="address right">
+    <thead>
+      <tr>
+        <th>Bill To</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Craig Perez</td>
+      </tr>
+      <tr>
+        <td>SEMEN HUB</td>
+      </tr>
+      <tr>
+        <td>PO BOX 327</td>
+      </tr>
+      <tr>
+        <td>Cleburne, TX 76033-0327</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>SEMENHUB SKU#</th>
+      <th>Cane Code</th>
+      <th>Animal</th>
+      <th>Semen Type</th>
+      <th>Semen Count</th>
+      <th>Number of Straws</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @order_items.each do |trans| %>
+      <tr>
+        <td><%= trans.sku.id %></td>
+        <td><%= trans.sku.cane_code %></td>
+        <td><%= trans.sku.animal.name %></td>
+        <td><%= trans.sku.semen_type %></td>
+        <td><%= trans.sku.semen_count %></td>
+        <td><%= -trans.quantity %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="raw-content" style="margin-top: 2.5em">Please respond with tracking number to: <a href="mailto:semenhub@gmail.com?Subject=SemenHub%20Purchase#<%= @purchase.id %>%20Tracking%20Number">semenhub@gmail.com</a> with subject: <em>SemenHub Purchase#<%= @purchase.id %> Tracking Number</em></div>

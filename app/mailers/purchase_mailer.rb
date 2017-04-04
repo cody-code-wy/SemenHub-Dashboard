@@ -30,4 +30,11 @@ class PurchaseMailer < ApplicationMailer
     mail(to: @seller.email, subject: 'New SemenHub Purchase Order')
   end
 
+  def shipping_order(purchase, storagefacility)
+    @purchase = purchase
+    @storagefacility = storagefacility
+    @order_items = purchase.inventory_transactions.where(sku: @storagefacility.skus)
+    mail(to: @storagefacility.email, subject: 'New SemenHub Shipping Order')
+  end
+
 end

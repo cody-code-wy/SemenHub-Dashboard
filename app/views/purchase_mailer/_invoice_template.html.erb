@@ -1,0 +1,3 @@
+<%= render 'invoice_transactions' %>
+<%= render 'invoice_line_items' unless @purchase.line_items.empty? %>
+<%= render 'invoice_totals' %>

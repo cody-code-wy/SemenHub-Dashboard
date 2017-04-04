@@ -1,7 +1,4 @@
-Please pay this invoice quickly, if you wish to change your payment method plase contact us as soon as passible.
+<%= render 'header' , badge: 'invoice_badge' %>
+<%= render 'invoice_template' %>
 
-<%= render 'invoice_transactions' %>
-<%= render 'invoice_line_items' %>
-<%= render 'invoice_totals' %>
 
-Your order number is <%= @purchase.id %>

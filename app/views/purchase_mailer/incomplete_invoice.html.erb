@@ -1,18 +1,3 @@
-<em>This is not a completed invoice, and should not be paid!</em>
-Your order requires special considerations, some fees, such as shipping costs, could not be automatically calculated. You will receive a completed invoice once your order has been cleared for payment.
+<div>Your order requires special considerations. For example: some fees, such as shipping costs, could not be automatically calculated. You will receive an invoice once your order has been cleared for payment.</div>
 
-
-
-<div class="invoice">
-  <div class="items">
-    <%= render 'invoice_transactions' %>
-  </div>
-  <div class="totals">
-    <%= render 'invoice_totals' %>
-  </div>
-  <div class="warning">
-    Do Not Pay! This is not an invoice
-  </div>
-</div>
-
-Your order number is <%= @purchase.id %>
+<div style="margin-top: 1.5em;">Your order number is <%= @purchase.id %></div>

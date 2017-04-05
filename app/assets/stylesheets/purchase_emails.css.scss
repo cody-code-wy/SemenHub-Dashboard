@@ -61,6 +61,10 @@ table {
 
     td {
       background-color: transparent;
+
+      &.spacer {
+        height: 1em;
+      }
     }
   }
 }

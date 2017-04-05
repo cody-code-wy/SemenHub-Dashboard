@@ -1,0 +1,24 @@
+<table>
+  <thead>
+    <tr>
+      <th>SEMENHUB SKU#</th>
+      <th>Cane Code</th>
+      <th>Animal</th>
+      <th>Semen Type</th>
+      <th>Semen Count</th>
+      <th>Number of Straws</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @order_items.each do |trans| %>
+      <tr>
+        <td><%= trans.sku.id %></td>
+        <td><%= trans.sku.cane_code %></td>
+        <td><%= trans.sku.animal.name %></td>
+        <td><%= trans.sku.semen_type %></td>
+        <td><%= trans.sku.semen_count %></td>
+        <td><%= -trans.quantity %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

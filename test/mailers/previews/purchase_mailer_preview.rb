@@ -31,4 +31,12 @@ class PurchaseMailerPreview < ActionMailer::Preview
     Premailer::Rails::Hook.perform(mail)
   end
 
+  def release_order
+    @purchase = Purchase.last
+    @seller = @purchase.sellers.first
+    @storagefacility = @purchase.skus.where(seller: @seller).first.storagefacility
+    mail = PurchaseMailer.release_order(@purchase, @seller, @storagefacility)
+    Premailer::Rails::Hook.perform(mail)
+  end
+
 end

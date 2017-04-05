@@ -1,0 +1,53 @@
+<div class="block raw-content">
+  <table class="address left">
+    <thead>
+      <tr>
+        <th>Release To</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Craig Perez</td>
+      </tr>
+      <tr>
+        <td>SemenHub</td>
+      </tr>
+      <tr class="line1">
+        <td>PO BOX 327</td>
+      </tr>
+      <tr>
+        <td>Cleburne, TX 76033-0327</td>
+      </tr>
+      <tr>
+        <td>United States</td>
+      </tr>
+    </tbody>
+  </table>
+  <table class="address right">
+    <thead>
+      <tr>
+        <th>Release From</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%= @seller.get_name %></td>
+      </tr>
+      <tr>
+        <td class="spacer"></td>
+      </tr>
+      <tr class="line1">
+        <td><%= @seller.mailing_address.line1 %></td>
+      </tr>
+      <tr>
+        <td><%= @seller.mailing_address.line2 %></td>
+      </tr>
+      <tr>
+        <td><%= @seller.mailing_address.city %>, <%= @seller.mailing_address.region %> <%= @seller.mailing_address.postal_code %></td>
+      </tr>
+      <tr>
+        <td><%= @seller.mailing_address.country.name %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

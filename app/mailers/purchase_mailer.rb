@@ -37,4 +37,12 @@ class PurchaseMailer < ApplicationMailer
     mail(to: @storagefacility.email, subject: "New SemenHub Shipping Order (purchase #{@purchase.id})")
   end
 
+  def release_order(purchase, seller, storagefacility)
+    @purchase = purchase
+    @seller = seller
+    @storagefacility = storagefacility
+    @order_items = @purchase.inventory_transactions.where(sku: Sku.where(storagefacility: @storagefacility, seller: @seller))
+    mail(to: @seller.email, subject: "SemenHub Release form for #{@purchase.shipment.location_name} for Purchase #{@purchase.id}")
+  end
+
 end

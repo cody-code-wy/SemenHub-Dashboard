@@ -12,7 +12,7 @@
       <%= f.text_field :email %>
     </div>
     <div>
-      <%=	f.label :website, get_field_errors(@facility, :website) %>
+      <%= f.label :website, get_field_errors(@facility, :website) %>
       <%= f.text_field :website %>
     </div>
     <div>
@@ -28,6 +28,18 @@
       <%= f.fields_for :mailing_address, @facility.address do |addr| %>
           <%= render "address", addr: addr, model: @facility.address %>
       <% end %>
+    </div>
+    <div>
+      <%= f.label :out_adjust %>
+      <%= f.number_field :out_adjust %>
+    </div>
+    <div>
+      <%= f.label :in_adjust %>
+      <%= f.number_field :in_adjust %>
+    </div>
+    <div>
+      <%= f.label :admin_required %>
+      <%= f.check_box :admin_required %>
     </div>
     <%= f.submit %>
 <% end %>

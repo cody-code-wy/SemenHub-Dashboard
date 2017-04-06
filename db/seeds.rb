@@ -271,14 +271,31 @@ Registrar.find_or_create_by(breed: Breed.find_or_create_by(breed_name: "Longhorn
 Registrar.find_or_create_by(breed: Breed.find_or_create_by(breed_name: "Longhorn"), address: Address.find_or_create_by(line1: "P.O. Box PLACEHOLDER", city: "Place Holder", region: "Texas", alpha_2: 'us', postal_code: "76032"), name: "TLCA", phone_primary: "780-362-4321", website: "http://holdplacer.space", email: "user@holdplacer.space")
 
 role = Role.find_by_name :superuser
-role.destroy if role                  #Normally find_or_create_by would be used, however that does not work with has_many through relations.
-Role.create(name: "superuser", permissions: [Permission.find_or_create_by(name: "superuser", description: "All Permissions Granted")]);
+perms = [Permission.find_or_create_by(name: "superuser", description: "All Permissions Granted")]
+if role
+  role.permissions.destroy_all
+  role.permissions << perms
+else
+  Role.create(name: "superuser", permissions: perms)
+end
+
 role = Role.find_by_name :default
-role.destroy if role
-Role.create(name: "default", permissions: [Permission.find_or_create_by(name: "login", description: "Allows user to login"), Permission.find_or_create_by(name: "purchase", description: "Allows user to purchase items")])
+perms = [Permission.find_or_create_by(name: "login", description: "Allows user to login"), Permission.find_or_create_by(name: "purchase", description: "Allows user to purchase items"), Permission.find_or_create_by(name: :"use_purchases_controller", description: "Allows user to view their purchases (invoices and recipts)")]
+if role
+  role.permissions.destroy_all
+  role.permissions << perms
+else
+  Role.create(name: "default", permissions: perms)
+end
+
 role = Role.find_by_name :seller
-role.destroy if role
-Role.create(name: "seller", permissions: [Permission.find_or_create_by(name: "addStock", description: "Allows user to register own transactions")])
+perms = [Permission.find_or_create_by(name: "addStock", description: "Allows user to register own transactions")]
+if role
+  role.permissions.destroy_all
+  role.permissions << perms
+else
+  Role.create(name: "seller", permissions: perms )
+end
 
 case Rails.env
   when "development"

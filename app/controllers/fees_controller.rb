@@ -20,30 +20,40 @@ class FeesController < ApplicationController
     @fee = Fee.create fee_params
     put_facility_in_fee
 
-    if @fee.save
-      redirect_to @fee
-    else
-      render :new
+    respond_to do |format|
+      if @fee.save
+        format.html { redirect_to @fee, notice: "Fee was successfully crated." }
+        format.json { render :show, status: :created, location: @fee }
+      else
+        format.html { render :new }
+        format.json { render json: @fee.errors, status: :unprocessable_entity }
+      end
     end
   end
 
   def update
     @fee = Fee.find(params[:id])
-    
     @fee.update fee_params
     put_facility_in_fee
 
-    if @fee.save
-      redirect_to @fee
-    else
-      render :edit
+    respond_to do |format|
+      if @fee.save
+        format.html { redirect_to @fee, notice: "Fee was successfully updated." }
+        format.json { render :show, status: :ok, location: @fee }
+      else
+        format.html { render :edit }
+        format.json { render json: @fee.errors, status: :unprocessable_entity }
+      end
     end
   end
 
   def destroy
     @fee = Fee.find(params[:id])
     @fee.destroy
-    redirect_to Fee
+    respond_to do |format|
+      format.html { redirect_to Fee}
+      format.json { head :no_content }
+    end
   end
 
   protected
@@ -51,7 +61,6 @@ class FeesController < ApplicationController
   def fee_params
     params.require(:fee).permit(
       :price, :fee_type, :storage_facility_id
-
     )
   end
 

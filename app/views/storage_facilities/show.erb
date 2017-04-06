@@ -35,10 +35,44 @@
 <div>
   In Adjust: <%= @facility.in_adjust %>
 </div>
+<div class='fees'>
+  <table style="width: auto;">
+    <thead>
+      <tr>
+        <th>Show</th>
+        <th>Delete</th>
+        <th>Fee Type</th>
+        <th>Fee Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @facility.fees.each do |fee| %>
+        <tr>
+          <td><%= link_to 'Show fee', fee %></td>
+          <td><%= link_to 'Delete fee', fee, remote: true, method: :delete, 'data-type': 'json' %></td>
+          <td><%= fee.fee_type %></td>
+          <td class="fee-price"><%= fee.price %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= form_for Fee.new(storage_facility: @facility), remote: true, html: { 'data-type': 'json' } do |f| %>
+    <%= f.label :price %>
+    <%= f.text_field :price %>
+    <%= f.label :fee_type %>
+    <%= f.select :fee_type, Fee.fee_types.keys %>
+    <%= f.hidden_field :storage_facility_id %>
+    <%= f.submit %>
+  <% end %>
+</div>
+
+</div>
 <div class="test_shipment seperate">
   <h4>Test Shipment</h4>
   <%= collection_select :storagefacility, :id, StorageFacility.all.order(:name), :id, :name, class: "sf-collection" %>
-  <div>Total Cost:<span class="test-total test-span">N/A</span></div>
-  <div>Out Cost:<span class="test-out test-span">N/A</span></div>
-  <div>In Cost:<span class="test-in test-span">N/A</span></div>
+  <div>Total Cost: <span class="test-total test-span">N/A</span></div>
+  <div>Total Shipping: <span class="test-shipping test-span">N/A</span></div>
+  <div>Out Cost: <span class="test-out test-span">N/A</span></div>
+  <div>In Cost: <span class="test-in test-span">N/A</span></div>
+  <div>Fees: <span class="test-fees test-span">N/A</span></div>
 </div>

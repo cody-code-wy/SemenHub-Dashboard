@@ -3,6 +3,18 @@
     <%= content_tag :h2, msg, class: name %>
 <% end -%>
 
+<% if current_user.can? :admin_purchases %>
+  <div>
+    <h3>Administrative Controls</h3>
+    <div>
+      <%= form_for @purchase do |f| %>
+        <%= f.hidden_field :state, value: "invoiced" %>
+        <%= f.submit "Clear for payment" %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
 <div>
   Purchase Number: <%= @purchase.id %>
 </div>
@@ -35,7 +47,6 @@
     </div>
   <% end %>
 </div>
-
 <%= render 'invoice' %>
 <div>
   <%= render @partial if @partial %>

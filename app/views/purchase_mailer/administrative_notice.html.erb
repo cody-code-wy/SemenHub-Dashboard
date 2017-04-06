@@ -1,0 +1,9 @@
+<%= render 'header', badge: 'admin_notice_badge' %>
+
+<div class="raw-content">
+<div>Purchase #<%= @purchase.id %> has entered Administrative Mode.</div>
+
+<div><%= link_to 'View Order', "https://semenhub.shop/purchases/#{@purchase.id}" %></div>
+
+<div>Please ensure that the shipping and fees are all included on the order before clearing for payment.</div>
+</div>

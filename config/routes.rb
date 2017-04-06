@@ -30,6 +30,7 @@ Rails.application.routes.draw do
 
   resources :purchases do
     resources :line_items, except: :index
+    resources :shipments, except: [:index, :show, :delete]
   end
 
   post '/purchases/:id', to: "purchases#get_address"

@@ -1,0 +1,22 @@
+<%= render 'header' , badge: 'invoice_badge' %>
+<%= render 'invoice_template' %>
+
+<div class="raw-content" style="margin-top: 2.5em">
+  Login to <a href="https://semenhub.shop/purchase/<%= @purchase.id %>">Semenhub.shop</a> to pay instantly with a debit, or credit card.
+</div>
+<div class="raw-content" style="margin-top: 1.5em">
+  Or print out and mail in the remittance form with a check. If you elect to mail in a check be advised that your order will not ship until your check is received and clears.
+</div>
+<div class="raw-content" style="margin-top: 1em">
+  Make all checks payable to: <em>SEMEN HUB</em>
+</div>
+<div class="raw-content" style="margin-top: 3em">
+  Please detach the portion below and return it with your payment if paying by mail.
+  <div class="remittance">
+    <h4>REMITTANCE</h4>
+    <div class="block">
+      <%= render 'letterhead' %>
+      <%= render 'invoice_badge', remittance: true %>
+    </div>
+  </div>
+

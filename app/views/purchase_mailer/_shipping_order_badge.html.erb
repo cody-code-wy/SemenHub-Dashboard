@@ -1,0 +1,17 @@
+<div class="badge right">
+  <div class="type">
+    Shipping Order
+  </div>
+  <table>
+    <tbody>
+      <tr>
+        <td>Date:</td>
+        <td><%= l Date.today %></td>
+      </tr>
+      <tr>
+        <td>SO #</td>
+        <td><%= @purchase.id %>.<%= @storagefacility.id %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

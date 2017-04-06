@@ -1,0 +1,17 @@
+<div class="badge right">
+  <div class="type">
+    Release Order
+  </div>
+  <table>
+    <tbody>
+      <tr>
+        <td>Date:</td>
+        <td><%= l Date.today %></td>
+      </tr>
+      <tr>
+        <td>RO #</td>
+        <td><%= @purchase.id %>.<%= @storagefacility.id %>-<%= @seller.id %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

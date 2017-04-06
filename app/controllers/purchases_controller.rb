@@ -18,13 +18,26 @@ class PurchasesController < ApplicationController
     @purchases = Purchase.all
   end
 
-  def get_address
+  def update
     @purchase = Purchase.find(params[:id])
-    @storage = StorageFacility.find_by_address_id(params[:shipment][:address_id])
-    @purchase.shipment = Shipment.new(address: @storage.address, account_name: current_user.get_name )
-    @purchase.invoiced!
+    case params[:purchase][:state]
+      when "invoiced"
+        @purchase.invoiced!
+        # send email
+      else
+        flash[:alert] = "There was an error with your administrative command"
+    end
     redirect_to @purchase
   end
+
+  # def get_address
+  #   @purchase = Purchase.find(params[:id])
+  #   @storage = StorageFacility.find_by_address_id(params[:shipment][:address_id])
+  #   @purchase.shipment = Shipment.new(address: @storage.address, account_name: current_user.get_name )
+  #   @purchase.administrative!
+  #   flash[:alert] = "Your order requires administrative oversight and cannot be processed yet, no action is required on your part. \nYou will recieve an email when you can complete, and pay, for your order. We appologise for any inconvinience."
+  #   redirect_to @purchase
+  # end
 
   def recipt
     # byebug

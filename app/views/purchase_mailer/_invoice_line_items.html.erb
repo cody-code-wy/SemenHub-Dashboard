@@ -1,0 +1,17 @@
+<table>
+  <thead>
+    <tr>
+      <th>Shipping, Handling, and Fees</th>
+      <th>Cost</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @purchase.line_items.each do |line| %>
+      <tr>
+        <td><%= line.name %></td>
+        <td><%= line.value %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

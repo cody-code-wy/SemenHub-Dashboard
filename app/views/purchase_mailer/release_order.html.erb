@@ -1,0 +1,4 @@
+<%= render 'header', badge: 'release_order_badge' %>
+<div class="raw-content">Instructions for Seller: Forward this email to <em><%= @storagefacility.email %></em> to release inventory to SemenHub</div>
+<%= render 'release_strip.html.erb' %>
+<%= render 'sf_order_items' %>

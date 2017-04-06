@@ -1,0 +1,30 @@
+<table>
+  <thead>
+    <tr>
+      <th>SKU Number</th>
+      <th>Animal</th>
+      <th>Semen Type</th>
+      <th>Semen Count</th>
+      <th>Cane Code</th>
+      <th>Origin Storage Facility</th>
+      <th>Cost Per Straw</th>
+      <th>Number of straws</th>
+      <th>Cost</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @purchase.inventory_transactions.each do |transaction| %>
+      <tr>
+        <td><%= transaction.sku.id %></td>
+        <td><%= transaction.sku.animal.name %></td>
+        <td><%= transaction.sku.semen_type %></td>
+        <td><%= transaction.sku.semen_count %></td>
+        <td><%= transaction.sku.cane_code %></td>
+        <td><%= transaction.sku.storagefacility.name %></td>
+        <td><%= transaction.sku.price_per_unit %></td>
+        <td><%= -transaction.quantity %></td>
+        <td><%= -transaction.quantity * transaction.sku.price_per_unit %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

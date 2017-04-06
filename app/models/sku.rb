@@ -18,4 +18,14 @@ class Sku < ApplicationRecord
     inventory_transaction.sum(:quantity)
   end
 
+  def get_commission
+    return seller.commission.commission_percent unless cost_per_unit
+    (price_per_unit - cost_per_unit) / price_per_unit * 100
+  end
+
+  def get_cost_per_unit
+    return cost_per_unit if cost_per_unit
+    price_per_unit - (price_per_unit * (seller.commission.commission_percent / 100))
+  end
+
 end

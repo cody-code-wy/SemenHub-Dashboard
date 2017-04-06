@@ -13,7 +13,9 @@ Rails.application.routes.draw do
   post '/login', to: 'sessions#create'
   get '/logout', to: 'sessions#destroy'
 
-  resources :storage_facilities
+  resources :storage_facilities do
+    get 'test', to: 'storage_facilities#test'
+  end
 
   resources :animals
   get '/animals/:id/js', to: 'animals#js'

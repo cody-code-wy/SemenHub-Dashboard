@@ -30,8 +30,8 @@ class StorageFacility < ApplicationRecord
     out_price = response.rates.select{|rate| rate.service_name =~ /ground/i }[0].total_price
     response = $active_shipping[shipping_provider].find_rates(location, address.get_shipping_location, packages)
     in_price = response.rates.select{|rate| rate.service_name =~ /ground/i }[0].total_price
-    out_price *= (out_adjust.to_f / 100)
-    in_price *= (in_adjust.to_f / 100)
+    out_price *= (out_adjust.to_f / 100) unless out_adjust = 0;
+    in_price *= (in_adjust.to_f / 100) unless in_adjust = 0;
     {out_price: out_price, in_price: in_price, total: out_price + in_price}
   end
 end

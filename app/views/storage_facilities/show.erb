@@ -33,5 +33,12 @@
   Out Adjust: <%= @facility.out_adjust %>
 </div>
 <div>
-  In Adjust <%= @facility.in_adjust %>
+  In Adjust: <%= @facility.in_adjust %>
+</div>
+<div class="test_shipment seperate">
+  <h4>Test Shipment</h4>
+  <%= collection_select :storagefacility, :id, StorageFacility.all.order(:name), :id, :name, class: "sf-collection" %>
+  <div>Total Cost:<span class="test-total test-span">N/A</span></div>
+  <div>Out Cost:<span class="test-out test-span">N/A</span></div>
+  <div>In Cost:<span class="test-in test-span">N/A</span></div>
 </div>

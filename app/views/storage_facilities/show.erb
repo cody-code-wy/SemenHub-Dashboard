@@ -10,6 +10,9 @@
 <div>
   Facility Name: <%= @facility.name %>
 </div>
+<% if @facility.admin_required %>
+  <em>Requires Administrative Approval</em>
+<% end %>
 <div>
   Email: <%= @facility.email %>
 </div>
@@ -25,4 +28,10 @@
 </div>
 <div>
   Straws Per Container: <%= @facility.straws_per_shipment %>
+</div>
+<div>
+  Out Adjust: <%= @facility.out_adjust %>
+</div>
+<div>
+  In Adjust <%= @facility.in_adjust %>
 </div>

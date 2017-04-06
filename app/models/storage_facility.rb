@@ -27,6 +27,11 @@ class StorageFacility < ApplicationRecord
     return unless location
     packages = get_packages(semen_count, semen_per_container)
     response = $active_shipping[shipping_provider].find_rates(address.get_shipping_location, location, packages)
-    response.rates.select{|rate| rate.service_name =~ /ground/i }[0].total_price
+    out_price = response.rates.select{|rate| rate.service_name =~ /ground/i }[0].total_price
+    response = $active_shipping[shipping_provider].find_rates(location, address.get_shipping_location, packages)
+    in_price = response.rates.select{|rate| rate.service_name =~ /ground/i }[0].total_price
+    out_price *= (out_adjust.to_f / 100)
+    in_price *= (in_adjust.to_f / 100)
+    {out_price: out_price, in_price: in_price, total: out_price + in_price}
   end
 end

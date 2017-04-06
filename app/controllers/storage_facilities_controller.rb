@@ -49,6 +49,12 @@ class StorageFacilitiesController < ApplicationController
     redirect_to StorageFacility
   end
 
+  def test
+    @source = StorageFacility.find(params[:storage_facility_id])
+    @dest = StorageFacility.find(params[:dest])
+    render json: @source.get_shipping_price(100, @dest)
+  end
+
   protected
 
   def facility_params

@@ -4,18 +4,19 @@ class PurchasesController < ApplicationController
   protect_from_forgery except: :recipt
 
   def perms
-    return super unless ["show", "get_address", "recipt"].include?(params[:action])
+    return :admin_purchase unless ["show", "get_address", "recipt", "index"].include?(params[:action])
     :purchase
   end
 
   def show
     @purchase = Purchase.find(params[:id])
+    redirect_to '/401' unless @purchase.user == current_user || current_user.can?(:admin_purchase)
     @purchase.build_shipment if @purchase.shipment.blank?
     @partial = @purchase.state if lookup_context.exists?(@purchase.state, _prefixes, true)
   end
 
   def index
-    @purchases = Purchase.all
+    @purchases = current_user.can?(:admin_purchase) ? Purchase.all : Purchase.where(user: current_user)
   end
 
   def update

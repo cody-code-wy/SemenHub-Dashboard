@@ -81,9 +81,8 @@ ActiveRecord::Schema.define(version: 20170405175120) do
     t.string   "name"
     t.decimal  "value"
     t.integer  "purchase_id"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-    t.integer  "inventory_transaction_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.index ["purchase_id"], name: "index_line_items_on_purchase_id", using: :btree
   end
 
@@ -164,12 +163,11 @@ ActiveRecord::Schema.define(version: 20170405175120) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "settings", id: false, force: :cascade do |t|
-    t.integer  "setting",    null: false
+  create_table "settings", force: :cascade do |t|
+    t.integer  "setting"
     t.string   "value"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["setting"], name: "index_settings_on_setting", unique: true, using: :btree
   end
 
   create_table "shipments", force: :cascade do |t|

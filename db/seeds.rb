@@ -299,5 +299,4 @@ end
 
 case Rails.env
   when "development"
-    Animal.find_or_create_by(name: "testCow", breed: Breed.first, owner: User.find_or_create_by(first_name: "Testy", last_name: "Testson", email: "test@test.test", phone_primary: "1 555 555 5555", mailing_address: Address.first, billing_address: Address.find_or_create_by(line1: "123 Test drive", postal_code: "H0H 0H0", city: "Testsville", region: "Testington", alpha_2: 'us')))
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170405175120) do
+ActiveRecord::Schema.define(version: 20170407154307) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,11 +61,11 @@ ActiveRecord::Schema.define(version: 20170405175120) do
   end
 
   create_table "fees", force: :cascade do |t|
-    t.decimal  "price"
+    t.decimal  "price",               precision: 30, scale: 2
     t.integer  "fee_type"
     t.integer  "storage_facility_id"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
     t.index ["storage_facility_id"], name: "index_fees_on_storage_facility_id", using: :btree
   end
 
@@ -79,10 +79,10 @@ ActiveRecord::Schema.define(version: 20170405175120) do
 
   create_table "line_items", force: :cascade do |t|
     t.string   "name"
-    t.decimal  "value"
+    t.decimal  "value",       precision: 30, scale: 2
     t.integer  "purchase_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
     t.index ["purchase_id"], name: "index_line_items_on_purchase_id", using: :btree
   end
 
@@ -195,14 +195,14 @@ ActiveRecord::Schema.define(version: 20170405175120) do
   create_table "skus", force: :cascade do |t|
     t.boolean  "private"
     t.integer  "semen_type"
-    t.decimal  "price_per_unit"
+    t.decimal  "price_per_unit",     precision: 30, scale: 2
     t.integer  "semen_count"
     t.integer  "animal_id"
     t.integer  "storagefacility_id"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
     t.integer  "seller_id"
-    t.decimal  "cost_per_unit"
+    t.decimal  "cost_per_unit",      precision: 30, scale: 2
     t.string   "cane_code"
     t.boolean  "has_percent"
     t.index ["animal_id"], name: "index_sku_on_animal_id", using: :btree

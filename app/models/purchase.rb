@@ -20,6 +20,9 @@ class Purchase < ApplicationRecord
       storage.fees.each do |fee|
         line_items << LineItem.new(name: "#{storage.name} #{fee.fee_type} fee", value: fee.price )
       end
+      unless storage.admin_required || shipment.address.alpha_2 != 'us'
+        line_items << LineItem.new(name: "shipping #{storage.name} to #{shipment.location_name}", value: storage.get_shipping_price(100, shipment)[:total].to_f / 100)
+      end
     end
     line_items
   end

@@ -34,7 +34,8 @@ class PurchasesController < ApplicationController
         @purchase.delivered!
       when "created"
         @purchase.created!
-        @purchase.shipment.destroy
+        @purchase.shipment.destroy if @purchase.shipment
+        @purchase.line_items.destroy_all
       else
         flash[:alert] = "There was an error with your administrative command"
     end

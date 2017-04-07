@@ -1,0 +1,7 @@
+<div class="change-state" >
+  <%= form_for @purchase, html: {onsubmit: "return confirm(\'#{warn}\')"} do |f| %>
+    <%= f.hidden_field :state, value: state %>
+    <%= f.submit submit %>
+  <% end %>
+</div>
+

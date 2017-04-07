@@ -42,7 +42,7 @@ class PurchaseMailer < ApplicationMailer
     @seller = seller
     @storagefacility = storagefacility
     @order_items = @purchase.inventory_transactions.where(sku: Sku.where(storagefacility: @storagefacility, seller: @seller))
-    mail(to: @seller.email, subject: "SemenHub Release form for #{@purchase.shipment.location_name} for Purchase #{@purchase.id}")
+    mail(to: @seller.email, subject: "SemenHub Release form for #{@storagefacility.name} for Purchase #{@purchase.id}")
   end
 
 end

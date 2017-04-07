@@ -46,6 +46,34 @@ class Purchase < ApplicationRecord
     end
   end
 
+  def send_all_emails
+    PurchaseMailer.receipt(self).deliver_now
+    send_purchase_orders
+    send_shipping_orders
+    send_release_orders
+  end
+
+  def send_purchase_orders
+    sellers.uniq.each do |seller|
+      PurchaseMailer.shipping_order(self, seller).deliver_now
+    end
+  end
+
+  def send_shipping_orders
+    storagefacilities.uniq.each do |storage|
+      PurchaseMailer.shipping_order(self, storage).deliver_now
+    end
+  end
+
+
+  def send_release_orders
+    sellers.uniq.each do |seller|
+      skus.where(seller: seller).pluck(:storagefacility_id).uniq.map{|id| StorageFacility.find(id)}.each do |facility|
+        PurchaseMailer.release_order(self, seller, facility).deliver_now
+      end
+    end
+  end
+
   # def shipping_fees
   #   return 0 unless shipment and shipment.id
   #   @sf = StorageFacility.find_by_address_id(shipment.address_id)

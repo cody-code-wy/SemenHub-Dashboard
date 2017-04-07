@@ -23,7 +23,17 @@ class PurchasesController < ApplicationController
     case params[:purchase][:state]
       when "invoiced"
         @purchase.invoiced!
-        # send email
+        PurchaseMailer.invoice(@purchase).deliver_now
+      when "paid"
+        @purchase.paid!
+        @purchase.send_all_emails
+      when "shipped"
+        @puchase.shipped!
+      when "delivered"
+        @purchase.delivered!
+      when "created"
+        @purchase.created!
+        @purchase.shipment.destroy
       else
         flash[:alert] = "There was an error with your administrative command"
     end
@@ -57,12 +67,44 @@ class PurchasesController < ApplicationController
       puts "Successful charge (auth + capture) (authorization code: #{response.transactionResponse.authCode}) (transaction ID: #{response.transactionResponse.transId})"
       @purchase.update(authorization_code: response.transactionResponse.authCode, transaction_id: response.transactionResponse.transId)
       @purchase.paid!
+      @purchase.send_all_emails
+      # send_all
       redirect_to @purchase
     else
       flash[:alert] = 'There was a problem processing your card. Please check the entered values and try again.'
+      puts response.messages
       redirect_to @purchase
     end
   end
+
+  # private
+
+  # def send_all
+  #   PurchaseMailer.receipt(@purchase).deliver_now
+  #   send_purchase_orders
+  #   send_shipping_orders
+  #   send_release_orders
+  # end
+
+  # def send_purchase_orders
+  #   @purchase.sellers.uniq.each do |seller|
+  #     PurchaseMailer.purchase_order(@purchase, seller).deliver_now
+  #   end
+  # end
+
+  # def send_shipping_orders
+  #   @purchase.storagefacilities.uniq.each do |storage|
+  #     PurchaseMailer.shipping_order(@purchase, storage).deliver_now
+  #   end
+  # end
+
+  # def send_release_orders
+  #   @purchase.sellers.uniq.each do |seller|
+  #     @purchase.skus.where(seller: seller).pluck(:storagefacility_id).uniq.map{|id| StorageFacility.find(id)}.each do |facility|
+  #       PurchaseMailer.release_order(@purchase, seller, facility).deliver_now
+  #     end
+  #   end
+  # end
 
 
 end

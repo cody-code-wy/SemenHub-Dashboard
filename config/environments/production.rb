@@ -92,7 +92,7 @@ Rails.application.configure do
     user_name: ENV['SMTP_ACCOUNT'],
     password: ENV['SMTP_PASSWORD'],
     authentication: :plain,
- 'semenhub@gmail.com'    enable_starttls_auto: true
+    enable_starttls_auto: true
   }
 
 end

@@ -31,7 +31,7 @@ class CartController < ApplicationController
           count = 0; #thats it we are done
         else
           count -= sku.quantity #take all of them
-          purchase.inventory_transactions << InventoryTransaction.create(quantity: -sku.quantity, sku: sku)
+          purchase.inventory_transactions << InventoryTransaction.create(quantity: -sku.quantity, sku: sku) if sku.quantity < 0
         end
       end
       if count > 0

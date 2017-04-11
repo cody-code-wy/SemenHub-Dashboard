@@ -17,14 +17,19 @@ class Purchase < ApplicationRecord
 
   def create_line_items
     storagefacilities.uniq.each do |storage|
+      fee_total = 0.00
       storage.fees.each do |fee|
-        line_items << LineItem.new(name: "#{storage.name} #{fee.fee_type} fee", value: fee.price )
+        fee_total += fee.price
       end
       unless storage.admin_required || shipment.address.alpha_2 != 'us'
-        line_items << LineItem.new(name: "shipping #{storage.name} to #{shipment.location_name}", value: storage.get_shipping_price(100, shipment)[:total].to_f / 100)
+        fee_total += storage.get_shipping_price(100, shipment)[:total].to_f / 100
       end
+      item_name = "#{storage.name} S&H"
+      LineItem.where(name: item_name).destroy_all
+      line_items << LineItem.new(name: item_name, value: fee_total)
     end
-    line_items
+    LineItem.where(name: "SemenHub Service Fee").destroy_all
+    line_items << LineItem.new(name: "SemenHub Service Fee", value: total * 0.03)
   end
 
   def total

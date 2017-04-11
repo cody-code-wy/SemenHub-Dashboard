@@ -63,7 +63,7 @@ class Purchase < ApplicationRecord
 
   def send_purchase_orders
     sellers.uniq.each do |seller|
-      PurchaseMailer.shipping_order(self, seller).deliver_now
+      PurchaseMailer.purchase_orders(self, seller).deliver_now
     end
   end
 

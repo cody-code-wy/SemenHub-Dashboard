@@ -12,16 +12,6 @@ class Purchase < ApplicationRecord
 
   enum state: ["problem", "created", "invoiced", "paid", "preparing for shipment", "shipped", "delivered", "canceled", "refunded", "administrative"]
 
-  before_validation do #add/update global fees
-    service_fee_name = "SemenHub Service Fee"
-    item = line_items.where(name: service_fee_name ).first
-    if item
-      item.update(value: total * 0.045)
-    else
-      line_items << LineItem.new(name: service_fee_name, value: total * 0.05)
-    end
-  end
-
   #shipping info
   shipping = {diameter: 41, height: 61, weight: 18144, straws_per: 10}
 

@@ -1,5 +1,9 @@
 class ShipmentsController < ApplicationController
 
+  def perms
+    return :purchase
+  end
+
   def create
     @purchase = Purchase.find(params[:purchase_id])
     @storage = StorageFacility.find_by_address_id(params[:shipment][:address_id])

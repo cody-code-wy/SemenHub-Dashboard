@@ -27,7 +27,7 @@ class PurchaseMailer < ApplicationMailer
     @purchase = purchase
     @seller = seller
     @order_items = @purchase.inventory_transactions.where(sku: @seller.skus)
-    mail(to: @seller.email, subject: "New SemenHub Purchase Order (purchase #{@purchase.id})")
+    mail(to: @seller.email, bcc: 'semenhub@gmail.com', subject: "New SemenHub Purchase Order (purchase #{@purchase.id})")
   end
 
   def shipping_order(purchase, storagefacility)

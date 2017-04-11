@@ -15,7 +15,7 @@ Order Items
   <tbody>
   <% @purchase.inventory_transactions.each do |trans| %>
       <tr>
-        <td><%= trans.sku.id %></td>
+        <td><%= trans.sku.id %> <%= link_to "detail", trans.sku if current_user.superuser? %></td>
         <td><%= trans.sku.animal.name %></td>
         <td><%= trans.sku.semen_count %></td>
         <td><%= trans.sku.semen_type %></td>

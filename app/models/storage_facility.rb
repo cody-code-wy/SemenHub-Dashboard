@@ -3,10 +3,7 @@ class StorageFacility < ApplicationRecord
   has_many :fees
   has_many :skus, foreign_key: 'storagefacility_id'
 
-  enum shipping_provider: {
-    'UPS': 0,
-    'FedEx': 1
-  }
+  enum shipping_provider: Shipment.shipping_providers
 
   validates_presence_of :phone_number, :website, :name, :shipping_provider, :straws_per_shipment
   validates :email, presence: true, email: true

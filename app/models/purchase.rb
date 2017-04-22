@@ -7,8 +7,7 @@ class Purchase < ApplicationRecord
   has_many :sellers, through: :skus
   has_many :storagefacilities, through: :skus
   has_many :line_items
-
-  has_one :shipment
+  has_many :shipments
 
   enum state: ["problem", "created", "invoiced", "paid", "preparing for shipment", "shipped", "delivered", "canceled", "refunded", "administrative"]
 

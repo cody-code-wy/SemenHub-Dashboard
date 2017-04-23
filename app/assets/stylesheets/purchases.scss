@@ -1,3 +1,25 @@
 // Place all the styles related to the purchases controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.shipments {
+  margin-bottom: 2em;
+  margin-left: 20%;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .shipment {
+    display: flex;
+    width: 100%;
+    margin-top: 1.25em;
+    .origin {
+      width: 100%;
+      flex-grow: 2;
+    }
+    .destination {
+      width: 100%;
+      flex-grow: 2;
+    }
+  }
+}

@@ -11,8 +11,7 @@
     <%= render 'change_state_form', state: 'paid', submit: 'Mark Paid', warn: "Only continue if the payment method used has fully cleared, as this will send release orders and shipping orders." %>
     <%= render 'change_state_form', state: 'shipped', submit: 'Mark Shipped', warn: "This will notify the user that their order has shipped." %>
     <%= render 'change_state_form', state: 'delivered', submit: 'Mark Delivered', warn: "This will notify the user that their order has been delivered." %>
-    <%= render 'change_state_form', state: 'created', submit: 'Reset Order', warn: "This will reset the state of the order to allow changing the shipment destination. This will also mark the order as Unpaid" %>
-  </div>
+    <%= render 'change_state_form', state: 'created', submit: 'Reset Order', warn: "This will reset the state of the order to allow changing the shipment destination. This will also mark the order as Unpaid" %> </div>
 <% end %>
 
 <div>
@@ -24,26 +23,51 @@
 <div>
   Purchase State: <%= @purchase.state %>
 </div>
-<div>
-  <% if @purchase&.shipment&.address %>
-    Destination Address
-    <div>
-      <%= @purchase.shipment.account_name %>
-    </div>
-    <div>
-      <%= @purchase.shipment.location_name %>
-    </div>
-    <div>
-      <%= @purchase.shipment.address.line1 %>
-    </div>
-    <div>
-      <%= @purchase.shipment.address.line2 %>
-    </div>
-    <div>
-      <%= @purchase.shipment.address.city %>, <%= @purchase.shipment.address.region %> <%= @purchase.shipment.address.postal_code %>
-    </div>
-    <div>
-      <%= @purchase.shipment.address.country.name %>
+<div class="shipments">
+  <% @purchase.shipments.each do |shipment| %>
+    <div class="shipment">
+      <div class="origin">
+        Origin Address
+        <div>
+          <%= shipment.origin_account %>
+        </div>
+        <div>
+          <%= shipment.origin_name %>
+        </div>
+        <div>
+          <%= shipment.origin_address.line1 %>
+        </div>
+        <div>
+          <%= shipment.origin_address.line2 %>
+        </div>
+        <div>
+          <%= shipment.origin_address.city%>, <%= shipment.origin_address.region %> <%= shipment.origin_address.postal_code %>
+        </div>
+        <div>
+          <%= shipment.origin_address.country.name %>
+        </div>
+      </div>
+      <div class="destination">
+        Destination Address
+        <div>
+          <%= shipment.account_name %>
+        </div>
+        <div>
+          <%= shipment.location_name %>
+        </div>
+        <div>
+          <%= shipment.address.line1 %>
+        </div>
+        <div>
+          <%= shipment.address.line2 %>
+        </div>
+        <div>
+          <%= shipment.address.city %>, <%= shipment.address.region %> <%= shipment.address.postal_code %>
+        </div>
+        <div>
+          <%= shipment.address.country.name %>
+        </div>
+      </div>
     </div>
   <% end %>
 </div>

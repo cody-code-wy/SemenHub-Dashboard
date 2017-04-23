@@ -20,8 +20,8 @@ class Purchase < ApplicationRecord
       storage.fees.each do |fee|
         fee_total += fee.price
       end
-      unless storage.admin_required || shipment.address.alpha_2 != 'us'
-        fee_total += storage.get_shipping_price(100, shipment)[:total].to_f / 100
+      unless storage.admin_required || shipments.where(address: Address.where.not(alpha_2: 'us')).count > 0
+        fee_total += storage.get_shipping_price(100, shipments.where(origin_address: storage.address).take)[:total].to_f / 100
       end
       item_name = "#{storage.name} S&H"
       LineItem.where(name: item_name).destroy_all

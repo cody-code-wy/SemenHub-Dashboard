@@ -11,15 +11,18 @@
   align-items: center;
   .shipment {
     display: flex;
+    flex-wrap: wrap;
     width: 100%;
     margin-top: 1.25em;
     .origin {
-      width: 100%;
-      flex-grow: 2;
+      width: 50%;
     }
     .destination {
+      width: 50%;
+    }
+    .tracking {
+      margin-top: 1em;
       width: 100%;
-      flex-grow: 2;
     }
   }
 }

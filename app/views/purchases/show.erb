@@ -68,6 +68,23 @@
           <%= shipment.address.country.name %>
         </div>
       </div>
+      <% if shipment.tracking_number %>
+        <div class="tracking">
+          Tracking Number
+          <div>
+            <%= shipment.tracking_number %>
+          </div>
+          <div>
+            <% if current_user.superuser? %>
+              <%= link_to 'Change tracking number', [@purchase, shipment] %>
+            <% end %>
+          </div>
+        </div>
+      <% elsif current_user.superuser? %>
+        <div class="tracking">
+          <%= link_to 'Set tracking number', [@purchase, shipment] %>
+        </div>
+      <% end %>
     </div>
   <% end %>
 </div>

@@ -1,6 +1,10 @@
 <h2>Shipping Order #<%= @shipment.purchase.id %>.<%= StorageFacility.find_by_address_id(@shipment.origin_address_id).id %></h2>
 
-<% if @shipment.tracking_number %>
+<% if current_user&.superuser? %>
+  <%= link_to 'Back to purchase', @shipment.purchase %>
+<% end %>
+
+<% if @shipment.tracking_number and !current_user&.superuser? %>
   <div>
     Tracking Number: <em><%= @shipment.tracking_number %></em>
   </div>

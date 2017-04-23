@@ -33,7 +33,8 @@ class ShipmentsController < ApplicationController
   def update
     @shipment = Shipment.find(params[:id])
     @shipment.update(shipment_update_params)
-    redirect_to [@shipment.purchase, @shipment]
+    redirect_to [@shipment.purchase, @shipment] unless current_user&.superuser?
+    redirect_to @shipment.purchase if current_user&.superuser?
   end
 
   private

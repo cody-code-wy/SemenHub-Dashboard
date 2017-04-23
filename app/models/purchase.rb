@@ -68,7 +68,11 @@ class Purchase < ApplicationRecord
 
   def send_shipping_orders
     storagefacilities.uniq.each do |storage|
-      PurchaseMailer.shipping_order(self, storage).deliver_now
+      PurchaseMailer.shipping_order(
+        self,
+        shipments.where(origin_address: storage.address).take,
+        storage
+      ).deliver_now
     end
   end
 

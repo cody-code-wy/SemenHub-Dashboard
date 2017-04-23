@@ -4,6 +4,11 @@ class ShipmentsController < ApplicationController
     return :purchase
   end
 
+  def secure
+    return true unless ['show', 'update'].include?(params[:action])
+    return false
+  end
+
   def create
     @purchase = Purchase.find(params[:purchase_id])
     @storage = StorageFacility.find_by_address_id(params[:shipment][:address_id])
@@ -21,6 +26,16 @@ class ShipmentsController < ApplicationController
     redirect_to @purchase
   end
 
+  def show
+    @shipment = Shipment.find(params[:id])
+  end
+
+  def update
+    @shipment = Shipment.find(params[:id])
+    @shipment.update(shipment_update_params)
+    redirect_to [@shipment.purchase, @shipment]
+  end
+
   private
 
   def create_shipments(purchase, destination)
@@ -35,6 +50,10 @@ class ShipmentsController < ApplicationController
         origin_account: 'Craig Perez (SemenHub)'
       )
     end
+  end
+
+  def shipment_update_params
+    params.require(:shipment).permit(:tracking_number)
   end
 
 end

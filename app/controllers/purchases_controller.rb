@@ -11,7 +11,7 @@ class PurchasesController < ApplicationController
   def show
     @purchase = Purchase.find(params[:id])
     redirect_to '/401' unless @purchase.user == current_user || current_user.can?(:admin_purchase)
-    @purchase.build_shipment if @purchase.shipment.blank?
+    # @purchase.build_shipment if @purchase.shipment.blank?
     @partial = @purchase.state if lookup_context.exists?(@purchase.state, _prefixes, true)
   end
 
@@ -34,7 +34,7 @@ class PurchasesController < ApplicationController
         @purchase.delivered!
       when "created"
         @purchase.created!
-        @purchase.shipment.destroy if @purchase.shipment
+        @purchase.shipments.destroy_all
         @purchase.line_items.destroy_all
       else
         flash[:alert] = "There was an error with your administrative command"

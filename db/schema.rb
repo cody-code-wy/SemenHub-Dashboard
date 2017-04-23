@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170407154307) do
+ActiveRecord::Schema.define(version: 20170420235009) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -172,14 +172,19 @@ ActiveRecord::Schema.define(version: 20170407154307) do
 
   create_table "shipments", force: :cascade do |t|
     t.integer  "purchase_id"
-    t.integer  "method"
+    t.integer  "shipping_provider"
     t.date     "requested_date"
     t.string   "location_name"
     t.string   "account_name"
     t.integer  "address_id"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.integer  "origin_address_id"
+    t.string   "origin_name"
+    t.string   "origin_account"
+    t.string   "tracking_number"
     t.index ["address_id"], name: "index_shipments_on_address_id", using: :btree
+    t.index ["origin_address_id"], name: "index_shipments_on_origin_address_id", using: :btree
     t.index ["purchase_id"], name: "index_shipments_on_purchase_id", using: :btree
   end
 

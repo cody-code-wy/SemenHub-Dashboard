@@ -7,22 +7,22 @@
     </thead>
     <tbody>
       <tr>
-        <td>Attn/Acct: <%= @purchase.shipment.account_name %></td>
+        <td>Attn/Acct: <%= @shipment.account_name %></td>
       </tr>
       <tr>
-        <td><%= @purchase.shipment.location_name %></td>
+        <td><%= @shipment.location_name %></td>
       </tr>
       <tr class="line1">
-        <td><%= @purchase.shipment.address.line1 %></td>
+        <td><%= @shipment.address.line1 %></td>
       </tr>
       <tr>
-        <td><%= @purchase.shipment.address.line2 %></td>
+        <td><%= @shipment.address.line2 %></td>
       </tr>
       <tr>
-        <td><%= @purchase.shipment.address.city %>, <%= @purchase.shipment.address.region %> <%= @purchase.shipment.address.postal_code %></td>
+        <td><%= @shipment.address.city %>, <%= @shipment.address.region %> <%= @shipment.address.postal_code %></td>
       </tr>
       <tr>
-        <td><%= @purchase.shipment.address.country.name %></td>
+        <td><%= @shipment.address.country.name %></td>
       </tr>
     </tbody>
   </table>

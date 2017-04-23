@@ -7,8 +7,7 @@ class Purchase < ApplicationRecord
   has_many :sellers, through: :skus
   has_many :storagefacilities, through: :skus
   has_many :line_items
-
-  has_one :shipment
+  has_many :shipments
 
   enum state: ["problem", "created", "invoiced", "paid", "preparing for shipment", "shipped", "delivered", "canceled", "refunded", "administrative"]
 
@@ -21,8 +20,8 @@ class Purchase < ApplicationRecord
       storage.fees.each do |fee|
         fee_total += fee.price
       end
-      unless storage.admin_required || shipment.address.alpha_2 != 'us'
-        fee_total += storage.get_shipping_price(100, shipment)[:total].to_f / 100
+      unless storage.admin_required || shipments.where(address: Address.where.not(alpha_2: 'us')).count > 0
+        fee_total += storage.get_shipping_price(100, shipments.where(origin_address: storage.address).take)[:total].to_f / 100
       end
       item_name = "#{storage.name} S&H"
       LineItem.where(name: item_name).destroy_all
@@ -69,7 +68,11 @@ class Purchase < ApplicationRecord
 
   def send_shipping_orders
     storagefacilities.uniq.each do |storage|
-      PurchaseMailer.shipping_order(self, storage).deliver_now
+      PurchaseMailer.shipping_order(
+        self,
+        shipments.where(origin_address: storage.address).take,
+        storage
+      ).deliver_now
     end
   end
 

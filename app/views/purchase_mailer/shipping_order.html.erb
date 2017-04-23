@@ -1,4 +1,5 @@
 <%= render 'header', badge: 'shipping_order_badge' %>
 <%= render 'ship_bill_strip' %>
 <%= render 'sf_order_items' %>
-<div class="raw-content" style="margin-top: 2.5em">Please respond with tracking number to: <a href="mailto:semenhub@gmail.com?Subject=SemenHub%20Purchase#<%= @purchase.id %>%20Tracking%20Number">semenhub@gmail.com</a> with subject: <em>SemenHub Purchase#<%= @purchase.id %> Tracking Number</em></div>
+<%# <div class="raw-content" style="margin-top: 2.5em">Please respond with tracking number to: <a href="mailto:semenhub@gmail.com?Subject=SemenHub%20Purchase#<%= @purchase.id %1>%20Tracking%20Number">semenhub@gmail.com</a> with subject: <em>SemenHub Purchase#<%= @purchase.id %1> Tracking Number</em></div> %>
+<div class="raw-content" style="margin-top: 2.5em">Please set tracking number on the <%= link_to "shiping order management page", [@purchase,@shipment] %></div>

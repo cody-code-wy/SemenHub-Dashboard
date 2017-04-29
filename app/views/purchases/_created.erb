@@ -1,5 +1,15 @@
 <%= form_for [@purchase,@purchase.shipments.new] do |f| %>
   <%= f.label :address_id, "Storage Facility To Ship To" %>
+  <%= f.fields_for :options do |opts| %>
+    <div>
+      <%= opts.label :option, "Send to Storage Facility" %>
+      <%= opts.radio_button :option, :storage, checked: true %>
+    </div>
+    <div>
+      <%= opts.label :option, "Send to personal address" %>
+      <%= opts.radio_button :option, :user %>
+    </div>
+  <% end %>
   <%= f.collection_select :address_id, StorageFacility.all, :address_id, :name %>
   <%= f.submit %>
 <% end %>

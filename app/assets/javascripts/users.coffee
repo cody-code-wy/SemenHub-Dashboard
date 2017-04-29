@@ -2,7 +2,7 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-$(document).on 'turbolinks:load', ->
+$(document).on 'users:new user:edit', ->
   billing_addr = $('#billing_address > .address')
   payee_addr = $('#payee_address > .address')
 
@@ -25,8 +25,7 @@ $(document).on 'turbolinks:load', ->
       else
         payee_addr.hide()
 
-  # Show
-
+$(document).on 'users:show', ->
   $('.edit-commission').on 'click', (event) ->
     original = $('.commission > .percent').text()
     $('.commission > .percent').text ''

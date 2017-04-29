@@ -1,4 +1,4 @@
-$(document).on 'turbolinks:load', ->
+$(document).on 'skus:new skus:edit', ->
 
   getCost = () ->
     price_per_unit = $('.sku_price_per_unit').val()

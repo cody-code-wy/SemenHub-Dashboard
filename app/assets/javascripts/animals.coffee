@@ -31,6 +31,8 @@ $(document).on 'animals:new animals:edit', ->
 
   $('#animal_breed_id').on 'change', getBreeds
 
+
+$(document).on 'animals:index', ->
   $('.add_to_order').on 'click', ->
     $.ajax('/cart/' + encodeURIComponent(Cookies.get("UniqueUser")) + "/add?animalid=" + $(this).data('animal')).success ->
       alert('Added to cart')

@@ -1,7 +1,7 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
-$(document).on 'turbolinks:load', ->
+$(document).on 'storage_facilities:show', ->
 
   getPrice = (price, div=100) ->
     (price / div).toFixed 2
@@ -21,6 +21,7 @@ $(document).on 'turbolinks:load', ->
 
   removeRow = (e, data, status, xhr) ->
     $(this).parent().parent().remove()
+    $('.fees table tbody').trigger('update')
     updateCost()
 
   $('#storagefacility_id').on 'change', updateCost

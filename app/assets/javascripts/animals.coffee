@@ -2,14 +2,14 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-$(document).on 'turbolinks:load', ->
+$(document).on 'animals:new animals:edit', ->
 
   getBreeds = () ->
     $('#registryinfo').empty()
     $.getJSON("/breeds").done (jd) ->
       selected_breed = (jd.filter (breed) -> breed.id == Number($('#animal_breed_id').find("option:selected").attr('value')))[0]
       for registry in selected_breed.registrars
-        registrar = parameterize(registry.registrar_name)
+        registrar = window.parameterize(registry.registrar_name)
         console.log(registry)
         $("<div></div>").attr('id', "registryinfo_#{registrar}").addClass("registry").appendTo("#registryinfo")
         wrapper = $("<div></div>").appendTo("#registryinfo_#{registrar}")
@@ -23,17 +23,16 @@ $(document).on 'turbolinks:load', ->
   getRegistrations = () ->
     $.getJSON("/animals/#{$('body').data('params-id')}").done (jd) ->
       for registration in jd.registrations
-        registrar = parameterize(registration.registrar_name)
+        registrar = window.parameterize(registration.registrar_name)
         $("#registry_#{registrar}_registration").val(registration.registration)
         $("#registry_#{registrar}_ai_certification").val(registration.ai_certification)
-
-  parameterize = (str) ->
-    str.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')
 
   getBreeds() if $('#animal_breed_id').length > 0
 
   $('#animal_breed_id').on 'change', getBreeds
 
+
+$(document).on 'animals:index', ->
   $('.add_to_order').on 'click', ->
     $.ajax('/cart/' + encodeURIComponent(Cookies.get("UniqueUser")) + "/add?animalid=" + $(this).data('animal')).success ->
       alert('Added to cart')

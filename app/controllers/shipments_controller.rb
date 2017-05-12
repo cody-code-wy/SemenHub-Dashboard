@@ -13,8 +13,12 @@ class ShipmentsController < ApplicationController
     @purchase = Purchase.find(params[:purchase_id])
     # @purchase.shipment = Shipment.new(address: @storage.address, location_name: @storage.name, account_name: @purchase.user.get_name )
     create_shipments(@purchase, get_destination(@purchase))
-    @purchase.create_line_items
-    if @purchase.storagefacilities.where(admin_required: true).any? || @purchase.shipments.where(address: Address.where.not(alpha_2: 'us')).count > 0 || @purchase.shipments.where(origin_address: Address.where.not(alpha_2: 'us')).count > 0
+    begin
+      @purchase.create_line_items
+    rescue
+      @purchase.administrative!
+    end
+    if @purchase.storagefacilities.where(admin_required: true).any? || @purchase.shipments.where(address: Address.where.not(alpha_2: 'us')).count > 0 || @purchase.shipments.where(origin_address: Address.where.not(alpha_2: 'us')).count > 0 || @purchase.administrative?
       @purchase.administrative!
       PurchaseMailer.administrative_notice(@purchase).deliver_now
       flash[:alert] = "Your order requires administrative oversight and cannot be processed yet, no action is required on your part. \nYou will recieve an email when you can complete, and pay, for your order. We appologise for any inconvinience."

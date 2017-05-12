@@ -2,6 +2,7 @@ class Address < ApplicationRecord
   belongs_to :country, foreign_key: 'alpha_2', primary_key: 'alpha_2'
 
   validates_presence_of :line1, :city, :region, :postal_code
+  validate :validate_address
 
   def get_location
     "#{city}, #{region}"
@@ -26,6 +27,10 @@ class Address < ApplicationRecord
 
   def is_valid_address(name = "Resident")
     get_validator_response(name).valid?
+  end
+
+  def validate_address
+    errors.add(:address, "Address is invalid") unless is_valid_address
   end
 
   def get_shipping_location

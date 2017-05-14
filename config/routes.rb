@@ -51,6 +51,8 @@ Rails.application.routes.draw do
   get '/settings', to: "settings#index"
   post '/settings', to: "settings#update"
 
+  get '/addresses/:id', to: "addresses#show", as: 'address'
+
   #errors
   match '/401', to: 'errors#unauthorised', via: :all
 

@@ -12,7 +12,20 @@ class ShipmentsController < ApplicationController
   def create
     @purchase = Purchase.find(params[:purchase_id])
     # @purchase.shipment = Shipment.new(address: @storage.address, location_name: @storage.name, account_name: @purchase.user.get_name )
-    create_shipments(@purchase, get_destination(@purchase))
+    begin
+      addr = get_destination(@purchase)
+    rescue
+      flash[:alert] = 'Incorrect Permissions'
+      redirect_to @purchase
+      return
+    end
+    if addr[:address_id].nil?
+      flash[:alert] = 'The address field was not filled out correctly. Please try again.'
+      redirect_to @purchase
+      return
+    else
+      create_shipments(@purchase, addr)
+    end
     begin
       @purchase.create_line_items
     rescue
@@ -60,6 +73,9 @@ class ShipmentsController < ApplicationController
     return case params[:shipment][:options][:option]
       when 'storage'
         StorageFacility.find_by_address_id(params[:shipment][:address_id])
+      when 'custom'
+        raise StandardError.new("Incorrect Permissions") unless current_user.superuser?
+        {address_id: Address.find_or_create_by(new_address_params).id}
       else
         {address_id: purchase.user.mailing_address_id}
     end
@@ -67,6 +83,10 @@ class ShipmentsController < ApplicationController
 
   def shipment_update_params
     params.require(:shipment).permit(:tracking_number)
+  end
+
+  def new_address_params
+    params.require(:shipment).require(:address).permit(:line1, :line2, :postal_code, :city, :region, :alpha_2)
   end
 
 end

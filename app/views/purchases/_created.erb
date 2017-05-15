@@ -8,10 +8,47 @@
       <%= opts.label :option, "Send to personal address" %>
       <%= opts.radio_button :option, :user %>
     </div>
+    <% if current_user.superuser? %>
+      <div>
+        <%= opts.label :option, "Send to custom address" %>
+        <%= opts.radio_button :option, :custom %>
+      </div>
+    <% end %>
   <% end %>
   <div class="storage-facility-selector">
     <%= f.label :address_id, "Storage Facility To Ship To" %>
     <%= f.collection_select :address_id, StorageFacility.all, :address_id, :name %>
   </div>
+  <% if current_user.superuser? %>
+    <div class="custom-address-input">
+      <%= f.fields_for :address do |addr| %>
+        <div>
+          <%= addr.label :line1 %>
+          <%= addr.text_field :line1 %>
+        </div>
+        <div class="optional">
+          <%= addr.label :line2 %>
+          <%= addr.text_field :line2 %>
+        </div>
+        <div>
+          <%= addr.label :postal_code %>
+          <%= addr.text_field :postal_code %>
+        </div>
+        <div>
+          <%= addr.label :city %>
+          <%= addr.text_field :city %>
+        </div>
+        <div>
+          <%= addr.label :region %>
+          <%= addr.text_field :region %>
+        </div>
+        <div>
+          <%= addr.label :alpha_2, "United States (other countries are not yet supported)" %>
+          <%= addr.hidden_field :alpha_2, value: 'us' %>
+          <%# TODO add country drop down (built form db countrys table) %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
   <%= f.submit %>
 <% end %>

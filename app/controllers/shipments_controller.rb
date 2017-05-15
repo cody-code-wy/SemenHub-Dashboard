@@ -11,11 +11,14 @@ class ShipmentsController < ApplicationController
 
   def create
     @purchase = Purchase.find(params[:purchase_id])
-    @storage = StorageFacility.find_by_address_id(params[:shipment][:address_id])
     # @purchase.shipment = Shipment.new(address: @storage.address, location_name: @storage.name, account_name: @purchase.user.get_name )
-    create_shipments(@purchase, @storage)
-    @purchase.create_line_items
-    if @purchase.storagefacilities.where(admin_required: true).any? || @purchase.shipments.where(address: Address.where.not(alpha_2: 'us')).count > 0 || @purchase.shipments.where(origin_address: Address.where.not(alpha_2: 'us')).count > 0
+    create_shipments(@purchase, get_destination(@purchase))
+    begin
+      @purchase.create_line_items
+    rescue
+      @purchase.administrative!
+    end
+    if @purchase.storagefacilities.where(admin_required: true).any? || @purchase.shipments.where(address: Address.where.not(alpha_2: 'us')).count > 0 || @purchase.shipments.where(origin_address: Address.where.not(alpha_2: 'us')).count > 0 || @purchase.administrative?
       @purchase.administrative!
       PurchaseMailer.administrative_notice(@purchase).deliver_now
       flash[:alert] = "Your order requires administrative oversight and cannot be processed yet, no action is required on your part. \nYou will recieve an email when you can complete, and pay, for your order. We appologise for any inconvinience."
@@ -42,14 +45,23 @@ class ShipmentsController < ApplicationController
   def create_shipments(purchase, destination)
     purchase.storagefacilities.uniq.each do |storage|
       purchase.shipments << Shipment.new(
-        location_name: destination.name,
+        location_name: destination[:name],
         account_name: purchase.user.get_name,
-        address: destination.address,
+        address_id: destination[:address_id],
         shipping_provider: storage.shipping_provider,
         origin_address: storage.address,
         origin_name: storage.name,
         origin_account: 'Craig Perez (SemenHub)'
       )
+    end
+  end
+
+  def get_destination(purchase)
+    return case params[:shipment][:options][:option]
+      when 'storage'
+        StorageFacility.find_by_address_id(params[:shipment][:address_id])
+      else
+        {address_id: purchase.user.mailing_address_id}
     end
   end
 

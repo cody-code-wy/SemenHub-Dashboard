@@ -35,6 +35,10 @@
         <%= f.label :account_name %>
         <%= f.text_field :account_name %>
       </div>
+      <div>
+        <%= f.label :phone_number, "Location Phone Number" %>
+        <%= f.text_field :phone_number %>
+      </div>
       <%= f.fields_for :address do |addr| %>
         <div>
           <%= addr.label :line1 %>

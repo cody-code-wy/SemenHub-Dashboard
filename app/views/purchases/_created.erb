@@ -1,5 +1,11 @@
 <%= form_for [@purchase,@purchase.shipments.new] do |f| %>
   <%= f.fields_for :options do |opts| %>
+    <% if current_user.superuser? %>
+      <div>
+        <%= opts.label :admin, "Mark as administrative" %>
+        <%= opts.check_box :admin %>
+      </div>
+    <% end %>
     <div>
       <%= opts.label :option, "Send to Storage Facility" %>
       <%= opts.radio_button :option, :storage, checked: true %>

@@ -31,7 +31,7 @@ class ShipmentsController < ApplicationController
     rescue
       @purchase.administrative!
     end
-    if @purchase.storagefacilities.where(admin_required: true).any? || @purchase.shipments.where(address: Address.where.not(alpha_2: 'us')).count > 0 || @purchase.shipments.where(origin_address: Address.where.not(alpha_2: 'us')).count > 0 || @purchase.administrative?
+    if @purchase.storagefacilities.where(admin_required: true).any? || @purchase.shipments.where(address: Address.where.not(alpha_2: 'us')).count > 0 || @purchase.shipments.where(origin_address: Address.where.not(alpha_2: 'us')).count > 0 || @purchase.administrative? || params[:shipment][:options][:admin] == '1'
       @purchase.administrative!
       PurchaseMailer.administrative_notice(@purchase).deliver_now
       flash[:alert] = "Your order requires administrative oversight and cannot be processed yet, no action is required on your part. \nYou will recieve an email when you can complete, and pay, for your order. We appologise for any inconvinience."

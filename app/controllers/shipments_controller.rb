@@ -59,7 +59,7 @@ class ShipmentsController < ApplicationController
     purchase.storagefacilities.uniq.each do |storage|
       purchase.shipments << Shipment.new(
         location_name: destination[:name],
-        account_name: purchase.user.get_name,
+        account_name: destination[:account] || purchase.user.get_name,
         address_id: destination[:address_id],
         shipping_provider: storage.shipping_provider,
         origin_address: storage.address,
@@ -75,7 +75,7 @@ class ShipmentsController < ApplicationController
         StorageFacility.find_by_address_id(params[:shipment][:address_id])
       when 'custom'
         raise StandardError.new("Incorrect Permissions") unless current_user.superuser?
-        {address_id: Address.find_or_create_by(new_address_params).id}
+        {address_id: Address.find_or_create_by(new_address_params).id, name: params[:shipment][:location_name], account: params[:shipment][:account_name]}
       else
         {address_id: purchase.user.mailing_address_id}
     end

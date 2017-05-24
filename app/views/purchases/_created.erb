@@ -1,4 +1,4 @@
-<%= form_for [@purchase,@purchase.shipments.new] do |f| %>
+<%= form_for [@purchase,@purchase.shipments.new(account_name: "ATTN: #{@purchase.user.get_name}")] do |f| %>
   <%= f.fields_for :options do |opts| %>
     <% if current_user.superuser? %>
       <div>
@@ -27,6 +27,14 @@
   </div>
   <% if current_user.superuser? %>
     <div class="custom-address-input">
+      <div>
+        <%= f.label :location_name %>
+        <%= f.text_field :location_name %>
+      </div>
+      <div>
+        <%= f.label :account_name %>
+        <%= f.text_field :account_name %>
+      </div>
       <%= f.fields_for :address do |addr| %>
         <div>
           <%= addr.label :line1 %>

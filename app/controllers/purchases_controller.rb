@@ -17,7 +17,7 @@ class PurchasesController < ApplicationController
 
   def index
     @purchases = current_user.can?(:admin_purchase) ? Purchase.all : Purchase.where(user: current_user)
-    @purchases.order(id: :DESC)
+    @purchases = @purchases.order(id: :desc)
   end
 
   def update

@@ -37,7 +37,7 @@
           <% end %>
             <td><%= link_to animal.owner.get_name, animal.owner %></td>
             <td><span class="add_to_order" data-animal="<%= animal.id %>">Add <%= animal.name %> to order</span></td>
-            <td><code class="html" id="animal<%= animal.id %>script"> &lt;script src="http://semenhub.shop/animals/<%= animal.id %>/js"&gt;&lt;/script&gt; </code><button class="btn" data-clipboard-target="#animal<%= animal.id %>script">Copy to Clipboard</button></td>
+            <td><code class="html" id="animal<%= animal.id %>target"> &lt;div class="sh-animal" data-id="<%= animal.id %>"&gt;Loading... Please wait.&lt;/div&gt; </code><button class="btn" data-clipboard-target="#animal<%= animal.id %>target">Copy to Clipboard</button></td>
         </tr>
       <% end %>
     <% end %>

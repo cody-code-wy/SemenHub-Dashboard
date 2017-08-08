@@ -18,7 +18,6 @@ Rails.application.routes.draw do
   end
 
   resources :animals
-  get '/animals/:id/js', to: 'animals#js'
 
   resources :registrations
 

@@ -1,7 +1,5 @@
 class AnimalsController < ApplicationController
 
-  protect_from_forgery except: :js
-
   def secure
     not (["js"].include?(params[:action]))
   end

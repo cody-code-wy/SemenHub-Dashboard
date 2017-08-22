@@ -9,22 +9,23 @@ window.added_to_cart = (data) ->
   confirm("#{data['animal']['name']} was added to your cart.")
 
 setup_animal = (id, name) ->
-  add_animal_buttons = () ->
-    this_tag = $(".sh-animal[data-id=#{id}]").last() #works outside ready only... Because this is the last script tag that was loaded!
-    this_tag.text('')
-    this_tag.append($("<br>"))
+  console.log("Setting Up #{name} (#{id})")
+  this_tag = $(".sh-animal[data-id=#{id}]")
+  this_tag.text('')
+  # this_tag.append($("<br>"))
+  link = $('<a>Add To Cart</a>').addClass('btn').addClass('btn-default').attr('style','display: inline-block;').appendTo(this_tag)
+  link.on 'click', ->
+    link.attr('disabled','') #UniqueUser cookie is from HiredHands website, I am stealing it for my own uses....
+    get = $.ajax({url: "https://semenhub.shop/cart/" + encodeURIComponent(Cookies.get("UniqueUser")) + "/add?animalid=#{id}", dataType: "jsonp", jsonpCallback: "window.added_to_cart"})
 
-    create_add_to_cart_button = () ->
-      link = $('<a>Add To Cart</a>').addClass('btn').addClass('btn-default').attr('style','display: inline-block;').append(this_tag)
-      link.on 'click', ->
-        link.attr('disabled','') #UniqueUser cookie is from HiredHands website, I am stealing it for my own uses....
-        get = $.ajax({url: "https://semenhub.shop/cart/" + encodeURIComponent(Cookies.get("UniqueUser")) + "/add?animalid=#{id}", dataType: "jsonp", jsonpCallback: "window.added_to_cart"})
 
 setup_animals = () ->
   <% @animals.each do |animal| %>
   #no indentation so coffescript does not have issues
   setup_animal(<%= animal.id %>, "<%= animal.name %>")
   <% end %>
+  checkout_tag = $(".sh-checkout").text("")
+  $("<a>Checkout</a>").addClass('btn').addClass('btn-default').attr('style','display: inline-block').attr("href","https://semenhub.shop/cart/"+encodeURIComponent(Cookies.get("UniqueUser"))).appendTo(checkout_tag)
 
 
 $(document).ready ->
@@ -34,3 +35,4 @@ $(document).ready ->
       setup_animals()
   else
     console.log("Cookies exits")
+    setup_animals()

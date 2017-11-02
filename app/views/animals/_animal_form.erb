@@ -4,6 +4,14 @@
       <%= a.text_field :name %>
     </div>
     <div>
+      <%= a.label :description, get_field_errors(@animal, :description) %>
+      <%= a.text_field :description %>
+    </div>
+    <div>
+      <%= a.label :notes, get_field_errors(@animal, :notes) %>
+      <%= a.text_field :notes %>
+    </div>
+    <div>
       <%= a.label :private_herd_number, get_field_errors(@animal, :private_herd_number) %>
       <%= a.text_field :private_herd_number %>
     </div>

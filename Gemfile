@@ -32,6 +32,8 @@ gem 'turbolinks', '~> 5'
 gem 'jquery-tablesorter'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
+# enable jsonp support for jbuilder
+gem 'jpbuilder'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password

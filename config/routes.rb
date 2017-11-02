@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   end
 
   resources :animals
+  get '/animals/:id/repl', to: 'animals#repl'
 
   resources :registrations
 

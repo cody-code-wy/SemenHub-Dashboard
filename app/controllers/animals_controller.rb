@@ -1,9 +1,8 @@
 class AnimalsController < ApplicationController
-
-  protect_from_forgery except: :js
+  protect_from_forgery except: :repl
 
   def secure
-    not (["js"].include?(params[:action]))
+    not (["repl"].include?(params[:action]))
   end
 
   def index
@@ -16,7 +15,8 @@ class AnimalsController < ApplicationController
     @skus = Sku.where(animal: @animal)
   end
 
-  def js
+  def repl
+    response.content_type = 'text/javascript' if params[:callback]
     @animal = Animal.find(params[:id])
   end
 
@@ -69,7 +69,7 @@ class AnimalsController < ApplicationController
 
   def animal_params
     params.require(:animal).permit(
-      :name, :owner_id, :breed_id, :private_herd_number, :dna_number
+      :name, :description, :notes, :owner_id, :breed_id, :private_herd_number, :dna_number
     )
   end
 

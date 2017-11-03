@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   end
 
   resources :animals
+  get '/animals/:id/repl', to: 'animals#repl'
 
   resources :registrations
 
@@ -51,6 +52,8 @@ Rails.application.routes.draw do
   post '/settings', to: "settings#update"
 
   get '/addresses/:id', to: "addresses#show", as: 'address'
+
+  get '/js/semenhub.js', to: 'js#semenhub'
 
   #errors
   match '/401', to: 'errors#unauthorised', via: :all

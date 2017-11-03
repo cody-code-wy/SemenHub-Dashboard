@@ -12,7 +12,8 @@ class CartController < ApplicationController
   def add
     $redis.sadd params[:session], params[:animalid]
     $redis.expire params[:session], $redis_timeout
-    render json: $redis.smembers(params[:session]), callback: params[:callback]
+    @animal = Animal.find(params[:animalid])
+    render json: {animal: @animal, redis: $redis.smembers(params[:session])}, callback: params[:callback]
   end
 
   def show

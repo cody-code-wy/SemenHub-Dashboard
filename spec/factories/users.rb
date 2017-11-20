@@ -13,5 +13,9 @@ FactoryBot.define do
     password { Faker::Internet.password(8) }
     password_confirmation { password }
     temp_pass false
+
+    trait :with_commission do
+      commission { FactoryBot.build(:commission, :without_user) }
+    end
   end
 end

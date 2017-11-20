@@ -75,7 +75,7 @@ RSpec.describe User, type: :model do
 
   describe 'Relations' do
     before do
-      @user = FactoryBot.build(:user)
+      @user = FactoryBot.build(:user, :with_commission)
     end
     it 'should have billing_address of type Address' do
       expect(@user.billing_address).to be_a Address
@@ -85,6 +85,9 @@ RSpec.describe User, type: :model do
     end
     it 'should have payee_address of type Address' do
       expect(@user.payee_address).to be_a Address
+    end
+    it 'should have A Commission' do
+      expect(@user.commission).to be_a Commission
     end
     it 'should have purchases of type Purchase'
     it 'should have animals of type Animal'
@@ -247,4 +250,28 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe 'Commission' do
+    before do
+      @user = FactoryBot.create(:user)
+      @user_with_commission = FactoryBot.create(:user, :with_commission)
+    end
+
+    it 'should have default 10% commission if none is set' do
+      expect(@user.commission).to be_new_record
+      expect(@user.commission.commission_percent).to be 10.0
+    end
+
+    it 'should have set commission if set' do
+      expect(@user_with_commission.commission).to_not be_new_record
+    end
+
+    it 'should update properly from default commission' do
+      expect{@user.commission.update( commission_percent: 15.0 )}.to change { User.find(@user.id).commission.commission_percent }
+    end
+
+    it 'should update properly from set commission' do
+      expect{@user_with_commission.commission.update( commission_percent: 15.0 )}.to change { User.find(@user_with_commission.id).commission.commission_percent }
+    end
+
+  end
 end

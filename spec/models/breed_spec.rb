@@ -12,6 +12,8 @@ RSpec.describe Breed, type: :model do
   end
 
   describe 'Relations' do
-    it 'Should have registrars of type Registrar'
+    it 'Should have registrars of type Registrar' do
+      expect( FactoryBot.build(:breed, :with_registrars).registrars.first ).to be_a Registrar
+    end
   end
 end

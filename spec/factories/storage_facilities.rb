@@ -17,5 +17,9 @@ FactoryBot.define do
       out_adjust { Faker::Number.between(10,30) }
       in_adjust { Faker::Number.between(10,30) }
     end
+
+    trait :with_fees do
+      fees { [ FactoryBot.build(:fee), FactoryBot.build(:fee) ] }
+    end
   end
 end

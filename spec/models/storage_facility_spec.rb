@@ -56,7 +56,9 @@ RSpec.describe StorageFacility, type: :model do
     it 'should have an Address' do
       expect(FactoryBot.build(:storage_facility).address).to be_a Address
     end
-    it 'should have fees of type Fee'
+    it 'should have fees of type Fee' do
+      expect(FactoryBot.build(:storage_facility, :with_fees).fees.first).to be_a Fee
+    end
     it 'should have skus of type SKU'
   end
 

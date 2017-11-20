@@ -1,0 +1,45 @@
+require 'rails_helper'
+
+RSpec.describe Animal, type: :model do
+
+  it 'should have a valid factory' do
+    expect(FactoryBot.build(:animal)).to be_valid
+  end
+
+  describe 'Validations' do
+    it 'should not be valid without name' do
+      expect(FactoryBot.build(:animal, name: nil)).to_not be_valid
+    end
+    it 'should not be valid without an owner' do
+      expect(FactoryBot.build(:animal, owner: nil)).to_not be_valid
+    end
+    it 'should not be valid without a breed' do
+      expect(FactoryBot.build(:animal, breed: nil)).to_not be_valid
+    end
+    it 'should be valid without private_herd_number' do
+      expect(FactoryBot.build(:animal, private_herd_number: nil)).to be_valid
+    end
+    it 'should be valid without dna_number' do
+      expect(FactoryBot.build(:animal, dna_number: nil)).to be_valid
+    end
+    it 'should be valid without description' do
+      expect(FactoryBot.build(:animal, description: nil)).to be_valid
+    end
+    it 'should be valid without notes' do
+      expect(FactoryBot.build(:animal, notes: nil)).to be_valid
+    end
+  end
+
+  describe 'Relations' do
+    before do
+      @animal = FactoryBot.build(:animal)
+    end
+    it 'should have a Owner of type User' do
+      expect(@animal.owner).to be_a User
+    end
+    it 'should have a Breed' do
+      expect(@animal.breed).to be_a Breed
+    end
+    it 'should have SKUs of type SKU'
+  end
+end

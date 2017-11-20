@@ -75,7 +75,7 @@ RSpec.describe User, type: :model do
 
   describe 'Relations' do
     before do
-      @user = FactoryBot.build(:user, :with_commission)
+      @user = FactoryBot.build(:user, :with_animals, :with_commission)
     end
     it 'should have billing_address of type Address' do
       expect(@user.billing_address).to be_a Address
@@ -90,7 +90,9 @@ RSpec.describe User, type: :model do
       expect(@user.commission).to be_a Commission
     end
     it 'should have purchases of type Purchase'
-    it 'should have animals of type Animal'
+    it 'should have animals of type Animal' do
+      expect(@user.animals.first).to be_a Animal
+    end
     it 'should have role_assignments of type RoleAssignment' do
       @user.roles << Role.find_by_name("superuser") # Give roles and permissions
       expect(@user.role_assignments.first).to be_a RoleAssignment

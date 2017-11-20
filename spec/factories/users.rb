@@ -17,5 +17,9 @@ FactoryBot.define do
     trait :with_commission do
       commission { FactoryBot.build(:commission, :without_user) }
     end
+
+    trait :with_animals do
+      animals { [FactoryBot.build(:animal),FactoryBot.build(:animal)] }
+    end
   end
 end

@@ -16,7 +16,14 @@ RSpec.describe Permission, type: :model do
   end
 
   describe 'Relations' do
-    it 'should belong to permission_assignments'
-    it 'should belong to roles thru permission_assignments'
+    before do
+      @permission = FactoryBot.build(:permission, :with_roles)
+    end
+    it 'should belong to permission_assignments' do
+      expect(@permission.permission_assignments.first).to be_a PermissionAssignment
+    end
+    it 'should belong to roles thru permission_assignments' do
+      expect(@permission.roles.first).to be_a Role
+    end
   end
 end

@@ -26,4 +26,10 @@ RSpec.describe Country, type: :model do
     end
   end
 
+  describe 'Relations' do
+    it 'should have addresses of type Address' do
+      expect(FactoryBot.build(:country, :with_addresses).addresses.first).to be_a Address
+    end
+  end
+
 end

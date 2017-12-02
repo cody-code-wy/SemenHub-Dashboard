@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171102023946) do
+ActiveRecord::Schema.define(version: 20171202171013) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -193,11 +193,11 @@ ActiveRecord::Schema.define(version: 20171102023946) do
 
   create_table "ships_tos", force: :cascade do |t|
     t.integer  "country_id"
-    t.integer  "inventoryTransaction_id"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.integer  "sku_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["country_id"], name: "index_ships_tos_on_country_id", using: :btree
-    t.index ["inventoryTransaction_id"], name: "index_ships_tos_on_inventoryTransaction_id", using: :btree
+    t.index ["sku_id"], name: "index_ships_tos_on_sku_id", using: :btree
   end
 
   create_table "skus", force: :cascade do |t|

@@ -143,6 +143,10 @@ RSpec.describe User, type: :model do
     expect(FactoryBot.build(:user, temp_pass: false).temp_pass?).to be false
   end
 
+  it 'get_name returns correct format' do
+    expect(FactoryBot.build(:user, first_name: 'first', last_name: 'last').get_name).to eq 'first last'
+  end
+
   describe 'Permissions' do # All of these may fail if test db is not seeded.
     before do
       @admin = FactoryBot.create(:user)

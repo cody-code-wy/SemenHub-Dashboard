@@ -42,4 +42,14 @@ RSpec.describe Animal, type: :model do
     end
     it 'should have SKUs of type SKU'
   end
+
+  describe 'get_drop_down_name' do
+    before do
+      @owner = FactoryBot.build(:user, first_name: 'first_name', last_name: 'last_name')
+      @animal = FactoryBot.build(:animal, name: 'animal_name', owner: @owner)
+    end
+    it 'should return the correct order' do
+      expect(@animal.get_drop_down_name).to eq "animal_name - first_name last_name"
+    end
+  end
 end

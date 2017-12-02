@@ -45,8 +45,39 @@ RSpec.describe Address, type: :model do
       expect(FactoryBot.build(:address).get_shipping_location).to be_a ActiveShipping::Location
     end
 
-    it 'validate_address should be vaild for know good address' do
+    it 'is_valid_address should be true for know good address' do
       expect(FactoryBot.build(:address, :known_good).is_valid_address).to be true
+    end
+
+    it 'validate_address should not add errors for know good address' do
+      @address = FactoryBot.build(:address, :known_good)
+      expect{
+        @address.validate_address
+      }.to_not change {
+        @address.errors.count
+      }
+    end
+
+    it 'is_valid_address should be false for bad address' do
+      expect(FactoryBot.build(:address).is_valid_address).to be false #if faker generates a valid address I will eat my hat
+    end
+
+    it 'validate_address should add errors for bad address' do
+      @address = FactoryBot.build(:address)
+      expect {
+        @address.validate_address
+      }.to change {
+        @address.errors.count
+      }.by 1
+    end
+  end
+
+  describe 'get_location' do
+    before do
+      @address = FactoryBot.build(:address, city: 'city', region: 'region')
+    end
+    it 'should return string with correct format' do
+      expect(@address.get_location).to eq 'city, region'
     end
   end
 end

@@ -14,6 +14,8 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
+  require 'simplecov'
+  SimpleCov.start 'rails'
   # Seed Database
   config.before(:suite) do
     Rails.application.load_seed

@@ -26,3 +26,6 @@
 # Ignore Eclipse Stuff
 .buildpath
 .project
+
+# Ignore Code coverage file
+coverage/*

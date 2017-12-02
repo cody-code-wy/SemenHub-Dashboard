@@ -28,7 +28,11 @@ class PurchasesController < ApplicationController
         PurchaseMailer.invoice(@purchase).deliver_now
       when "paid"
         @purchase.paid!
-        @purchase.send_all_emails
+        if Setting.get_setting(:send_purchase_emails) != 'true'
+          flash[:notice] = "Emails not sent"
+        else
+          @purchase.send_all_emails
+        end
       when "shipped"
         @puchase.shipped!
       when "delivered"
@@ -50,7 +54,7 @@ class PurchasesController < ApplicationController
   #   @purchase.administrative!
   #   flash[:alert] = "Your order requires administrative oversight and cannot be processed yet, no action is required on your part. \nYou will recieve an email when you can complete, and pay, for your order. We appologise for any inconvinience."
   #   redirect_to @purchase
-  # end
+  #end
 
   def recipt
     # byebug
@@ -70,7 +74,11 @@ class PurchasesController < ApplicationController
       puts "Successful charge (auth + capture) (authorization code: #{response.transactionResponse.authCode}) (transaction ID: #{response.transactionResponse.transId})"
       @purchase.update(authorization_code: response.transactionResponse.authCode, transaction_id: response.transactionResponse.transId)
       @purchase.paid!
-      @purchase.send_all_emails
+      if Setting.get_setting(:send_purchase_emails) != 'true'
+        flash[:alert] = 'Emails were not sent'
+      else
+        @purchase.send_all_emails
+      end
       # send_all
       redirect_to @purchase
     else

@@ -272,7 +272,7 @@ RSpec.describe User, type: :model do
     end
 
     it 'should update properly from set commission' do
-      expect{@user_with_commission.commission.update( commission_percent: 15.0 )}.to change { User.find(@user_with_commission.id).commission.commission_percent }
+      expect{@user_with_commission.commission.update( commission_percent: 5.0 )}.to change { User.find(@user_with_commission.id).commission.commission_percent }
     end
 
   end

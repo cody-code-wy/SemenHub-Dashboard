@@ -33,17 +33,19 @@ RSpec.describe Purchase, type: :model do
 
   describe 'Relations' do
     before do
-      @purchase = FactoryBot.build(:purchase, :with_shipments)
+      @purchase = FactoryBot.build(:purchase, :with_line_items, :with_shipments)
     end
     it 'should has a User' do
       expect(@purchase.user).to be_a User
     end
     it 'should have purchase_transactions'
-    it 'should have Transactions via purchase_transactions'
-    it 'should have Skus thru Transactions'
+    it 'should have Invetory Transactions thru purchase_transactions'
+    it 'should have Skus thru Inventory Transactions'
     it 'should have Users as sellers thru Skus'
     it 'should have StorageFacilities thru Skus'
-    it 'should have LineItem'
+    it 'should have LineItems' do
+      expect(@purchase.line_items.first).to be_a LineItem
+    end
     it 'should have Shipments' do
       expect(@purchase.shipments.first).to be_a Shipment
     end
@@ -56,13 +58,26 @@ RSpec.describe Purchase, type: :model do
   end
 
   describe 'Create_line_items' do
+    before do
+      @purchase = FactoryBot.build(:purchase, :with_shipments)
+      allow(@purchase).to receive_messages(create_storage_facility_sh: nil, update_service_fee: nil)
+    end
     context 'when all shipments are to the us' do
       it 'should call create_storage_facility_sh for each storage facility'
     end
     context 'when any shipment is not to the us' do
-      it 'should not call create_storage_facility_sh'
+      before do
+        @purchase.shipments.last.address.alpha_2 = 'ca'
+      end
+      it 'should not call create_storage_facility_sh' do
+        expect(@purchase).to_not receive(:create_storage_facility_sh)
+        @purchase.create_line_items
+      end
     end
-    it 'should call update_service_fee'
+    it 'should call update_service_fee' do
+      expect(@purchase).to receive(:update_service_fee)
+      @purchase.create_line_items
+    end
   end
 
   describe 'create_storage_facility_sh' do
@@ -77,24 +92,66 @@ RSpec.describe Purchase, type: :model do
   end
 
   describe 'update_service_fee' do
+    before do
+      @purchase = FactoryBot.build(:purchase)
+    end
     context 'when service fee does not exist' do
-      it 'should add a line_item'
-      it 'should create line item with 3% of total value'
+      it 'should add a line_item' do
+        expect {
+          @purchase.update_service_fee
+        }.to change {
+          @purchase.line_items.length
+        }.by 1
+      end
+      it 'should create line item with 3% of total value' do
+        expect(@purchase).to receive(:total) { 100 }
+        @purchase.update_service_fee
+        expect(@purchase.line_items.last.value).to eq 3
+      end
     end
     context 'when service fee exists' do
-      it 'should not add a line_item'
-      it 'should update service fee line item to 3% of total value without previous service fee'
+      before do
+        @service_fee = FactoryBot.create(:line_item, name: 'SemenHub Service Fee', value: 3 , purchase: @purchase)
+        @purchase.line_items << @service_fee
+      end
+      it 'should not add a line_item' do
+        expect {
+          @purchase.update_service_fee
+        }.to_not change {
+          @purchase.line_items.length
+        }
+      end
+      it 'should update service fee line item to 3% of total value without previous service fee' do
+        expect(@purchase).to receive(:total) { 203 }
+        expect {
+          @purchase.update_service_fee
+        }.to change {
+          @service_fee.reload
+          @service_fee.value
+        }.by 3
+      end
     end
   end
 
   describe 'Totals' do
     before do
-      @purchase = FactoryBot.build(:purchase)
+      @purchase = FactoryBot.build(:purchase, :with_line_items)
     end
     context 'total' do
-      it 'should call transaction_total'
-      it 'should call line_items_tatal'
-      it 'should return sum of transaction_total and line_items_total'
+      before do
+        allow(@purchase).to receive_messages(transaction_total: 1, line_items_total: 1)
+      end
+      it 'should call transaction_total' do
+        expect(@purchase).to receive(:transaction_total) { 1 }
+        @purchase.total
+      end
+      it 'should call line_items_total' do
+        expect(@purchase).to receive(:line_items_total) { 1 }
+        @purchase.total
+      end
+      it 'should return sum of transaction_total and line_items_total' do
+        expect(@purchase.total).to eq 2
+      end
     end
     context 'transaction_total' do
       it 'should work'
@@ -103,7 +160,36 @@ RSpec.describe Purchase, type: :model do
       it 'should work'
     end
     context 'line_items_total' do
-      it 'should work'
+      describe 'No line items' do
+        before do
+          @purchase = FactoryBot.build(:purchase)
+        end
+        it 'should return 0' do
+          expect(@purchase.line_items.length).to eq 0 #sanity check
+          expect(@purchase.line_items_total).to eq 0
+        end
+      end
+      describe 'line_items with value=nil' do
+        it 'should not change value of return when exists line_item with value=nil' do
+          expect {
+            @purchase.line_items << FactoryBot.build(:line_item, value: nil)
+          }.to_not change {
+            @purchase.line_items_total
+          }
+        end
+      end
+      it 'should call value on each line items' do
+        @purchase.line_items.each do |li|
+          expect(li).to receive(:value).at_least(:once) { 1 }
+        end
+        @purchase.line_items_total
+      end
+      it 'should return sum of all line items' do
+        @purchase.line_items.each do |li|
+          expect(li).to receive(:value).at_least(:once) { 1 }
+        end
+        expect(@purchase.line_items_total).to eq @purchase.line_items.length # not count, purchase is not commited to db
+      end
     end
   end
 

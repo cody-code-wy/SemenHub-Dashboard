@@ -39,7 +39,7 @@ class Purchase < ApplicationRecord
   def update_service_fee
     service_fee = line_items.find_or_initialize_by(name: 'SemenHub Service Fee')
     total_without_service_fee = total
-    total_without_service_fee -= service_fee.total if service_fee.total
+    total_without_service_fee -= service_fee.value if service_fee.value
     service_fee.update(value: total_without_service_fee * 0.03)
   end
 
@@ -61,6 +61,7 @@ class Purchase < ApplicationRecord
 
   def line_items_total
     line_items.reduce(0) do |sum,line_item|
+      next sum unless line_item.value
       sum + line_item.value
     end
   end

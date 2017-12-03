@@ -8,5 +8,9 @@ FactoryBot.define do
       authorization_code { Faker::Number.number(6) }
       transaction_id { Faker::Number.number(11) }
     end
+
+    trait :with_shipments do
+      shipments { build_list(:shipment, 3) }
+    end
   end
 end

@@ -2,11 +2,21 @@ require 'rails_helper'
 
 RSpec.describe Purchase, type: :model do
 
-  it 'should have a valid factory' do
-    expect(FactoryBot.build(:purchase)).to be_valid
+  describe 'Factory' do
+    it 'should have a valid factory' do
+      expect(FactoryBot.build(:purchase)).to be_valid
+    end
+
+    it 'should have a valid factory with :paid' do
+      expect(FactoryBot.build(:purchase, :paid)).to be_valid
+    end
+
+    it 'should have a valid fatroy :with_shipments' do
+      expect(FactoryBot.build(:purchase, :with_shipments)).to be_valid
+    end
   end
 
-  describe 'Validations'do
+  describe 'Validations' do
     it 'should not be valid without user' do
       expect(FactoryBot.build(:purchase, user: nil)).to_not be_valid
     end
@@ -23,7 +33,7 @@ RSpec.describe Purchase, type: :model do
 
   describe 'Relations' do
     before do
-      @purchase = FactoryBot.build(:purchase)
+      @purchase = FactoryBot.build(:purchase, :with_shipments)
     end
     it 'should has a User' do
       expect(@purchase.user).to be_a User
@@ -34,7 +44,9 @@ RSpec.describe Purchase, type: :model do
     it 'should have Users as sellers thru Skus'
     it 'should have StorageFacilities thru Skus'
     it 'should have LineItem'
-    it 'should have Shipments'
+    it 'should have Shipments' do
+      expect(@purchase.shipments.first).to be_a Shipment
+    end
   end
 
   it 'state should be in the enum Purchase.states' do

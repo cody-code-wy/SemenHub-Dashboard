@@ -28,7 +28,7 @@ class PurchasesController < ApplicationController
         PurchaseMailer.invoice(@purchase).deliver_now
       when "paid"
         @purchase.paid!
-        if Setting.get_setting(:send_purchase_emails) != 'true'
+        if Setting.get_setting(:send_purchase_emails).value != 'true'
           flash[:notice] = "Emails not sent"
         else
           @purchase.send_all_emails
@@ -74,7 +74,7 @@ class PurchasesController < ApplicationController
       puts "Successful charge (auth + capture) (authorization code: #{response.transactionResponse.authCode}) (transaction ID: #{response.transactionResponse.transId})"
       @purchase.update(authorization_code: response.transactionResponse.authCode, transaction_id: response.transactionResponse.transId)
       @purchase.paid!
-      if Setting.get_setting(:send_purchase_emails) != 'true'
+      if Setting.get_setting(:send_purchase_emails).value != 'true'
         flash[:alert] = 'Emails were not sent'
       else
         @purchase.send_all_emails

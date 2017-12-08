@@ -25,14 +25,27 @@ class Purchase < ApplicationRecord
     end
   end
 
+  def get_storage_facility_fees(storage)
+    storage.fees.map(&:price).reduce(:+)
+  end
+
+  def get_shipment_item_count(storage)
+    shipping_inventory = inventory_transactions.where(sku: skus.where(storagefacility: storage))
+    shipping_inventory.map(&:quantity).reduce(:+)
+  end
+
+  def get_storage_facility_shipping(storage)
+    destination = shipments.where(origin_address: storage.address).take.address
+    item_count = get_shipment_item_count(storage)
+    shipping = storage.get_shipping_price(item_count, destination)
+    shipping[:total].to_f / 100
+  end
+
   def create_storage_facility_sh(storage)
     return if storage.admin_required
-    destination = shipments.where(origin_address: storage.address).take.address
-    shipping_inventory = inventory_transactions.where(sku: skus.where(storagefacility: storage))
-    item_count = shipping_inventory.map(&:quantity).reduce(:+)
-    fees = storage.fees.map(&:price).reduce(:+)
-    fees += storage.get_shipping_price(item_count, destination)[:total].to_f / 100
-    line_item = line_items.find_or_initialize_by(name: "#{storage.name}")
+    fees = get_storage_facility_fees(storage)
+    fees += get_storage_facility_shipping(storage)
+    line_item = line_items.find_or_initialize_by(name: "#{storage.name} S&H")
     line_item.update(value: fees)
   end
 

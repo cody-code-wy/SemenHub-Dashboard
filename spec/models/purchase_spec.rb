@@ -81,13 +81,96 @@ RSpec.describe Purchase, type: :model do
   end
 
   describe 'create_storage_facility_sh' do
+    before do
+      @purchase = FactoryBot.build(:purchase)
+      @storage = FactoryBot.build(:storage_facility)
+      allow(@storage).to receive(:get_shipping_price) {  {total: 500} }
+      allow(@purchase).to receive_messages(get_storage_facility_fees: 5.0, get_storage_facility_shipping: 5.0)
+    end
     context 'when storage_facility.admin_required = false' do
-      it 'should create a line item'
-      it 'should create a line item with format "name: #{storage_facility.name}"'
-      it 'should create a line item with value = all storage facility fees + return from get_shipping_price'
+      it 'should create a line item' do
+        expect{
+          @purchase.create_storage_facility_sh(@storage)
+        }.to change(LineItem,:count).and change(@purchase.line_items,:count)
+      end
+      it 'should call get_storage_facility_fees' do
+        expect(@purchase).to receive(:get_storage_facility_fees)
+        @purchase.create_storage_facility_sh(@storage)
+      end
+      it 'should call get_storage_facility_shipping' do
+        expect(@purchase).to receive(:get_storage_facility_shipping)
+        @purchase.create_storage_facility_sh(@storage)
+      end
+      it 'should create a line item with format "name: #{storage_facility.name}"' do
+        @purchase.create_storage_facility_sh(@storage)
+        expect(LineItem.last.name).to eq "#{@storage.name} S&H"
+      end
+      it 'should create a line item with value = get_storage_facility_fees + get_storage_facility_shipping' do
+        @purchase.create_storage_facility_sh(@storage)
+        expect(LineItem.last.value).to eq 10
+      end
     end
     context 'when storage_facility.admin_required = true' do
-      it 'should not create a line item'
+      before do
+        allow(@storage).to receive(:admin_required) { true }
+      end
+      it 'should not create a line item' do
+        expect {
+          @purchase.create_storage_facility_sh(@storage)
+        }.to_not change(LineItem,:count)
+      end
+      it 'should not call get_storage_facility_fees' do
+        expect(@purchase).to_not receive(:get_storage_facility_fees)
+        @purchase.create_storage_facility_sh(@storage)
+      end
+      it 'should not call get_storage_facility_shipping' do
+        expect(@purchase).to_not receive(:get_storage_facility_shipping)
+        @purchase.create_storage_facility_sh(@storage)
+      end
+    end
+  end
+
+  describe 'get_storage_facility_fees' do
+    before do
+      @purchase = FactoryBot.build(:purchase)
+      @storage = FactoryBot.build(:storage_facility, :with_fees)
+      @storage.fees.each do |fee|
+        allow(fee).to receive(:price) { 1 }
+      end
+    end
+    it 'should return sum of storage facility\'s fee prices' do
+      expect(@purchase.get_storage_facility_fees(@storage)).to eq 2
+    end
+    it 'should call Fee.Price on each fee' do
+      @storage.fees.each do |fee|
+        expect(fee).to receive(:price) { 1 }
+      end
+      @purchase.get_storage_facility_fees(@storage)
+    end
+  end
+
+  describe 'get_shipment_item_count' do
+    it 'should return number of straws shipping from storagefacility'
+  end
+
+  describe 'get_storage_facility_shipping' do
+    before do
+      @purchase = FactoryBot.create(:purchase, :with_shipments)
+      address = @purchase.shipments.first.origin_address
+      @storage = FactoryBot.build(:storage_facility, address: address)
+      allow(@storage).to receive(:get_shipping_price) { {total: 100} }
+      allow(@purchase).to receive(:get_shipment_item_count) { 10 }
+    end
+    it 'should call get_shipment_item_count' do
+      expect(@purchase).to receive(:get_shipment_item_count) { 10 }
+      @purchase.get_storage_facility_shipping(@storage)
+    end
+    it 'should call StorageFacility.get_shipping_price' do
+      expect(@storage).to receive(:get_shipping_price) { {total: 10} }
+      @purchase.get_storage_facility_shipping(@storage)
+    end
+    it 'should return the total returned by StorageFacility.get_shipping_price[:total] / 100' do
+      expect(@purchase.get_storage_facility_shipping(@storage)).to eq 1.0
     end
   end
 

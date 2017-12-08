@@ -12,6 +12,7 @@
     <thead>
     <tr>
       <th>Animal</th>
+      <th>ID</th>
       <th>Private Herd Number</th>
       <th>DNA Number</th>
       <% @registrars.each do |registrar| %>
@@ -28,6 +29,7 @@
       <% cache animal do %>
         <tr>
           <td><%= link_to animal.name, animal %></td>
+          <td><%= animal.id %></td>
           <td><%= animal.private_herd_number ? animal.private_herd_number : "" %></td>
           <td><%= animal.dna_number ? animal.dna_number : "" %></td>
           <% @registrars.each do |registrar| %>

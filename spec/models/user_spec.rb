@@ -2,8 +2,19 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
 
-  it 'should have a valid factory' do
-    expect(FactoryBot.build(:user)).to be_valid
+  describe 'Factory' do
+    it 'should have a valid factory' do
+      expect(FactoryBot.build(:user)).to be_valid
+    end
+    it 'should have a valid factory :with_commission' do
+      expect(FactoryBot.build(:user, :with_commission)).to be_valid
+    end
+    it 'should have a valid factory :with_animals' do
+      expect(FactoryBot.build(:user, :with_animals)).to be_valid
+    end
+    it 'should have a vaild factory :with_purchases' do
+      expect(FactoryBot.build(:user, :with_purchases)).to be_valid
+    end
   end
 
   describe 'Validations' do
@@ -75,7 +86,7 @@ RSpec.describe User, type: :model do
 
   describe 'Relations' do
     before do
-      @user = FactoryBot.build(:user, :with_animals, :with_commission)
+      @user = FactoryBot.build(:user, :with_animals, :with_commission, :with_purchases)
     end
     it 'should have billing_address of type Address' do
       expect(@user.billing_address).to be_a Address
@@ -89,7 +100,9 @@ RSpec.describe User, type: :model do
     it 'should have A Commission' do
       expect(@user.commission).to be_a Commission
     end
-    it 'should have purchases of type Purchase'
+    it 'should have purchases of type Purchase' do
+      expect(@user.purchases.first).to be_a Purchase
+    end
     it 'should have animals of type Animal' do
       expect(@user.animals.first).to be_a Animal
     end

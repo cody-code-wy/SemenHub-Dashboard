@@ -21,5 +21,9 @@ FactoryBot.define do
     trait :with_animals do
       animals { [FactoryBot.build(:animal),FactoryBot.build(:animal)] }
     end
+
+    trait :with_purchases do
+      purchases { build_list :purchase, 10 }
+    end
   end
 end

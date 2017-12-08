@@ -2,8 +2,13 @@ require 'rails_helper'
 
 RSpec.describe Animal, type: :model do
 
-  it 'should have a valid factory' do
-    expect(FactoryBot.build(:animal)).to be_valid
+  describe 'Factory' do
+    it 'should have a valid factory' do
+      expect(FactoryBot.build(:animal)).to be_valid
+    end
+    it 'should have a valid factory :with_registrations' do
+      expect(FactoryBot.build(:animal, :with_registrations)).to be_valid
+    end
   end
 
   describe 'Validations' do
@@ -32,13 +37,16 @@ RSpec.describe Animal, type: :model do
 
   describe 'Relations' do
     before do
-      @animal = FactoryBot.build(:animal)
+      @animal = FactoryBot.build(:animal, :with_registrations)
     end
     it 'should have a Owner of type User' do
       expect(@animal.owner).to be_a User
     end
     it 'should have a Breed' do
       expect(@animal.breed).to be_a Breed
+    end
+    it 'should have registrations' do
+      expect(@animal.registrations.first).to be_a Registration
     end
     it 'should have SKUs of type SKU'
   end

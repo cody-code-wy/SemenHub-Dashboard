@@ -7,5 +7,9 @@ FactoryBot.define do
     dna_number { Faker::Number.number(10) }
     description { [ Faker::Lorem.paragraph, nil].sample }
     notes { [Faker::Lorem.paragraph, nil].sample }
+
+    trait :with_registrations do
+      registrations { build_list :registration, 3 }
+    end
   end
 end

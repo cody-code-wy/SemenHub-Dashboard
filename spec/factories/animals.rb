@@ -11,5 +11,9 @@ FactoryBot.define do
     trait :with_registrations do
       registrations { build_list :registration, 3 }
     end
+
+    trait :with_skus do
+      skus { build_list :sku, 10 }
+    end
   end
 end

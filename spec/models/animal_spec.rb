@@ -9,6 +9,9 @@ RSpec.describe Animal, type: :model do
     it 'should have a valid factory :with_registrations' do
       expect(FactoryBot.build(:animal, :with_registrations)).to be_valid
     end
+    it 'should have a valid factory :with_skus' do
+      expect(FactoryBot.build(:animal, :with_skus)).to be_valid
+    end
   end
 
   describe 'Validations' do
@@ -37,7 +40,7 @@ RSpec.describe Animal, type: :model do
 
   describe 'Relations' do
     before do
-      @animal = FactoryBot.build(:animal, :with_registrations)
+      @animal = FactoryBot.build(:animal, :with_registrations, :with_skus)
     end
     it 'should have a Owner of type User' do
       expect(@animal.owner).to be_a User
@@ -48,7 +51,9 @@ RSpec.describe Animal, type: :model do
     it 'should have registrations' do
       expect(@animal.registrations.first).to be_a Registration
     end
-    it 'should have SKUs of type SKU'
+    it 'should have SKUs of type SKU' do
+      expect(@animal.skus.first).to be_a Sku
+    end
   end
 
   describe 'get_drop_down_name' do

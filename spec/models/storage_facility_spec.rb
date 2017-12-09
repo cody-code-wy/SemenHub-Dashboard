@@ -2,8 +2,19 @@ require 'rails_helper'
 
 RSpec.describe StorageFacility, type: :model do
 
-  it 'should have a valid factory' do
-    expect(FactoryBot.build(:storage_facility)).to be_valid
+  describe 'Factory' do
+    it 'should have a valid factory' do
+      expect(FactoryBot.build(:storage_facility)).to be_valid
+    end
+    it 'should have a valid factory :with_adjustments' do
+      expect(FactoryBot.build(:storage_facility, :with_adjustments)).to be_valid
+    end
+    it 'should have a valid factory :with_fees' do
+      expect(FactoryBot.build(:storage_facility, :with_fees)).to be_valid
+    end
+    it 'should have a valid factory :with_skus' do
+      expect(FactoryBot.build(:storage_facility, :with_skus)).to be_valid
+    end
   end
 
   describe 'Validations' do
@@ -43,8 +54,15 @@ RSpec.describe StorageFacility, type: :model do
   end
 
   it 'should have admin_required true by default' do
-    expect(FactoryBot.build(:storage_facility, :without_admin_required))
+    FactoryBot.create(:storage_facility, admin_required: nil)
+    expect(StorageFacility.last.admin_required).to be_truthy
   end
+
+  it 'should not change a false admin_required to true' do
+    FactoryBot.create(:storage_facility, admin_required: false)
+    expect(StorageFacility.last.admin_required).to be_falsy
+  end
+
   it 'shipping_provider should be one of Shipment.shipping_providers' do
     Shipment.shipping_providers.each do |provider, num|
       @storageFacility = FactoryBot.build(:storage_facility, shipping_provider: provider)
@@ -53,13 +71,18 @@ RSpec.describe StorageFacility, type: :model do
   end
 
   describe 'Relations' do
+    before do
+      @storageFacility = FactoryBot.build(:storage_facility, :with_fees, :with_skus)
+    end
     it 'should have an Address' do
-      expect(FactoryBot.build(:storage_facility).address).to be_a Address
+      expect(@storageFacility.address).to be_a Address
     end
     it 'should have fees of type Fee' do
-      expect(FactoryBot.build(:storage_facility, :with_fees).fees.first).to be_a Fee
+      expect(@storageFacility.fees.first).to be_a Fee
     end
-    it 'should have skus of type SKU'
+    it 'should have skus of type SKU' do
+      expect(@storageFacility.skus.first).to be_a Sku
+    end
   end
 
   describe 'Get Packages' do

@@ -9,10 +9,6 @@ FactoryBot.define do
     straws_per_shipment { Faker::Number.between(10,50) }
     admin_required false # default to false to make it more usable
 
-    trait :without_admin_required do
-      admin_required nil
-    end
-
     trait :with_adjustments do
       out_adjust { Faker::Number.between(10,30) }
       in_adjust { Faker::Number.between(10,30) }
@@ -20,6 +16,10 @@ FactoryBot.define do
 
     trait :with_fees do
       fees { [ FactoryBot.build(:fee), FactoryBot.build(:fee) ] }
+    end
+
+    trait :with_skus do
+      skus { build_list :sku, 10 }
     end
   end
 end

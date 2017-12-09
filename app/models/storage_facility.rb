@@ -1,4 +1,6 @@
 class StorageFacility < ApplicationRecord
+  after_initialize :set_defaults
+
   belongs_to :address
   has_many :fees
   has_many :skus, foreign_key: 'storagefacility_id'
@@ -30,5 +32,11 @@ class StorageFacility < ApplicationRecord
     out_price *= (out_adjust.to_f / 100) unless out_adjust.nil?;
     in_price *= (in_adjust.to_f / 100) unless in_adjust.nil?;
     {out_price: out_price, in_price: in_price, total: out_price + in_price}
+  end
+
+  private
+
+  def set_defaults
+    self.admin_required = true if self.admin_required.nil?
   end
 end

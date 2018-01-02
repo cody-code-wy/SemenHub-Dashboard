@@ -6,6 +6,7 @@
   <thead>
     <tr>
       <th>Purchase Number</th>
+      <th>Date</th>
       <th>User</th>
       <th>State</th>
       <th>Total</th>
@@ -17,6 +18,7 @@
       <% cache purchase do %>
         <tr>
           <td><%= link_to purchase.id, purchase %></td>
+          <td><%= purchase.created_at.in_time_zone("Central Time (US & Canada)").to_date %></td>
           <td><%= purchase.user.get_name %></td>
           <td><%= purchase.state %></td>
           <td><%= purchase.total %></td>

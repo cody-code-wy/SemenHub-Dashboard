@@ -40,7 +40,7 @@ RSpec.describe Sku, type: :model do
   end
   describe 'Relation' do
     before do
-      @sku = FactoryBot.build(:sku)
+      @sku = FactoryBot.build(:sku, :with_inventory_transactions)
     end
     it 'should have an animal' do
       expect(@sku.animal).to be_an Animal
@@ -51,22 +51,24 @@ RSpec.describe Sku, type: :model do
     it 'should have a user as seller' do
       expect(@sku.seller).to be_a User
     end
-    it 'should have many inventory_transactions'
+    it 'should have many inventory_transactions' do
+      expect(@sku.inventory_transaction.first).to be_an InventoryTransaction
+    end
   end
   describe 'Methods' do
     context 'similar' do
       before do
-        @sku_a = FactoryBot.create(:sku)
-        @sku_b = FactoryBot.create(:sku) #will be different
+        @sku_a = FactoryBot.create(:sku, :with_inventory_transactions)
+        @sku_b = FactoryBot.create(:sku, :with_inventory_transactions) #will be different
         @sku = FactoryBot.build(:sku,
+                                :with_inventory_transactions,
                                 private: @sku_a.private,
                                 semen_type: @sku_a.semen_type,
                                 price_per_unit: @sku_a.price_per_unit,
                                 semen_count: @sku_a.semen_count,
                                 animal: @sku_a.animal,
-                                storagefacility: @sku_a.storagefacility,
+                                storagefacility: @sku_a.storagefacility
                                )
-        pending 'the Skus must have inventory transactions it seems'
       end
       it 'should return Skus' do
         expect(@sku.similar.first).to be_a Sku
@@ -77,13 +79,17 @@ RSpec.describe Sku, type: :model do
         end
       end
       describe 'not matching params' do
-        pending 'should not be output' #do
-          # expect(@sku.similar).to_not include @sku_b
-        # end
+        it 'should not be output' do
+          expect(@sku.similar).to_not include @sku_b
+        end
       end
     end
     context 'quantity' do
-      pending 'should return the appropiate quantity'
+      it 'should return the appropiate quantity' do
+        @sku = FactoryBot.create(:sku)
+        @transactions = FactoryBot.create_list(:inventory_transaction, 2, quantity: 2, sku: @sku)
+        expect(@sku.quantity).to eq 4
+      end
     end
     context 'get_commission' do
       describe 'when cost_per_unit = nil' do

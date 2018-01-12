@@ -10,5 +10,9 @@ FactoryBot.define do
     cost_per_unit nil
     cane_code nil
     has_percent false
+
+    trait :with_inventory_transactions do
+      inventory_transaction { FactoryBot.build_list(:inventory_transaction, 2) }
+    end
   end
 end

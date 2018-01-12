@@ -16,5 +16,9 @@ FactoryBot.define do
     trait :with_line_items do
       line_items { build_list(:line_item, 10) }
     end
+
+    trait :with_inventory_transactions do
+      inventory_transactions { build_list(:inventory_transaction, 2) }
+    end
   end
 end

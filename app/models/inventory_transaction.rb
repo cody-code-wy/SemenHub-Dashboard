@@ -4,9 +4,5 @@ class InventoryTransaction < ApplicationRecord
 
   belongs_to :sku, touch: true
 
-  has_many :shipsTo, foreign_key: 'inventoryTransaction_id'
-  has_many :countries, through: :shipsTo
-  
-
   validates_presence_of :quantity
 end

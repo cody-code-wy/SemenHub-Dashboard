@@ -33,16 +33,26 @@ RSpec.describe Purchase, type: :model do
 
   describe 'Relations' do
     before do
-      @purchase = FactoryBot.build(:purchase, :with_line_items, :with_shipments)
+      @purchase = FactoryBot.create(:purchase, :with_line_items, :with_shipments, :with_inventory_transactions)
     end
     it 'should has a User' do
       expect(@purchase.user).to be_a User
     end
-    it 'should have purchase_transactions'
-    it 'should have Invetory Transactions thru purchase_transactions'
-    it 'should have Skus thru Inventory Transactions'
-    it 'should have Users as sellers thru Skus'
-    it 'should have StorageFacilities thru Skus'
+    it 'should have purchase_transactions' do
+      expect(@purchase.purchase_transactions.first).to be_a PurchaseTransaction
+    end
+    it 'should have Invetory Transactions thru purchase_transactions' do
+      expect(@purchase.inventory_transactions.first).to be_an InventoryTransaction
+    end
+    it 'should have Skus thru Inventory Transactions' do
+      expect(@purchase.skus.first).to be_a Sku
+    end
+    it 'should have Users as sellers thru Skus' do
+      expect(@purchase.sellers.first).to be_a User
+    end
+    it 'should have StorageFacilities thru Skus' do
+      expect(@purchase.storagefacilities.first).to be_a StorageFacility
+    end
     it 'should have LineItems' do
       expect(@purchase.line_items.first).to be_a LineItem
     end
@@ -63,7 +73,14 @@ RSpec.describe Purchase, type: :model do
       allow(@purchase).to receive_messages(create_storage_facility_sh: nil, update_service_fee: nil)
     end
     context 'when all shipments are to the us' do
-      it 'should call create_storage_facility_sh for each storage facility'
+      before do
+        @purchase = FactoryBot.create(:purchase, :with_shipments, :with_inventory_transactions)
+      end
+      it 'should call create_storage_facility_sh for each storage facility' do
+        expect(@purchase.storagefacilities.count).to be > 0 #Sanity Check
+        expect(@purchase).to receive(:create_storage_facility_sh).exactly(@purchase.storagefacilities.count)
+        @purchase.create_line_items
+      end
     end
     context 'when any shipment is not to the us' do
       before do
@@ -150,7 +167,17 @@ RSpec.describe Purchase, type: :model do
   end
 
   describe 'get_shipment_item_count' do
-    it 'should return number of straws shipping from storagefacility'
+    before do
+      @purchase = FactoryBot.create(:purchase)
+      @sku = FactoryBot.create(:sku)
+      @storage = @sku.storagefacility
+      @inventory_transactions = FactoryBot.create_list(:inventory_transaction, 2, sku: @sku, quantity: 2)
+      @purchase.inventory_transactions << @inventory_transactions
+    end
+    it 'should return number of straws shipping from storagefacility' do
+      expect(@purchase.inventory_transactions.count).to eq 2 #sanity check
+      expect(@purchase.get_shipment_item_count(@storage)).to eq 4
+    end
   end
 
   describe 'get_storage_facility_shipping' do
@@ -237,10 +264,62 @@ RSpec.describe Purchase, type: :model do
       end
     end
     context 'transaction_total' do
-      it 'should work'
+      before do
+        @purchase = FactoryBot.create(:purchase, :with_inventory_transactions)
+        @purchase.inventory_transactions.each do |trans|
+          allow(trans).to receive(:quantity) { -2 }
+          allow(trans.sku).to receive(:price_per_unit) { 1 }
+        end
+      end
+      it 'should call sku on each inventory_transaction' do
+        @purchase.inventory_transactions.each do |trans|
+          expect(trans).to receive(:sku) { FactoryBot.build(:sku) }
+        end
+        @purchase.transaction_total
+      end
+      it 'should call quantity on each inventory_transaction' do
+        @purchase.inventory_transactions.each do |trans|
+          expect(trans).to receive(:quantity) { 2 }
+        end
+        @purchase.transaction_total
+      end
+      it 'should call price_per_unit on each sku' do
+        @purchase.inventory_transactions.each do |trans|
+          expect(trans.sku).to receive(:price_per_unit) { 1 }
+        end
+        @purchase.transaction_total
+      end
+      it 'should return the sum of all prices*quantity at that price' do
+        expect(@purchase.transaction_total).to eq @purchase.inventory_transactions.count * 2
+      end
     end
     context 'fees_total' do
-      it 'should work'
+      before do
+        @purchase = FactoryBot.create(:purchase, :with_inventory_transactions)
+        @fees = FactoryBot.build_list(:fee, 2, price: 1)
+        @fees.each do |fee|
+          allow(fee).to receive(:price) { 1 }
+        end
+        @purchase.storagefacilities.uniq.each do |storage|
+          allow(storage).to receive(:fees) { @fees }
+        end
+      end
+      it 'should call fees on each storage facility' do
+        @purchase.storagefacilities.uniq.each do |storage|
+          expect(storage).to receive(:fees) { @fees }
+        end
+        @purchase.fees_total
+      end
+      it 'should call price on each fee on each storage facility(uniq)' do
+        @fees.each do |fee|
+          expect(fee).to receive(:price).exactly(2) { 1 }
+        end
+        @purchase.fees_total
+      end
+      it 'should return the sum of all fees on each uniq storage facility' do
+        expect(@purchase.storagefacilities.uniq.count).to eq 2 #sanity check
+        expect(@purchase.fees_total).to eq 4
+      end
     end
     context 'line_items_total' do
       describe 'No line items' do
@@ -279,18 +358,17 @@ RSpec.describe Purchase, type: :model do
   describe 'Emails' do
     before do
       @purchase = FactoryBot.build(:purchase)
+      @mail = double()
+      allow(@mail).to receive(:deliver_now)
     end
     context 'send_all_emails' do
       before do
         allow(@purchase).to receive_messages(send_purchase_orders: nil, send_shipping_orders: nil, send_release_orders: nil)
-        @mail = double()
-        allow(@mail).to receive(:deliver_now)
         allow(PurchaseMailer).to receive_messages(invoice: @mail, receipt: @mail, purchase_order: @mail, shipping_order: @mail, release_order: @mail)
       end
       it 'should send receipt' do
-        mail = double()
-        expect(PurchaseMailer).to receive(:receipt).with(@purchase).and_return(mail)
-        expect(mail).to receive(:deliver_now)
+        expect(PurchaseMailer).to receive(:receipt).with(@purchase).and_return(@mail)
+        expect(@mail).to receive(:deliver_now)
         @purchase.send_all_emails
       end
       it 'should call send_purchase_orders' do
@@ -307,13 +385,34 @@ RSpec.describe Purchase, type: :model do
       end
     end
     context 'send_purchase_orders' do
-      it 'should send a purchase order for each seller'
+      before do
+        @purchase = FactoryBot.create(:purchase, :with_inventory_transactions)
+      end
+      it 'should send a purchase order for each seller' do
+        expect(@mail).to receive(:deliver_now).at_least(:once)
+        expect(PurchaseMailer).to receive(:purchase_order).exactly(@purchase.sellers.count) { @mail }
+        @purchase.send_purchase_orders
+      end
     end
     context 'send_shipping_orders' do
-      it 'should send a shipping_order for each storage facility'
+      before do
+        @purchase = FactoryBot.create(:purchase, :with_inventory_transactions)
+      end
+      it 'should send a shipping_order for each storage facility' do
+        expect(@mail).to receive(:deliver_now).at_least(:once)
+        expect(PurchaseMailer).to receive(:shipping_order).exactly(@purchase.storagefacilities.count) { @mail }
+        @purchase.send_shipping_orders
+      end
     end
     context 'send_release_orders' do
-      it 'should send a release order for each seller'
+      before do
+        @purchase = FactoryBot.create(:purchase, :with_inventory_transactions)
+      end
+      it 'should send a release order for each seller' do
+        expect(@mail).to receive(:deliver_now).at_least(:once)
+        expect(PurchaseMailer).to receive(:release_order).exactly(@purchase.sellers.count) { @mail }
+        @purchase.send_release_orders
+      end
     end
   end
 end

@@ -8,5 +8,9 @@ FactoryBot.define do
     email { Faker::Internet.email }
     website { Faker::Internet.url }
     note { Faker::Lorem.paragraph }
+
+    trait :with_registrations do
+      registrations { FactoryBot.build_list(:registration, 2) }
+    end
   end
 end

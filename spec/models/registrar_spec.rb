@@ -35,7 +35,7 @@ RSpec.describe Registrar, type: :model do
 
   describe 'Relations' do
     before do
-      @registrar = FactoryBot.build(:registrar)
+      @registrar = FactoryBot.build(:registrar, :with_registrations)
     end
     it 'should have an Address' do
       expect(@registrar.address).to be_a Address
@@ -43,6 +43,8 @@ RSpec.describe Registrar, type: :model do
     it 'should have a Breed' do
       expect(@registrar.breed).to be_a Breed
     end
-    it 'should have registrations of type Registration'
+    it 'should have registrations of type Registration' do
+      expect(@registrar.registrations.first).to be_a Registration
+    end
   end
 end

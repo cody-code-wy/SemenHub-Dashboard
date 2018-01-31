@@ -11,24 +11,49 @@ class Purchase < ApplicationRecord
 
   enum state: ["problem", "created", "invoiced", "paid", "preparing for shipment", "shipped", "delivered", "canceled", "refunded", "administrative"]
 
+  validates_presence_of :state
+
   #shipping info
   shipping = {diameter: 41, height: 61, weight: 18144, straws_per: 10}
 
   def create_line_items
+    unless shipments.where(address: Address.where.not(alpha_2: 'us')).count > 0
     storagefacilities.uniq.each do |storage|
-      fee_total = 0.00
-      storage.fees.each do |fee|
-        fee_total += fee.price
-      end
-      unless storage.admin_required || shipments.where(address: Address.where.not(alpha_2: 'us')).count > 0
-        fee_total += storage.get_shipping_price(100, shipments.where(origin_address: storage.address).take)[:total].to_f / 100
-      end
-      item_name = "#{storage.name} S&H"
-      LineItem.where(name: item_name).destroy_all
-      line_items << LineItem.new(name: item_name, value: fee_total)
+      create_storage_facility_sh(storage)
     end
-    LineItem.where(name: "SemenHub Service Fee").destroy_all
-    line_items << LineItem.new(name: "SemenHub Service Fee", value: total * 0.03)
+    update_service_fee
+    end
+  end
+
+  def get_storage_facility_fees(storage)
+    storage.fees.map(&:price).reduce(:+)
+  end
+
+  def get_shipment_item_count(storage)
+    shipping_inventory = inventory_transactions.where(sku: skus.where(storagefacility: storage))
+    shipping_inventory.map(&:quantity).reduce(:+)
+  end
+
+  def get_storage_facility_shipping(storage)
+    destination = shipments.where(origin_address: storage.address).take.address
+    item_count = get_shipment_item_count(storage)
+    shipping = storage.get_shipping_price(item_count, destination)
+    shipping[:total].to_f / 100
+  end
+
+  def create_storage_facility_sh(storage)
+    return if storage.admin_required
+    fees = get_storage_facility_fees(storage)
+    fees += get_storage_facility_shipping(storage)
+    line_item = line_items.find_or_initialize_by(name: "#{storage.name} S&H")
+    line_item.update(value: fees)
+  end
+
+  def update_service_fee
+    service_fee = line_items.find_or_initialize_by(name: 'SemenHub Service Fee')
+    total_without_service_fee = total
+    total_without_service_fee -= service_fee.value if service_fee.value
+    service_fee.update(value: total_without_service_fee * 0.03)
   end
 
   def total
@@ -49,6 +74,7 @@ class Purchase < ApplicationRecord
 
   def line_items_total
     line_items.reduce(0) do |sum,line_item|
+      next sum unless line_item.value
       sum + line_item.value
     end
   end
@@ -95,5 +121,5 @@ class Purchase < ApplicationRecord
   #     sum + storage.get_shipping_price(quantity, shipment)
   #   end.to_f / 100
   # end
-  
+
 end

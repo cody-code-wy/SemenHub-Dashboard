@@ -1,4 +1,6 @@
 class StorageFacility < ApplicationRecord
+  after_initialize :set_defaults
+
   belongs_to :address
   has_many :fees
   has_many :skus, foreign_key: 'storagefacility_id'
@@ -18,7 +20,7 @@ class StorageFacility < ApplicationRecord
     packages
   end
 
-  def get_shipping_price(semen_count, destination, semen_per_container=straws_per_shipment)
+  def get_shipping_price(semen_count, destination, semen_per_container=straws_per_shipment) # How to test this???
     location = destination.get_shipping_location if destination.respond_to? :get_shipping_location
     location = destination.address.get_shipping_location if destination.respond_to? :address
     return unless location
@@ -30,5 +32,11 @@ class StorageFacility < ApplicationRecord
     out_price *= (out_adjust.to_f / 100) unless out_adjust.nil?;
     in_price *= (in_adjust.to_f / 100) unless in_adjust.nil?;
     {out_price: out_price, in_price: in_price, total: out_price + in_price}
+  end
+
+  private
+
+  def set_defaults
+    self.admin_required = true if self.admin_required.nil?
   end
 end

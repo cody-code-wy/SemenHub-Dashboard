@@ -1,6 +1,6 @@
 class User < ApplicationRecord
 
-  has_secure_password
+  has_secure_password confirmation: true
 
   belongs_to :billing_address, class_name: 'Address'
   belongs_to :mailing_address, class_name: 'Address'
@@ -17,6 +17,8 @@ class User < ApplicationRecord
   has_many :permissions, through: :permission_assignments
 
   validates :email, presence: true, email: true
+
+  validates :password, length: {minimum: 8}
 
   validates_presence_of :first_name, :last_name, :phone_primary
 

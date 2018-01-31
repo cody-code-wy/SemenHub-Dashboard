@@ -1,4 +1,4 @@
 class ShipsTo < ApplicationRecord
   belongs_to :country
-  belongs_to :inventoryTransaction
+  belongs_to :sku
 end

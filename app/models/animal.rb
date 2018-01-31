@@ -1,13 +1,13 @@
 class Animal < ApplicationRecord
-  has_many :registrations
-  has_many :skus
   belongs_to :owner, class_name: 'User'
   belongs_to :breed
 
-  validates_presence_of :name
+  has_many :registrations
+  has_many :skus
+
+  validates :name, presence: true
 
   def get_drop_down_name
     "#{name} - #{owner.first_name} #{owner.last_name}"
   end
-
 end

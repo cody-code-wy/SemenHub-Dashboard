@@ -1,8 +1,11 @@
 class Address < ApplicationRecord
   belongs_to :country, foreign_key: 'alpha_2', primary_key: 'alpha_2'
 
-  validates_presence_of :line1, :city, :region, :postal_code
   # validate :validate_address #this does not work well....
+  validates :line1, presence: true
+  validates :city, presence: true
+  validates :region, presence: true
+  validates :postal_code, presence: true
 
   def get_location
     "#{city}, #{region}"
@@ -41,5 +44,4 @@ class Address < ApplicationRecord
       zip: postal_code
     )
   end
-
 end

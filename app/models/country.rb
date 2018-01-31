@@ -3,6 +3,4 @@ class Country < ApplicationRecord
 
   validates :alpha_2, uniqueness: true, presence: true
   validates :name, presence: true
-
-
 end

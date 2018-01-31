@@ -1,6 +1,4 @@
 class Fee < ApplicationRecord
-  belongs_to :storage_facility
-
   enum fee_type: {
     'Release': 0,
     'Handling': 1,
@@ -8,6 +6,8 @@ class Fee < ApplicationRecord
     'Packaging Fee': 3
   }
 
-  validates_presence_of :price, :fee_type
+  belongs_to :storage_facility
 
+  validates :price, presence: true
+  validates :fee_type, presence: true
 end

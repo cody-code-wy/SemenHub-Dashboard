@@ -1,14 +1,20 @@
 class StorageFacility < ApplicationRecord
-  after_initialize :set_defaults
+  enum shipping_provider: Shipment.shipping_providers
 
   belongs_to :address
+
   has_many :fees
   has_many :skus, foreign_key: 'storagefacility_id'
 
-  enum shipping_provider: Shipment.shipping_providers
 
-  validates_presence_of :phone_number, :website, :name, :shipping_provider, :straws_per_shipment
   validates :email, presence: true, email: true
+  validates :phone_number, presence: true
+  validates :website, presence: true
+  validates :name, presence: true
+  validates :shipping_provider, presence: true
+  validates :straws_per_shipment, presence: true
+
+  after_initialize :set_defaults
 
   def get_packages(semen_count, semen_per_container=straws_per_shipment)
     packages = []
@@ -20,6 +26,7 @@ class StorageFacility < ApplicationRecord
     packages
   end
 
+  #TODO refactor to be simpler and easier to test
   def get_shipping_price(semen_count, destination, semen_per_container=straws_per_shipment) # How to test this???
     location = destination.get_shipping_location if destination.respond_to? :get_shipping_location
     location = destination.address.get_shipping_location if destination.respond_to? :address

@@ -17,7 +17,7 @@ class CommissionsController < ApplicationController
       return head :bad_request
     end
     @user.commission.update(commission_params)
-    if @user.save && @user.commission.save
+    if @user.commission.save
       render json: @user.commission
     else
       return head :internal_server_error

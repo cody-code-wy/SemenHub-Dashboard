@@ -18,7 +18,7 @@ class User < ApplicationRecord
 
   validates :email, presence: true, email: true
 
-  validates :password, length: {minimum: 8}
+  validates :password, presence: true, length: {minimum: 8}, confirmation: true, if: :password_changed?
 
   validates_presence_of :first_name, :last_name, :phone_primary
 
@@ -51,5 +51,9 @@ class User < ApplicationRecord
 
   def temp_pass?
     return temp_pass
+  end
+
+  def password_changed?
+    !password.blank? or password_digest.blank?
   end
 end

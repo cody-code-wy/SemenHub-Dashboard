@@ -15,7 +15,10 @@
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
   require 'simplecov'
-  SimpleCov.start 'rails'
+  SimpleCov.start 'rails' do
+    add_filter 'app/channels/application_cable/connection.rb'
+    add_filter 'app/channels/application_cable/channel.rb'
+  end
   # Seed Database
   config.before(:suite) do
     Rails.application.load_seed

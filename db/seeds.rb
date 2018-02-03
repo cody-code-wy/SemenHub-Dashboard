@@ -12,7 +12,9 @@ require "#{Rails.root}/db/role_permission_seeds"
 
 case Rails.env
   when "test"
-    test_user = User.find_by_email("test@test.com")
-    test_user ||= FactoryBot.create(:user, email: 'test@test.com', password: 'password')
-    test_user.roles << Role.find_by_name(:superuser)
+    require "#{Rails.root}/db/test_user_seeds"
+    require "#{Rails.root}/db/test_seeds"
+  when "development"
+    require "#{Rails.root}/db/test_user_seeds"
+    require "#{Rails.root}/db/dev_seeds"
 end

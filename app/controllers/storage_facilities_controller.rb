@@ -13,14 +13,17 @@ class StorageFacilitiesController < ApplicationController
   end
 
   def create
-    @facility = StorageFacility.new(facility_params)
+    StorageFacility.transaction do
+      @facility = StorageFacility.new(facility_params)
 
-    put_address_in_facility(@facility)
+      put_address_in_facility(@facility)
 
-    if(@facility.save)
-      redirect_to @facility
-    else
-      render :new
+      if put_address_in_facility(@facility) && @facility.save
+        redirect_to @facility
+      else
+        render :new
+        raise ActiveRecord::Rollback
+      end
     end
   end
 
@@ -31,16 +34,17 @@ class StorageFacilitiesController < ApplicationController
   def update
     @facility = StorageFacility.find(params[:id])
 
-    @facility.update(facility_params)
+    StorageFacility.transaction do
+      @facility.update(facility_params)
 
-    put_address_in_facility(@facility)
 
-    if @facility.save
-      redirect_to @facility
-    else
-      render :new
+      if put_address_in_facility(@facility) && @facility.save
+        redirect_to @facility
+      else
+        render :new
+        raise ActiveRecord::Rollback
+      end
     end
-
   end
 
   def destroy
@@ -71,8 +75,6 @@ class StorageFacilitiesController < ApplicationController
     facility.address.update(address_params) if facility.address
     facility.address = Address.new(address_params) unless facility.address
 
-    facility.address.validate
-
-    facility
+    facility.address.valid?
   end
 end

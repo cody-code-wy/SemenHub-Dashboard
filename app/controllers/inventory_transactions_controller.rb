@@ -18,11 +18,14 @@ class InventoryTransactionsController < ApplicationController
   end
 
   def create
-    @transaction = InventoryTransaction.new(get_params.merge(sku: get_sku))
-    if @transaction.save and @transaction.sku.valid?
-      redirect_to @transaction
-    else
-      render :new
+    InventoryTransaction.transaction do
+      @transaction = InventoryTransaction.new(get_params.merge(sku: get_sku))
+      if @transaction.save and @transaction.sku.valid?
+        redirect_to @transaction
+      else
+        render :new
+        raise ActiveRecord::Rollback
+      end
     end
   end
 
@@ -32,11 +35,14 @@ class InventoryTransactionsController < ApplicationController
 
   def update
     @transaction = InventoryTransaction.find params[:id]
-    @transaction.update(get_params.merge(sku: get_sku))
-    if @transaction.save and @transaction.sku.valid?
-      redirect_to @transaction
-    else
-      render :edit
+    InventoryTransaction.transaction do
+      @transaction.update(get_params.merge(sku: get_sku))
+      if @transaction.save and @transaction.sku.valid?
+        redirect_to @transaction
+      else
+        render :edit
+        raise ActiveRecord::Rollback
+      end
     end
   end
 

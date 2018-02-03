@@ -298,5 +298,8 @@ else
 end
 
 case Rails.env
-  when "development"
+  when "test"
+    test_user = User.find_by_email("test@test.com")
+    test_user ||= FactoryBot.create(:user, email: 'test@test.com', password: 'password')
+    test_user.roles << Role.find_by_name(:superuser)
 end

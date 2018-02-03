@@ -293,4 +293,21 @@ RSpec.describe User, type: :model do
     end
 
   end
+
+  describe 'password_changed?' do
+    before do
+      @user = FactoryBot.create(:user)
+    end
+    it 'should return false without changing the password' do
+      @user = User.find_by_email(@user.email)
+      expect(@user.password_changed?).to be_falsy
+    end
+    it 'should be true for a new user without password_digest' do
+      expect(User.new.password_changed?).to be_truthy
+    end
+    it 'should be true if the password has been changed' do
+      @user.password = 'new_password'
+      expect(@user.password_changed?).to be_truthy
+    end
+  end
 end

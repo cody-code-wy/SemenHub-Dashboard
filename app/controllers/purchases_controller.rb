@@ -47,15 +47,6 @@ class PurchasesController < ApplicationController
     redirect_to @purchase
   end
 
-  # def get_address
-  #   @purchase = Purchase.find(params[:id])
-  #   @storage = StorageFacility.find_by_address_id(params[:shipment][:address_id])
-  #   @purchase.shipment = Shipment.new(address: @storage.address, account_name: current_user.get_name )
-  #   @purchase.administrative!
-  #   flash[:alert] = "Your order requires administrative oversight and cannot be processed yet, no action is required on your part. \nYou will recieve an email when you can complete, and pay, for your order. We appologise for any inconvinience."
-  #   redirect_to @purchase
-  #end
-
   def recipt
     # byebug
     @purchase = Purchase.find(params[:id])
@@ -87,35 +78,5 @@ class PurchasesController < ApplicationController
       redirect_to @purchase
     end
   end
-
-  # private
-
-  # def send_all
-  #   PurchaseMailer.receipt(@purchase).deliver_now
-  #   send_purchase_orders
-  #   send_shipping_orders
-  #   send_release_orders
-  # end
-
-  # def send_purchase_orders
-  #   @purchase.sellers.uniq.each do |seller|
-  #     PurchaseMailer.purchase_order(@purchase, seller).deliver_now
-  #   end
-  # end
-
-  # def send_shipping_orders
-  #   @purchase.storagefacilities.uniq.each do |storage|
-  #     PurchaseMailer.shipping_order(@purchase, storage).deliver_now
-  #   end
-  # end
-
-  # def send_release_orders
-  #   @purchase.sellers.uniq.each do |seller|
-  #     @purchase.skus.where(seller: seller).pluck(:storagefacility_id).uniq.map{|id| StorageFacility.find(id)}.each do |facility|
-  #       PurchaseMailer.release_order(@purchase, seller, facility).deliver_now
-  #     end
-  #   end
-  # end
-
 
 end

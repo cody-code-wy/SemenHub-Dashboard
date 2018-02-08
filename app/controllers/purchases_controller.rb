@@ -70,8 +70,8 @@ class PurchasesController < ApplicationController
       end
       redirect_to @purchase
     else
-      flash[:alert] = 'There was a problem processing your card. Please check the entered values and try again.'
-      puts response.messages
+      flash[:alert] = response.messages.messages.first.text
+      puts "AUTHORIZENET:#{ response.messages.messages.first.code }:#{response.transactionResponse&.errors&.errors&.first&.errorCode}"
       redirect_to @purchase
     end
   end

@@ -275,6 +275,7 @@ RSpec.feature "Purchases", type: :feature do
     end
   end
   context 'invoiced' do
+    let(:valid_card) { ['5424000000000015','2223000010309703','2223000010309711','4111111111111111'].sample } #prevent duplicat trans on same card
     before do
       @purchase = FactoryBot.create(:purchase, :for_test_transaction)
       visit purchase_path(@purchase)
@@ -283,7 +284,7 @@ RSpec.feature "Purchases", type: :feature do
     end
     describe 'valid card' do
       before do
-        fill_in('card_num', with: '5424000000000015')
+        fill_in('card_num', with: valid_card)
         fill_in('exp_date', with: 1.year.from_now.strftime('%m%y'))
         fill_in('ccv', with: '123')
       end

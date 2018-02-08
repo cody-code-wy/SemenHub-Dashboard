@@ -33,7 +33,7 @@ class PurchasesController < ApplicationController
           @purchase.send_all_emails
         end
       when "shipped"
-        @puchase.shipped!
+        @purchase.shipped!
       when "delivered"
         @purchase.delivered!
       when "created"

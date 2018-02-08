@@ -26,12 +26,12 @@ class Purchase < ApplicationRecord
   end
 
   def get_storage_facility_fees(storage)
-    storage.fees.map(&:price).reduce(:+)
+    storage.fees.map(&:price).reduce(0,:+)
   end
 
   def get_shipment_item_count(storage)
     shipping_inventory = inventory_transactions.where(sku: skus.where(storagefacility: storage))
-    shipping_inventory.map(&:quantity).reduce(:+)
+    shipping_inventory.map(&:quantity).reduce(0,:+)
   end
 
   def get_storage_facility_shipping(storage)

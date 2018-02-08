@@ -11,7 +11,6 @@ class ShipmentsController < ApplicationController
 
   def create
     @purchase = Purchase.find(params[:purchase_id])
-    # @purchase.shipment = Shipment.new(address: @storage.address, location_name: @storage.name, account_name: @purchase.user.get_name )
     begin
       addr = get_destination(@purchase)
     rescue

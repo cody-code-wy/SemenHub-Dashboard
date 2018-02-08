@@ -11,7 +11,6 @@ class PurchasesController < ApplicationController
   def show
     @purchase = Purchase.find(params[:id])
     redirect_to '/401' unless @purchase.user == current_user || current_user.can?(:admin_purchase)
-    # @purchase.build_shipment if @purchase.shipment.blank?
     @partial = @purchase.state if lookup_context.exists?(@purchase.state, _prefixes, true)
   end
 
@@ -48,7 +47,6 @@ class PurchasesController < ApplicationController
   end
 
   def recipt
-    # byebug
     @purchase = Purchase.find(params[:id])
     transaction = AuthorizeNet::API::Transaction.new($authorizenet[:login], $authorizenet[:key], gateway: $authorizenet[:gateway])
 
@@ -70,7 +68,6 @@ class PurchasesController < ApplicationController
       else
         @purchase.send_all_emails
       end
-      # send_all
       redirect_to @purchase
     else
       flash[:alert] = 'There was a problem processing your card. Please check the entered values and try again.'

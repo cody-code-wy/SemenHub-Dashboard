@@ -14,6 +14,7 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
+  require 'capybara/rspec'
   require 'simplecov'
   SimpleCov.start 'rails' do
     add_filter 'app/channels/application_cable/connection.rb'

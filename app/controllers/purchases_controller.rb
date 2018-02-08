@@ -1,7 +1,8 @@
 class PurchasesController < ApplicationController
 
   helper :authorize_net
-  protect_from_forgery except: :recipt
+  before_action :set_purchase, only: [:show]
+  before_action :set_purchase_sub, only: [:invoice, :paid, :shipped, :delivered, :reset, :payment]
 
   def perms
     return :admin_purchase unless ["show", "get_address", "recipt", "index"].include?(params[:action])
@@ -9,7 +10,6 @@ class PurchasesController < ApplicationController
   end
 
   def show
-    @purchase = Purchase.find(params[:id])
     redirect_to '/401' unless @purchase.user == current_user || current_user.can?(:admin_purchase)
     @partial = @purchase.state if lookup_context.exists?(@purchase.state, _prefixes, true)
   end
@@ -19,35 +19,45 @@ class PurchasesController < ApplicationController
     @purchases = @purchases.order(id: :desc)
   end
 
-  def update
-    @purchase = Purchase.find(params[:id])
-    case params[:purchase][:state]
-      when "invoiced"
-        @purchase.invoiced!
-        PurchaseMailer.invoice(@purchase).deliver_now
-      when "paid"
-        @purchase.paid!
-        if Setting.get_setting(:send_purchase_emails).value != 'true'
-          flash[:notice] = "Emails not sent"
-        else
-          @purchase.send_all_emails
-        end
-      when "shipped"
-        @purchase.shipped!
-      when "delivered"
-        @purchase.delivered!
-      when "created"
-        @purchase.created!
-        @purchase.shipments.destroy_all
-        @purchase.line_items.destroy_all
-      else
-        flash[:alert] = "There was an error with your administrative command"
+  def invoice
+    @purchase.invoiced!
+    PurchaseMailer.invoice(@purchase).deliver_now
+
+    redirect_to @purchase
+  end
+
+  def paid
+    @purchase.paid!
+    if Setting.get_setting(:send_purchase_emails).value != 'true'
+      flash[:notice] = "Emails not sent"
+    else
+      @purchase.send_all_emails
     end
+
+    redirect_to @purchase
+  end
+
+  def shipped
+    @purchase.shipped!
+
+    redirect_to @purchase
+  end
+
+  def delivered
+    @purchase.delivered!
+
+    redirect_to @purchase
+  end
+
+  def reset
+    @purchase.created!
+    @purchase.shipments.destroy_all
+    @purchase.line_items.destroy_all
+
     redirect_to @purchase
   end
 
   def payment
-    @purchase = Purchase.find(params[:id])
     transaction = AuthorizeNet::API::Transaction.new($authorizenet[:login], $authorizenet[:key], gateway: $authorizenet[:gateway])
 
     request = AuthorizeNet::API::CreateTransactionRequest.new()
@@ -74,6 +84,15 @@ class PurchasesController < ApplicationController
       puts "AUTHORIZENET:#{ response.messages.messages.first.code }:#{response.transactionResponse&.errors&.errors&.first&.errorCode}"
       redirect_to @purchase
     end
+  end
+
+  private
+
+  def set_purchase
+    @purchase = Purchase.find(params[:id])
+  end
+  def set_purchase_sub
+    @purchase = Purchase.find(params[:purchase_id])
   end
 
 end

@@ -6,12 +6,12 @@
 <% if current_user.can? :admin_purchases %>
   <div>
     <h3>Administrative Controls</h3>
-    <%= render 'change_state_form', state: 'invoiced', submit: 'Clear for payment', warn: "Do you want to allow #{@purchase.user.get_name} to pay for this order for #{@purchase.total}" %>
-    <%= render 'change_state_form', state: 'invoiced', submit: 'Mark Unpaid', warn: "This will mark this purchase as unpaid and send a new invoice to #{@purchase.user.get_name} for #{@purchase.total}" %>
-    <%= render 'change_state_form', state: 'paid', submit: 'Mark Paid', warn: "Only continue if the payment method used has fully cleared, as this will send release orders and shipping orders." %>
-    <%= render 'change_state_form', state: 'shipped', submit: 'Mark Shipped', warn: "This will notify the user that their order has shipped." %>
-    <%= render 'change_state_form', state: 'delivered', submit: 'Mark Delivered', warn: "This will notify the user that their order has been delivered." %>
-    <%= render 'change_state_form', state: 'created', submit: 'Reset Order', warn: "This will reset the state of the order to allow changing the shipment destination. This will also mark the order as Unpaid" %> </div>
+    <%= button_to 'Clear for payment', purchase_invoice_path(@purchase), data: {confirm: "Do you want to allow #{@purchase.user.get_name} to pay for this order for #{@purchase.total}" } %>
+    <%= button_to 'Mark Unpaid', purchase_invoice_path(@purchase), data: {confirm: "This will mark this purchase as unpaid and send a new invoice to #{@purchase.user.get_name} for #{@purchase.total}" } %>
+    <%= button_to 'Mark Paid', purchase_paid_path(@purchase), data: {confirm: "Only continue if the payment method used has fully cleared, as this will send release orders and shipping orders." } %>
+    <%= button_to 'Mark Shipped', purchase_shipped_path(@purchase), data: {confirm: "This will notify the user that their order has shipped." } %>
+    <%= button_to 'Mark Delivered', purchase_delivered_path(@purchase), data: {confirm: "This will notify the user that their order has been delivered." } %>
+    <%= button_to 'Reset Order', purchase_reset_path(@purchase), data: {confirm: "This will reset the state of the order to allow changing the shipment destination. This will also mark the order as Unpaid" } %>
 <% end %>
 
 <div>

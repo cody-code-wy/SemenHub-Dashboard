@@ -30,14 +30,16 @@ Rails.application.routes.draw do
 
   resources :skus
 
-  resources :purchases do
+  resources :purchases , only: [ :index, :show ] do
+    post 'invoice', to: 'purchases#invoice'
+    post 'paid', to: 'purchases#paid'
+    post 'shipped', to: 'purchases#shipped'
+    post 'delivered', to: 'purchases#delivered'
+    post 'reset', to: 'purchases#reset'
+    post 'payment', to: 'purchases#payment'
     resources :line_items, except: :index
     resources :shipments, except: [:index, :delete]
   end
-
-  post '/purchases/:id', to: "purchases#get_address"
-
-  post '/purchases/:id/payment', to: "purchases#payment"
 
   get '/commissions', to: 'commissions#index'
   post '/users/:user/commission', to: 'commissions#create' #API

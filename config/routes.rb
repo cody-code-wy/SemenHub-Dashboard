@@ -37,7 +37,7 @@ Rails.application.routes.draw do
 
   post '/purchases/:id', to: "purchases#get_address"
 
-  post '/purchases/:id/payment', to: "purchases#recipt"
+  post '/purchases/:id/payment', to: "purchases#payment"
 
   get '/commissions', to: 'commissions#index'
   post '/users/:user/commission', to: 'commissions#create' #API

@@ -46,7 +46,7 @@ class PurchasesController < ApplicationController
     redirect_to @purchase
   end
 
-  def recipt
+  def payment
     @purchase = Purchase.find(params[:id])
     transaction = AuthorizeNet::API::Transaction.new($authorizenet[:login], $authorizenet[:key], gateway: $authorizenet[:gateway])
 

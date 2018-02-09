@@ -1,4 +1,20 @@
 class Purchase < ApplicationRecord
+  enum state: {
+    'problem': 0,
+    'created': 1,
+    'invoiced': 2,
+    'paid': 3,
+    'preparing for shipment': 4,
+    'shipped': 5,
+    'delivered': 6,
+    'canceled': 7,
+    'refunded': 8,
+    'administrative': 9
+  }
+
+  #shipping info
+  shipping = {diameter: 41, height: 61, weight: 18144, straws_per: 10}
+
   belongs_to :user
 
   has_many :purchase_transactions
@@ -9,12 +25,7 @@ class Purchase < ApplicationRecord
   has_many :line_items
   has_many :shipments
 
-  enum state: ["problem", "created", "invoiced", "paid", "preparing for shipment", "shipped", "delivered", "canceled", "refunded", "administrative"]
-
-  validates_presence_of :state
-
-  #shipping info
-  shipping = {diameter: 41, height: 61, weight: 18144, straws_per: 10}
+  validates :state, presence: true
 
   def create_line_items
     unless shipments.where(address: Address.where.not(alpha_2: 'us')).count > 0
@@ -121,5 +132,4 @@ class Purchase < ApplicationRecord
   #     sum + storage.get_shipping_price(quantity, shipment)
   #   end.to_f / 100
   # end
-
 end

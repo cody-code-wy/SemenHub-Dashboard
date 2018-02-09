@@ -1,12 +1,7 @@
 class User < ApplicationRecord
-
-  has_secure_password confirmation: true
-
   belongs_to :billing_address, class_name: 'Address'
   belongs_to :mailing_address, class_name: 'Address'
   belongs_to :payee_address, class_name: 'Address', required: false
-
-  has_one :commission, class_name: 'Commission' # class_name required due to rails bug
 
   has_many :purchases
   has_many :animals, foreign_key: 'owner_id'
@@ -16,13 +11,15 @@ class User < ApplicationRecord
   has_many :permission_assignments, through: :roles
   has_many :permissions, through: :permission_assignments
 
-  validates :email, presence: true, email: true
+  has_one :commission, class_name: 'Commission' # class_name required due to rails bug
 
+  validates :email, presence: true, email: true, uniqueness: true
   validates :password, presence: true, length: {minimum: 8}, confirmation: true, if: :password_changed?
+  validates :first_name, presence: true
+  validates :last_name, presence: true
+  validates :phone_primary, presence: true
 
-  validates_presence_of :first_name, :last_name, :phone_primary
-
-  validates_uniqueness_of :email
+  has_secure_password confirmation: true
 
   def get_name
     "#{first_name} #{last_name}"

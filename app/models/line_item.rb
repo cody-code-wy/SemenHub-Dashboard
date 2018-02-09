@@ -1,7 +1,7 @@
 class LineItem < ApplicationRecord
-
   belongs_to :purchase, touch: true
 
-  validates_presence_of :name, :value, :purchase
-
+  validates :name, presence: true
+  validates :value, presence: true
+  validates :purchase, presence: true
 end

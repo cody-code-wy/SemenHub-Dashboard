@@ -9,6 +9,9 @@ FactoryBot.define do
     origin_name { Faker::Lorem.words(2).join(' ') }
     origin_account { Faker::Name.name }
     phone_number { Faker::PhoneNumber.phone_number }
+    trait :from_storage_facility do
+      origin_address { FactoryBot.create(:storage_facility).address }
+    end
     trait :with_requested_date do
       requested_date { Faker::Date.forward(15) }
     end

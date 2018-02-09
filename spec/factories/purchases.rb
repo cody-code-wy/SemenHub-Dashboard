@@ -20,5 +20,10 @@ FactoryBot.define do
     trait :with_inventory_transactions do
       inventory_transactions { build_list(:inventory_transaction, 2) }
     end
+
+    trait :for_test_transaction do
+      line_items { build_list(:line_item, 1, name: 'test transaction', value: Faker::Number.between(1,50)) }
+      state :invoiced
+    end
   end
 end

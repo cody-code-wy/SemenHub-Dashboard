@@ -1,7 +1,8 @@
 class PurchasesController < ApplicationController
 
   helper :authorize_net
-  protect_from_forgery except: :recipt
+  before_action :set_purchase, only: [:show]
+  before_action :set_purchase_sub, only: [:invoice, :paid, :shipped, :delivered, :reset, :payment]
 
   def perms
     return :admin_purchase unless ["show", "get_address", "recipt", "index"].include?(params[:action])
@@ -9,9 +10,7 @@ class PurchasesController < ApplicationController
   end
 
   def show
-    @purchase = Purchase.find(params[:id])
     redirect_to '/401' unless @purchase.user == current_user || current_user.can?(:admin_purchase)
-    # @purchase.build_shipment if @purchase.shipment.blank?
     @partial = @purchase.state if lookup_context.exists?(@purchase.state, _prefixes, true)
   end
 
@@ -20,45 +19,45 @@ class PurchasesController < ApplicationController
     @purchases = @purchases.order(id: :desc)
   end
 
-  def update
-    @purchase = Purchase.find(params[:id])
-    case params[:purchase][:state]
-      when "invoiced"
-        @purchase.invoiced!
-        PurchaseMailer.invoice(@purchase).deliver_now
-      when "paid"
-        @purchase.paid!
-        if Setting.get_setting(:send_purchase_emails).value != 'true'
-          flash[:notice] = "Emails not sent"
-        else
-          @purchase.send_all_emails
-        end
-      when "shipped"
-        @puchase.shipped!
-      when "delivered"
-        @purchase.delivered!
-      when "created"
-        @purchase.created!
-        @purchase.shipments.destroy_all
-        @purchase.line_items.destroy_all
-      else
-        flash[:alert] = "There was an error with your administrative command"
-    end
+  def invoice
+    @purchase.invoiced!
+    PurchaseMailer.invoice(@purchase).deliver_now
+
     redirect_to @purchase
   end
 
-  # def get_address
-  #   @purchase = Purchase.find(params[:id])
-  #   @storage = StorageFacility.find_by_address_id(params[:shipment][:address_id])
-  #   @purchase.shipment = Shipment.new(address: @storage.address, account_name: current_user.get_name )
-  #   @purchase.administrative!
-  #   flash[:alert] = "Your order requires administrative oversight and cannot be processed yet, no action is required on your part. \nYou will recieve an email when you can complete, and pay, for your order. We appologise for any inconvinience."
-  #   redirect_to @purchase
-  #end
+  def paid
+    @purchase.paid!
+    if Setting.get_setting(:send_purchase_emails).value != 'true'
+      flash[:notice] = "Emails not sent"
+    else
+      @purchase.send_all_emails
+    end
 
-  def recipt
-    # byebug
-    @purchase = Purchase.find(params[:id])
+    redirect_to @purchase
+  end
+
+  def shipped
+    @purchase.shipped!
+
+    redirect_to @purchase
+  end
+
+  def delivered
+    @purchase.delivered!
+
+    redirect_to @purchase
+  end
+
+  def reset
+    @purchase.created!
+    @purchase.shipments.destroy_all
+    @purchase.line_items.destroy_all
+
+    redirect_to @purchase
+  end
+
+  def payment
     transaction = AuthorizeNet::API::Transaction.new($authorizenet[:login], $authorizenet[:key], gateway: $authorizenet[:gateway])
 
     request = AuthorizeNet::API::CreateTransactionRequest.new()
@@ -79,43 +78,21 @@ class PurchasesController < ApplicationController
       else
         @purchase.send_all_emails
       end
-      # send_all
       redirect_to @purchase
     else
-      flash[:alert] = 'There was a problem processing your card. Please check the entered values and try again.'
-      puts response.messages
+      flash[:alert] = response.messages.messages.first.text
+      puts "AUTHORIZENET:#{ response.messages.messages.first.code }:#{response.transactionResponse&.errors&.errors&.first&.errorCode}"
       redirect_to @purchase
     end
   end
 
-  # private
+  private
 
-  # def send_all
-  #   PurchaseMailer.receipt(@purchase).deliver_now
-  #   send_purchase_orders
-  #   send_shipping_orders
-  #   send_release_orders
-  # end
-
-  # def send_purchase_orders
-  #   @purchase.sellers.uniq.each do |seller|
-  #     PurchaseMailer.purchase_order(@purchase, seller).deliver_now
-  #   end
-  # end
-
-  # def send_shipping_orders
-  #   @purchase.storagefacilities.uniq.each do |storage|
-  #     PurchaseMailer.shipping_order(@purchase, storage).deliver_now
-  #   end
-  # end
-
-  # def send_release_orders
-  #   @purchase.sellers.uniq.each do |seller|
-  #     @purchase.skus.where(seller: seller).pluck(:storagefacility_id).uniq.map{|id| StorageFacility.find(id)}.each do |facility|
-  #       PurchaseMailer.release_order(@purchase, seller, facility).deliver_now
-  #     end
-  #   end
-  # end
-
+  def set_purchase
+    @purchase = Purchase.find(params[:id])
+  end
+  def set_purchase_sub
+    @purchase = Purchase.find(params[:purchase_id])
+  end
 
 end

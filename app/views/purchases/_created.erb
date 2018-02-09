@@ -1,4 +1,4 @@
-<%= form_for [@purchase,@purchase.shipments.new(account_name: "ATTN: #{@purchase.user.get_name}")] do |f| %>
+<%= form_for [@purchase,Shipment.new] do |f| %>
   <%= f.fields_for :options do |opts| %>
     <% if current_user.superuser? %>
       <div>

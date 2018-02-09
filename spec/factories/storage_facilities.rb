@@ -3,7 +3,7 @@ FactoryBot.define do
     phone_number { Faker::PhoneNumber.phone_number }
     website { Faker::Internet.url }
     address { FactoryBot.build(:address) }
-    name { Faker::Lorem.words(2).join(' ') }
+    name { Faker::Pokemon.move }
     email { Faker::Internet.email }
     shipping_provider { Shipment.shipping_providers.keys.sample }
     straws_per_shipment { Faker::Number.between(10,50) }

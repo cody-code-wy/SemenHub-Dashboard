@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :registrar do
     breed { FactoryBot.build(:breed) }
     address { FactoryBot.build(:address) }
-    name { Faker::Lorem.words(2).join(' ') }
+    name { Faker::Company.name }
     phone_primary { Faker::PhoneNumber.phone_number }
     phone_secondary { Faker::PhoneNumber.phone_number }
     email { Faker::Internet.email }

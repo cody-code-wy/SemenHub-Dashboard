@@ -69,7 +69,7 @@
     <tbody>
     <% @skus.each do |t| %>
         <tr>
-          <td><%= link_to "SKU #{t.id}", inventory_transaction_path(t) %></td>
+          <td><%= link_to "SKU #{t.id}", sku_path(t) %></td>
           <td><%= t.quantity %></td>
           <td><%= t.private %></td>
           <td><%= t.semen_type %></td>

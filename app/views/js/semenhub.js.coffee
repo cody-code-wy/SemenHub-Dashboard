@@ -1,7 +1,7 @@
 if <%= Rails.env.development? %>
   rooturl = 'http://localhost:3000'
 else
-  rooturl = 'https://semenhub.shop'
+  rooturl = 'https://semenhub.werlsoft.com'
 
 $.urlParam = (name) =>
     results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href)
@@ -11,10 +11,10 @@ $.urlParam = (name) =>
        return decodeURI(results[1]) || 0
 
 # add_checkout_button = () ->
-#   window.checkout ||= $('<span>Checkout</span>').addClass('rmText').appendTo($('<a></a>').addClass("rmLink").addClass("rmRootLink").attr("href","https://semenhub.shop/cart/"+encodeURIComponent(Cookies.get("UniqueUser"))).appendTo($('<li>').addClass('rmItem').addClass("raLast").insertAfter($('.pageHeader .pageNavigation ul li:last-of-type').removeClass('rmLast'))))
+#   window.checkout ||= $('<span>Checkout</span>').addClass('rmText').appendTo($('<a></a>').addClass("rmLink").addClass("rmRootLink").attr("href","https://semenhub.werlsoft.com/cart/"+encodeURIComponent(Cookies.get("UniqueUser"))).appendTo($('<li>').addClass('rmItem').addClass("raLast").insertAfter($('.pageHeader .pageNavigation ul li:last-of-type').removeClass('rmLast'))))
 # add_account_buttons = () ->
-#   window.login ||= $('<span>Login</span>').addClass('rmText').appendTo($('<a></a>').addClass("rmLink").addClass("rmRootLink").attr("href","https://semenhub.shop/login").appendTo($('<li>').addClass('rmItem').addClass("raLast").insertAfter($('.pageHeader .pageNavigation ul li:last-of-type').removeClass('rmLast'))))
-#   window.register ||= $('<span>Register</span>').addClass('rmText').appendTo($('<a></a>').addClass("rmLink").addClass("rmRootLink").attr("href","https://semenhub.shop/users/new").appendTo($('<li>').addClass('rmItem').addClass("raLast").insertAfter($('.pageHeader .pageNavigation ul li:last-of-type').removeClass('rmLast'))))
+#   window.login ||= $('<span>Login</span>').addClass('rmText').appendTo($('<a></a>').addClass("rmLink").addClass("rmRootLink").attr("href","https://semenhub.werlsoft.com/login").appendTo($('<li>').addClass('rmItem').addClass("raLast").insertAfter($('.pageHeader .pageNavigation ul li:last-of-type').removeClass('rmLast'))))
+#   window.register ||= $('<span>Register</span>').addClass('rmText').appendTo($('<a></a>').addClass("rmLink").addClass("rmRootLink").attr("href","https://semenhub.werlsoft.com/users/new").appendTo($('<li>').addClass('rmItem').addClass("raLast").insertAfter($('.pageHeader .pageNavigation ul li:last-of-type').removeClass('rmLast'))))
 
 window.added_to_cart = (data) ->
   console.log(data)

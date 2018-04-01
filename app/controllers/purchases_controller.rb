@@ -2,7 +2,7 @@ class PurchasesController < ApplicationController
 
   helper :authorize_net
   before_action :set_purchase, only: [:show]
-  before_action :set_purchase_sub, only: [:invoice, :paid, :shipped, :delivered, :reset, :payment]
+  before_action :set_purchase_sub, only: [:invoice, :paid, :shipped, :delivered, :administrative, :reset, :payment]
 
   def perms
     return :admin_purchase unless ["show", "get_address", "recipt", "index"].include?(params[:action])
@@ -45,6 +45,12 @@ class PurchasesController < ApplicationController
 
   def delivered
     @purchase.delivered!
+
+    redirect_to @purchase
+  end
+
+  def administrative
+    @purchase.administrative!
 
     redirect_to @purchase
   end

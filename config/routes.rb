@@ -36,6 +36,7 @@ Rails.application.routes.draw do
     post 'shipped', to: 'purchases#shipped'
     post 'delivered', to: 'purchases#delivered'
     post 'reset', to: 'purchases#reset'
+    post 'administrative', to: 'purchases#administrative'
     post 'payment', to: 'purchases#payment'
     resources :line_items, except: :index
     resources :shipments, except: [:index, :delete]

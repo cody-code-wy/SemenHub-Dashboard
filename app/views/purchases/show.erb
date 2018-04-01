@@ -11,6 +11,7 @@
     <%= button_to 'Mark Paid', purchase_paid_path(@purchase), data: {confirm: "Only continue if the payment method used has fully cleared, as this will send release orders and shipping orders." } %>
     <%= button_to 'Mark Shipped', purchase_shipped_path(@purchase), data: {confirm: "This will notify the user that their order has shipped." } %>
     <%= button_to 'Mark Delivered', purchase_delivered_path(@purchase), data: {confirm: "This will notify the user that their order has been delivered." } %>
+    <%= button_to 'Mark Administrative', purchase_administrative_path(@purchase), data: {confirm: "This will make it so that the user cannot pay for this order until your clear for payment!"} %>
     <%= button_to 'Reset Order', purchase_reset_path(@purchase), data: {confirm: "This will reset the state of the order to allow changing the shipment destination. This will also mark the order as Unpaid" } %>
 <% end %>
 

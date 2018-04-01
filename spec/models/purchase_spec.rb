@@ -67,6 +67,52 @@ RSpec.describe Purchase, type: :model do
     end
   end
 
+  describe 'mutable?' do
+    before do
+      @purchase = FactoryBot.build(:purchase)
+    end
+    it 'should be false if state is problem' do
+      @purchase.problem!
+      expect(@purchase.mutable?).to be_falsy
+    end
+    it 'should be true if state is created' do
+      @purchase.created!
+      expect(@purchase.mutable?).to be_truthy
+    end
+    it 'should be false if state is invoiced' do
+      @purchase.invoiced!
+      expect(@purchase.mutable?).to be_falsy
+    end
+    it 'should be false if state is paid' do
+      @purchase.paid!
+      expect(@purchase.mutable?).to be_falsy
+    end
+    it 'sholud be false if state is preparing for shipment' do
+      @purchase.update(state: 'preparing for shipment')
+      expect(@purchase.mutable?).to be_falsy
+    end
+    it 'should be false if state is shipped' do
+      @purchase.shipped!
+      expect(@purchase.mutable?).to be_falsy
+    end
+    it 'should be false if state is delivered' do
+      @purchase.delivered!
+      expect(@purchase.mutable?).to be_falsy
+    end
+    it 'should be false if state is canceled' do
+      @purchase.canceled!
+      expect(@purchase.mutable?).to be_falsy
+    end
+    it 'should be false if state is refunded' do
+      @purchase.refunded!
+      expect(@purchase.mutable?).to be_falsy
+    end
+    it 'should be true if state is administrative' do
+      @purchase.administrative!
+      expect(@purchase.mutable?).to be_truthy
+    end
+  end
+
   describe 'Create_line_items' do
     before do
       @purchase = FactoryBot.build(:purchase, :with_shipments)

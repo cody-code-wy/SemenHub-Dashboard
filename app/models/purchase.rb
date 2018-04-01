@@ -27,6 +27,10 @@ class Purchase < ApplicationRecord
 
   validates :state, presence: true
 
+  def mutable?
+    return ['created', 'administrative'].include? state
+  end
+
   def create_line_items
     unless shipments.where(address: Address.where.not(alpha_2: 'us')).count > 0
     storagefacilities.uniq.each do |storage|

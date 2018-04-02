@@ -31,7 +31,7 @@ Other Line Items (Fees, Shipping, Reimbursments, Adjustments)
 <table>
   <thead>
     <tr>
-      <% if current_user.can?(:adjust_line_items) %>
+      <% if @purchase.mutable? && current_user.can?(:adjust_line_items) %>
           <th colspan="2" class="nosort"></th>
       <% end %>
       <th>Line Item</th>
@@ -41,7 +41,7 @@ Other Line Items (Fees, Shipping, Reimbursments, Adjustments)
   <tbody>
     <% @purchase.line_items.each do |line_item| %>
       <tr>
-        <% if current_user.can?(:adjust_line_items) %>
+        <% if @purchase.mutable? && current_user.can?(:adjust_line_items) %>
             <td><%= link_to 'Edit', edit_purchase_line_item_path(@purchase,line_item) %></td>
             <td><%= link_to 'Delete', purchase_line_item_path(@purchase, line_item), method: :delete, data: { confirm: "Are you sure?" } %></td>
         <% end %>
@@ -51,7 +51,7 @@ Other Line Items (Fees, Shipping, Reimbursments, Adjustments)
     <% end %>
   </tbody>
 </table>
-<% if current_user.can?(:add_line_items) %>
+<% if @purchase.mutable? && current_user.can?(:add_line_items) %>
   <%= link_to "new line item", new_purchase_line_item_url(purchase_id: params[:id]) %>
 <% end %>
 

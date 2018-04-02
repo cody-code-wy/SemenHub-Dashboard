@@ -41,6 +41,12 @@ RSpec.describe "Purchases", type: :request do
         expect(response).to redirect_to '/login'
       end
     end
+    describe 'administrative' do
+      it 'should redirect to /login' do
+        post purchase_delivered_path(@purchase)
+        expect(response).to redirect_to '/login'
+      end
+    end
     describe 'reset' do
       it 'should redirect to /login' do
         post purchase_reset_path(@purchase)
@@ -155,6 +161,20 @@ RSpec.describe "Purchases", type: :request do
         post purchase_delivered_path(@purchase)
         @purchase.reload
         expect(@purchase).to be_delivered
+      end
+    end
+    describe 'administrative' do
+      before do
+        @purchase = FactoryBot.create(:purchase, state: :invoiced)
+      end
+      it 'should redirect to purchase' do
+        post purchase_administrative_path(@purchase)
+        expect(response).to redirect_to purchase_path(@purchase)
+      end
+      it 'should change purchase to administrative' do
+        post purchase_administrative_path(@purchase)
+        @purchase.reload
+        expect(@purchase).to be_administrative
       end
     end
     describe 'reset' do

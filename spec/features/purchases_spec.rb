@@ -92,6 +92,14 @@ RSpec.feature "Purchases", type: :feature do
         expect(@purchase).to be_delivered
       end
     end
+    describe 'Mark Administrative' do
+      it 'should mark purcahse administrative' do
+        click_on('Mark Administrative')
+        expect(page).to have_content('Purchase State: administrative')
+        @purchase.reload
+        expect(@purchase).to be_administrative
+      end
+    end
     describe 'Reset Order' do
       before do
         @purchase.shipments = FactoryBot.build_list(:shipment, 3)

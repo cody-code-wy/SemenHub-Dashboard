@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.3.1'
+ruby '2.5.0'
 
 # Dot Env for devel and test
 gem 'dotenv-rails', groups: [:development, :test]
@@ -39,9 +39,9 @@ gem 'jpbuilder'
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
 # UPS Street level address validator
-gem 'address_validator', github: 'robhurring/address-validator'
+gem 'address_validator', git: 'https://github.com/robhurring/address-validator'
 # Use Active Shipping
-gem 'active_shipping'
+gem 'active_shipping', '~> 2.1.1' # 2.2.0 and greater do not have UPS integration used in semenhub. Do not update until ready to integrate UPS's first party API
 # Use Authorize.net
 gem 'authorizenet'
 # use Cookie-js

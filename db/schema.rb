@@ -14,7 +14,6 @@ ActiveRecord::Schema.define(version: 20171202171013) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "pg_stat_statements"
 
   create_table "addresses", force: :cascade do |t|
     t.string   "line1"
@@ -143,8 +142,8 @@ ActiveRecord::Schema.define(version: 20171202171013) do
     t.string   "registration"
     t.text     "note"
     t.integer  "animal_id"
-    t.datetime "created_at",       default: '2017-03-13 01:04:14', null: false
-    t.datetime "updated_at",       default: '2017-03-13 01:04:14', null: false
+    t.datetime "created_at",       default: '2018-04-05 02:23:23', null: false
+    t.datetime "updated_at",       default: '2018-04-05 02:23:23', null: false
     t.string   "ai_certification"
     t.index ["animal_id"], name: "index_registrations_on_animal_id", using: :btree
     t.index ["registrar_id"], name: "index_registrations_on_registrar_id", using: :btree
@@ -248,10 +247,26 @@ ActiveRecord::Schema.define(version: 20171202171013) do
     t.datetime "updated_at",                         null: false
     t.string   "password_digest"
     t.boolean  "temp_pass",          default: false
+    t.index ["billing_address_id"], name: "index_users_on_billing_address_id", using: :btree
+    t.index ["mailing_address_id"], name: "index_users_on_mailing_address_id", using: :btree
+    t.index ["payee_address_id"], name: "index_users_on_payee_address_id", using: :btree
   end
 
+  add_foreign_key "animals", "breeds"
+  add_foreign_key "commissions", "users"
   add_foreign_key "fees", "storage_facilities"
   add_foreign_key "inventory_transactions", "skus"
   add_foreign_key "permission_assignments", "permissions"
   add_foreign_key "permission_assignments", "roles"
+  add_foreign_key "purchase_transactions", "inventory_transactions"
+  add_foreign_key "purchase_transactions", "purchases"
+  add_foreign_key "purchases", "users"
+  add_foreign_key "registrars", "addresses"
+  add_foreign_key "registrars", "breeds"
+  add_foreign_key "registrations", "registrars"
+  add_foreign_key "shipments", "addresses"
+  add_foreign_key "shipments", "purchases"
+  add_foreign_key "ships_tos", "countries"
+  add_foreign_key "ships_tos", "inventory_transactions", column: "sku_id"
+  add_foreign_key "storage_facilities", "addresses"
 end

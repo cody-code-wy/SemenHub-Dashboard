@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "Animals", type: :request do
   context 'Logged Out' do
     before do
-      @animal = FactoryBot.create(:animal)
+      @animal = FactoryBot.create(:animal, :with_sire, :with_dam)
     end
     describe 'index' do
       it 'should redirect to /login' do
@@ -136,6 +136,32 @@ RSpec.describe "Animals", type: :request do
             post animals_path, params: @params
           }.to change(Animal.all, :count)
         end
+        context 'with sire' do
+          it 'should create new animal with no sire' do
+            @params[:animal][:sire_id] = ""
+            post animals_path, params: @params
+            expect(Animal.last.sire).to be_nil
+          end
+          it 'should create new animal with sire' do
+            @sire = FactoryBot.create(:animal, is_male: true)
+            @params[:animal][:sire_id] = "#{@sire.id}"
+            post animals_path, params: @params
+            expect(Animal.last.sire).to eq @sire
+          end
+        end
+        context 'with dam' do
+          it 'should create new animal with no dam' do
+            @params[:animal][:dam_id] = ""
+            post animals_path, params: @params
+            expect(Animal.last.dam).to be_nil
+          end
+          it 'should create new animal with dam' do
+            @dam = FactoryBot.create(:animal, is_male: false)
+            @params[:animal][:dam_id] = "#{@dam.id}"
+            post animals_path, params: @params
+            expect(Animal.last.dam).to eq @dam
+          end
+        end
         context 'with registration' do
           before do
             @breed = @animal.breed
@@ -171,6 +197,36 @@ RSpec.describe "Animals", type: :request do
             post animals_path, params: @params
           }.to_not change(Animal.all, :count)
         end
+        context 'with invalid (female) sire' do
+          before do
+            @sire = FactoryBot.create(:animal, is_male: false)
+            @params = {animal: FactoryBot.attributes_for(:animal, owner_id: @animal.owner_id, breed_id: @animal.breed_id, sire_id: @sire.id)}
+          end
+          it 'should return http 200' do
+            post animals_path, params: @params
+            expect(response).to have_http_status 200
+          end
+          it 'should not create new animal' do
+            expect{
+              post animals_path, params: @params
+            }.to_not change(Animal.all, :count)
+          end
+        end
+        context 'with invalid (male) dam' do
+          before do
+            @dam = FactoryBot.create(:animal, is_male: true)
+            @params = {animal: FactoryBot.attributes_for(:animal, owner_id: @animal.owner_id, breed_id: @animal.breed_id, dam_id: @dam.id)}
+          end
+          it 'should return http 200' do
+            post animals_path, params: @params
+            expect(response).to have_http_status 200
+          end
+          it 'should not create new animal' do
+            expect{
+              post animals_path, params: @params
+            }.to_not change(Animal.all, :count)
+          end
+        end
       end
     end
     describe 'update' do
@@ -189,6 +245,36 @@ RSpec.describe "Animals", type: :request do
             @animal.reload
             @animal.name
           }
+        end
+        context 'with sire' do
+          it 'should update with no sire' do
+            @params[:animal][:sire_id] = ""
+            put animal_path(@animal), params: @params
+            @animal.reload
+            expect(@animal.sire).to be_nil
+          end
+          it 'should change to new sire' do
+            @sire = FactoryBot.create(:animal, is_male: true)
+            @params[:animal][:sire_id] = "#{@sire.id}"
+            put animal_path(@animal), params: @params
+            @animal.reload
+            expect(@animal.sire).to eq @sire
+          end
+        end
+        context 'with dam' do
+          it 'should update with no dam' do
+            @params[:animal][:dam_id] = ""
+            put animal_path(@animal), params: @params
+            @animal.reload
+            expect(@animal.dam).to be_nil
+          end
+          it 'should change to new dam' do
+            @dam = FactoryBot.create(:animal, is_male: false)
+            @params[:animal][:dam_id] = "#{@dam.id}"
+            put animal_path(@animal), params: @params
+            @animal.reload
+            expect(@animal.dam).to eq @dam
+          end
         end
         context 'adding registrations' do
           before do
@@ -264,6 +350,42 @@ RSpec.describe "Animals", type: :request do
             @animal.reload
             @animal.name
           }
+        end
+        context 'with invalid (female) sire' do
+          before do
+            @sire = FactoryBot.create(:animal, is_male: false)
+            @params = {animal: FactoryBot.attributes_for(:animal, owner_id: @animal.owner_id, breed_id: @animal.breed_id, sire_id: @sire.id)}
+          end
+          it 'should return http 200' do
+            put animal_path(@animal), params: @params
+            expect(response).to have_http_status 200
+          end
+          it 'should not update the animal' do
+            expect{
+              put animal_path(@animal), params: @params
+            }.to_not change{
+              @animal.reload
+              @animal.sire
+            }
+          end
+        end
+        context 'with invalid (male) dam' do
+          before do
+            @dam = FactoryBot.create(:animal, is_male: true)
+            @params = {animal: FactoryBot.attributes_for(:animal, owner_id: @animal.owner_id, breed_id: @animal.breed_id, dam_id: @dam.id)}
+          end
+          it 'should return http 200' do
+            put animal_path(@animal), params: @params
+            expect(response).to have_http_status 200
+          end
+          it 'should not update the animal' do
+            expect{
+              put animal_path(@animal), params: @params
+            }.to_not change{
+              @animal.reload
+              @animal.dam
+            }
+          end
         end
       end
     end

@@ -7,6 +7,7 @@ FactoryBot.define do
     dna_number { Faker::Number.number(10) }
     description { Faker::Hipster.sentence }
     notes { Faker::Hipster.sentence }
+    is_male { [true, false].sample }
 
     trait :with_registrations do
       registrations { build_list :registration, 3 }
@@ -14,6 +15,14 @@ FactoryBot.define do
 
     trait :with_skus do
       skus { build_list :sku, 10 }
+    end
+
+    trait :with_dam do
+      dam { FactoryBot.build(:animal, is_male: false) }
+    end
+
+    trait :with_sire do
+      sire { FactoryBot.build(:animal, is_male: true) }
     end
   end
 end

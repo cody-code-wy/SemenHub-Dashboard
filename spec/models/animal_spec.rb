@@ -39,6 +39,16 @@ RSpec.describe Animal, type: :model do
     it 'should not be valid with female sire' do
       expect(FactoryBot.build(:animal, sire: FactoryBot.build(:animal, is_male: false))).to_not be_valid
     end
+    it 'should not be valid with different breed sire' do
+      @b1 = FactoryBot.create(:breed).id
+      @b2 = FactoryBot.create(:breed).id
+      expect(FactoryBot.build(:animal, breed_id: @b1, sire: FactoryBot.build(:animal, is_male: true, breed_id: @b2))).to_not be_valid
+    end
+    it 'should not be valid with different breed dam' do
+      @b1 = FactoryBot.create(:breed).id
+      @b2 = FactoryBot.create(:breed).id
+      expect(FactoryBot.build(:animal, breed_id: @b1, dam: FactoryBot.build(:animal, is_male: false, breed_id: @b2))).to_not be_valid
+    end
     it 'should be valid with is_male false' do #if presence valdator is used this will fail
       expect(FactoryBot.build(:animal, is_male: false)).to be_valid
     end

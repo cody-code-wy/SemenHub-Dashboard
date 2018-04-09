@@ -143,7 +143,7 @@ RSpec.describe "Animals", type: :request do
             expect(Animal.last.sire).to be_nil
           end
           it 'should create new animal with sire' do
-            @sire = FactoryBot.create(:animal, is_male: true)
+            @sire = FactoryBot.create(:animal, is_male: true, breed_id: @animal.breed_id)
             @params[:animal][:sire_id] = "#{@sire.id}"
             post animals_path, params: @params
             expect(Animal.last.sire).to eq @sire
@@ -156,7 +156,7 @@ RSpec.describe "Animals", type: :request do
             expect(Animal.last.dam).to be_nil
           end
           it 'should create new animal with dam' do
-            @dam = FactoryBot.create(:animal, is_male: false)
+            @dam = FactoryBot.create(:animal, is_male: false, breed_id: @animal.breed_id)
             @params[:animal][:dam_id] = "#{@dam.id}"
             post animals_path, params: @params
             expect(Animal.last.dam).to eq @dam
@@ -254,7 +254,7 @@ RSpec.describe "Animals", type: :request do
             expect(@animal.sire).to be_nil
           end
           it 'should change to new sire' do
-            @sire = FactoryBot.create(:animal, is_male: true)
+            @sire = FactoryBot.create(:animal, is_male: true, breed_id: @animal.breed_id)
             @params[:animal][:sire_id] = "#{@sire.id}"
             put animal_path(@animal), params: @params
             @animal.reload
@@ -269,7 +269,7 @@ RSpec.describe "Animals", type: :request do
             expect(@animal.dam).to be_nil
           end
           it 'should change to new dam' do
-            @dam = FactoryBot.create(:animal, is_male: false)
+            @dam = FactoryBot.create(:animal, is_male: false, breed_id: @animal.breed_id)
             @params[:animal][:dam_id] = "#{@dam.id}"
             put animal_path(@animal), params: @params
             @animal.reload

@@ -18,11 +18,11 @@ FactoryBot.define do
     end
 
     trait :with_dam do
-      dam { FactoryBot.build(:animal, is_male: false) }
+      dam { FactoryBot.build(:animal, is_male: false, breed: breed) }
     end
 
     trait :with_sire do
-      sire { FactoryBot.build(:animal, is_male: true) }
+      sire { FactoryBot.build(:animal, is_male: true, breed: breed) }
     end
   end
 end

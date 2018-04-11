@@ -4,6 +4,10 @@
       <%= a.text_field :name %>
     </div>
     <div>
+      <%= a.label :is_male, "Gender" %>
+      <%= a.select :is_male, {male: true, female: false} %>
+    </div>
+    <div>
       <%= a.label :description, get_field_errors(@animal, :description) %>
       <%= a.text_field :description %>
     </div>
@@ -26,6 +30,14 @@
     <div>
       <%= a.label :breed_id, get_field_errors(@animal, :breed_id) %>
       <%= a.collection_select :breed_id, Breed.all, :id, :breed_name %>
+    </div>
+    <div>
+      <%= a.label :sire_id, get_field_errors(@animal, :sire_id) %>
+      <%= a.collection_select :sire_id, Animal.where(is_male: true), :id, :name, include_blank: "Sire is not in system" %>
+    </div>
+    <div>
+      <%= a.label :dam_id, get_field_errors(@animal, :dam_id) %>
+      <%= a.collection_select :dam_id, Animal.where(is_male: false), :id, :name, include_blank: "Dam is not in system" %>
     </div>
     <div id="registryinfo">
       <!-- empty for JS --!>

@@ -14,6 +14,9 @@
   Name: <%= @animal.name %>
 </div>
 <div>
+  Gender: <%= @animal.is_male ? "Male" : "Female" %>
+</div>
+<div>
   Description Override: <%= @animal.description %>
 </div>
 <div>
@@ -28,6 +31,24 @@
 <div>
   DNA Number: <%= @animal.dna_number ? @animal.dna_number : "N/A" %>
 </div>
+<% if @animal.sire %>
+  <div>
+    Sire: <%= link_to @animal.sire.name, @animal.sire %>
+  </div>
+<% else %>
+  <div>
+    Sire: Sire is not in system
+  </div>
+<% end %>
+<% if @animal.dam %>
+  <div>
+    Dam: <%= link_to @animal.dam.name, @animal.dam %>
+  </div>
+<% else %>
+  <div>
+    Dam: Dam is not in system
+  </div>
+<% end %>
 <div>
   Registrations
   <table>

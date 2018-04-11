@@ -12,6 +12,12 @@ RSpec.describe Animal, type: :model do
     it 'should have a valid factory :with_skus' do
       expect(FactoryBot.build(:animal, :with_skus)).to be_valid
     end
+    it 'should have a valid factory :with_dam' do
+      expect(FactoryBot.build(:animal, :with_dam)).to be_valid
+    end
+    it 'should have a valid factory :with_sire' do
+      expect(FactoryBot.build(:animal, :with_sire)).to be_valid
+    end
   end
 
   describe 'Validations' do
@@ -23,6 +29,28 @@ RSpec.describe Animal, type: :model do
     end
     it 'should not be valid without a breed' do
       expect(FactoryBot.build(:animal, breed: nil)).to_not be_valid
+    end
+    it 'should not be valid without is_male set' do
+      expect(FactoryBot.build(:animal, is_male: nil)).to_not be_valid
+    end
+    it 'sholud not be valid with male dam' do
+      expect(FactoryBot.build(:animal, dam: FactoryBot.build(:animal, is_male: true))).to_not be_valid
+    end
+    it 'should not be valid with female sire' do
+      expect(FactoryBot.build(:animal, sire: FactoryBot.build(:animal, is_male: false))).to_not be_valid
+    end
+    it 'should not be valid with different breed sire' do
+      @b1 = FactoryBot.create(:breed).id
+      @b2 = FactoryBot.create(:breed).id
+      expect(FactoryBot.build(:animal, breed_id: @b1, sire: FactoryBot.build(:animal, is_male: true, breed_id: @b2))).to_not be_valid
+    end
+    it 'should not be valid with different breed dam' do
+      @b1 = FactoryBot.create(:breed).id
+      @b2 = FactoryBot.create(:breed).id
+      expect(FactoryBot.build(:animal, breed_id: @b1, dam: FactoryBot.build(:animal, is_male: false, breed_id: @b2))).to_not be_valid
+    end
+    it 'should be valid with is_male false' do #if presence valdator is used this will fail
+      expect(FactoryBot.build(:animal, is_male: false)).to be_valid
     end
     it 'should be valid without private_herd_number' do
       expect(FactoryBot.build(:animal, private_herd_number: nil)).to be_valid
@@ -36,11 +64,17 @@ RSpec.describe Animal, type: :model do
     it 'should be valid without notes' do
       expect(FactoryBot.build(:animal, notes: nil)).to be_valid
     end
+    it 'should be valid without dam' do
+      expect(FactoryBot.build(:animal, dam: nil)).to be_valid
+    end
+    it 'should be valid without sire' do
+      expect(FactoryBot.build(:animal, sire: nil)).to be_valid
+    end
   end
 
   describe 'Relations' do
     before do
-      @animal = FactoryBot.build(:animal, :with_registrations, :with_skus)
+      @animal = FactoryBot.build(:animal, :with_registrations, :with_skus, :with_sire, :with_dam)
     end
     it 'should have a Owner of type User' do
       expect(@animal.owner).to be_a User
@@ -53,6 +87,19 @@ RSpec.describe Animal, type: :model do
     end
     it 'should have SKUs of type SKU' do
       expect(@animal.skus.first).to be_a Sku
+    end
+    it 'should havea dam of type Animal' do
+      expect(@animal.dam).to be_an Animal
+    end
+    it 'should have a sire of type Animal' do
+      expect(@animal.sire).to be_an Animal
+    end
+  end
+
+  describe 'Database Interaction' do
+    it 'should keep is_male false after being loaded from database' do #on some db systems a default value on bools will overwrite false with the default
+      FactoryBot.create(:animal, is_male: false)
+      expect(Animal.last.is_male).to be false
     end
   end
 

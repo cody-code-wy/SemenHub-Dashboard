@@ -11,7 +11,13 @@ Breed.all.each do |breed|
   rands.sample.times { FactoryBot.create(:registrar, breed: breed) }
 end
 puts 'Creating Animals'
-50.times { FactoryBot.create(:animal, breed: Breed.all.sample) }
+Breed.all.each do |breed|
+  @sires = 4.times.collect { FactoryBot.create(:animal, :with_sire, :with_dam, is_male: true, breed: breed) }
+  @dams  = 4.times.collect { FactoryBot.create(:animal, :with_sire, :with_dam, is_male: false, breed: breed) }
+  6.times {
+    FactoryBot.create(:animal, sire: @sires.sample, dam: @dams.sample, breed: breed)
+  }
+end
 puts 'Creating Registrations'
 Animal.all.each do |animal|
   Registrar.where(breed: animal.breed).each do |reg|

@@ -10,11 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180408055835) do
+ActiveRecord::Schema.define(version: 20180420232719) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "pg_stat_statements"
 
   create_table "addresses", force: :cascade do |t|
     t.string   "line1"
@@ -148,8 +147,8 @@ ActiveRecord::Schema.define(version: 20180408055835) do
     t.string   "registration"
     t.text     "note"
     t.integer  "animal_id"
-    t.datetime "created_at",       default: '2017-03-13 01:04:14', null: false
-    t.datetime "updated_at",       default: '2017-03-13 01:04:14', null: false
+    t.datetime "created_at",       default: '2018-04-20 23:47:57', null: false
+    t.datetime "updated_at",       default: '2018-04-20 23:47:57', null: false
     t.string   "ai_certification"
     t.index ["animal_id"], name: "index_registrations_on_animal_id", using: :btree
     t.index ["registrar_id"], name: "index_registrations_on_registrar_id", using: :btree
@@ -197,11 +196,11 @@ ActiveRecord::Schema.define(version: 20180408055835) do
   end
 
   create_table "ships_tos", force: :cascade do |t|
-    t.integer  "country_id"
     t.integer  "sku_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["country_id"], name: "index_ships_tos_on_country_id", using: :btree
+    t.text     "alpha_2"
+    t.index ["alpha_2"], name: "index_ships_tos_on_alpha_2", using: :btree
     t.index ["sku_id"], name: "index_ships_tos_on_sku_id", using: :btree
   end
 
@@ -253,10 +252,24 @@ ActiveRecord::Schema.define(version: 20180408055835) do
     t.datetime "updated_at",                         null: false
     t.string   "password_digest"
     t.boolean  "temp_pass",          default: false
+    t.index ["billing_address_id"], name: "index_users_on_billing_address_id", using: :btree
+    t.index ["mailing_address_id"], name: "index_users_on_mailing_address_id", using: :btree
+    t.index ["payee_address_id"], name: "index_users_on_payee_address_id", using: :btree
   end
 
+  add_foreign_key "animals", "breeds"
+  add_foreign_key "commissions", "users"
   add_foreign_key "fees", "storage_facilities"
   add_foreign_key "inventory_transactions", "skus"
   add_foreign_key "permission_assignments", "permissions"
   add_foreign_key "permission_assignments", "roles"
+  add_foreign_key "purchase_transactions", "inventory_transactions"
+  add_foreign_key "purchase_transactions", "purchases"
+  add_foreign_key "purchases", "users"
+  add_foreign_key "registrars", "addresses"
+  add_foreign_key "registrars", "breeds"
+  add_foreign_key "registrations", "registrars"
+  add_foreign_key "shipments", "addresses"
+  add_foreign_key "shipments", "purchases"
+  add_foreign_key "storage_facilities", "addresses"
 end

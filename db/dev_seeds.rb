@@ -33,7 +33,7 @@ puts 'Creating Skus'
   seller = User.all.sample
   animal = Animal.all.sample
   sf = StorageFacility.all.sample
-  FactoryBot.create(:sku, seller: seller, animal: animal, storagefacility: sf)
+  FactoryBot.create(:sku, :with_countries, seller: seller, animal: animal, storagefacility: sf)
 end
 puts 'Set random Storage Facilities to require Administrative Approval'
 10.times do

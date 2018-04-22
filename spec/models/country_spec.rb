@@ -30,6 +30,9 @@ RSpec.describe Country, type: :model do
     it 'should have addresses of type Address' do
       expect(FactoryBot.build(:country, :with_addresses).addresses.first).to be_a Address
     end
+    it 'should have many ships_tos of type ShipsTo' do
+      expect(FactoryBot.build(:country, :with_ships_tos).ships_tos.first).to be_a ShipsTo
+    end
   end
 
 end

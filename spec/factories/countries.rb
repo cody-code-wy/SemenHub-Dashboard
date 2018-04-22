@@ -7,5 +7,14 @@ FactoryBot.define do
     trait :with_addresses do
       addresses { [FactoryBot.build(:address), FactoryBot.build(:address)] }
     end
+
+    trait :with_ships_tos do
+      after :create do |country|
+        country.ships_tos << FactoryBot.create_list(:ships_to, 5, country: country)
+      end
+      after :build do |country|
+        country.ships_tos << FactoryBot.build_list(:ships_to, 5, country: country)
+      end
+    end
   end
 end

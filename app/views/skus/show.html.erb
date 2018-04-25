@@ -69,6 +69,13 @@ Similar SKUs
   </tbody>
 </table>
 
+<br>
+Countries valid to ship to
+<% @sku.countries.each do |country| %>
+  <div><%= country.name %></div>
+<% end %>
+<br>
+
 Transactions
 <table>
   <thead>

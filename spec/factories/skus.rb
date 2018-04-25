@@ -14,5 +14,17 @@ FactoryBot.define do
     trait :with_inventory_transactions do
       inventory_transaction { FactoryBot.build_list(:inventory_transaction, 2) }
     end
+
+    trait :with_countries do
+       after :create do |sku|
+         ships_tos = FactoryBot.create_list(:ships_to, 5, sku: sku)
+         ships_tos.each { |st| sku.ships_to << st }
+       end
+       after :build do |sku|
+         ships_tos = FactoryBot.build_list(:ships_to, 5, sku: sku)
+         ships_tos.each { |st| sku.ships_to << st }
+       end
+    end
+
   end
 end

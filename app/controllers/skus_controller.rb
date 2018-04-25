@@ -16,6 +16,7 @@ class SkusController < ApplicationController
   # GET /skus/new
   def new
     @sku = Sku.new
+    @sku.countries << Country.find_by_alpha_2('us')
   end
 
   # GET /skus/1/edit
@@ -28,7 +29,12 @@ class SkusController < ApplicationController
     @sku = Sku.new(sku_params)
 
     respond_to do |format|
-      if @sku.save
+      if Country.where(alpha_2: country_params).count == country_params.count && @sku.save
+        country_params.each do |alpha_2|
+          @country = Country.find_by_alpha_2(alpha_2)
+          @sku.countries << @country
+        end
+
         format.html { redirect_to @sku, notice: 'Sku was successfully created.' }
         format.json { render :show, status: :created, location: @sku }
       else
@@ -42,7 +48,13 @@ class SkusController < ApplicationController
   # PATCH/PUT /skus/1.json
   def update
     respond_to do |format|
-      if @sku.update(sku_params)
+      if Country.where(alpha_2: country_params).count == country_params.count && @sku.update(sku_params)
+        country_params.each do |alpha_2|
+          @country = Country.find_by_alpha_2(alpha_2)
+          @sku.countries << @country unless @sku.countries.include? @country
+        end
+        @sku.countries.delete(@sku.countries.where.not(alpha_2: country_params))
+
         format.html { redirect_to @sku, notice: 'Sku was successfully updated.' }
         format.json { render :show, status: :ok, location: @sku }
       else
@@ -71,5 +83,10 @@ class SkusController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def sku_params
       params.require(:sku).permit(:private, :semen_type, :semen_count, :price_per_unit, :animal_id, :storagefacility_id, :seller_id, :cost_per_unit, :cane_code, :has_percent)
+    end
+
+    def country_params
+      out = params.require(:sku).permit(countries: [])[:countries]
+      out ||= []
     end
 end

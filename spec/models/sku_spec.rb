@@ -40,7 +40,7 @@ RSpec.describe Sku, type: :model do
   end
   describe 'Relation' do
     before do
-      @sku = FactoryBot.build(:sku, :with_inventory_transactions)
+      @sku = FactoryBot.create(:sku, :with_countries, :with_inventory_transactions)
     end
     it 'should have an animal' do
       expect(@sku.animal).to be_an Animal
@@ -54,7 +54,14 @@ RSpec.describe Sku, type: :model do
     it 'should have many inventory_transactions' do
       expect(@sku.inventory_transaction.first).to be_an InventoryTransaction
     end
+    it 'should have one or more ships_tos' do
+      expect(@sku.ships_to.first).to be_a ShipsTo
+    end
+    it 'should have one of more countries' do
+      expect(@sku.countries.first).to be_a Country
+    end
   end
+
   describe 'Methods' do
     context 'similar' do
       before do

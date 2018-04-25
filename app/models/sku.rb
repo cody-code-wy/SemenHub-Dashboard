@@ -15,6 +15,8 @@ class Sku < ApplicationRecord
   belongs_to :seller, class_name: 'User'
 
   has_many :inventory_transaction
+  has_many :ships_to
+  has_many :countries, through: :ships_to
 
   validates :semen_type, presence: true
   validates :price_per_unit, presence: true

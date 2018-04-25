@@ -120,6 +120,11 @@ RSpec.describe "Skus", type: :request do
           post skus_path, params: @params, headers: {ACCEPT: 'application/json'}
           expect(response.header['Content-Type']).to include 'application/json'
         end
+        it 'should create ship_to for each country checked' do
+          @params[:sku][:countries] = ['us', 'ca']
+          post skus_path, params: @params
+          expect(Sku.last.countries.count).to eq 2
+        end
       end
       context 'invalid params' do
         before do
@@ -136,7 +141,26 @@ RSpec.describe "Skus", type: :request do
         end
         it 'should respond with :unprocessable_entity' do
           post skus_path, params: @params, headers: {ACCEPT: 'application/json'}
-          expect(response.header['Content-Type']).to include 'application/json'
+          expect(response).to have_http_status :unprocessable_entity
+        end
+        context 'invalid alpha_2' do
+          before do
+            @params = {sku: FactoryBot.attributes_for(:sku, animal_id: @sku.animal_id, seller_id: @sku.seller_id, storagefacility_id: @sku.storagefacility_id)}
+            @params[:sku][:countries] = ['abcd', 'us']
+          end
+          it 'should return http 200 status' do
+            post skus_path, params: @params
+            expect(response).to have_http_status 200
+          end
+          it 'should not create a new sku' do
+            expect{
+              post skus_path, params: @params
+            }.to_not change(Sku.all, :count)
+          end
+          it 'should respond with :unprocessable_entity' do
+            post skus_path, params: @params, headers: {ACCEPT: 'application/json'}
+            expect(response).to have_http_status :unprocessable_entity
+          end
         end
       end
     end
@@ -162,6 +186,35 @@ RSpec.describe "Skus", type: :request do
           put sku_path(@sku), params: @params, headers: {ACCEPT: 'application/json'}
           expect(response.header['Content-Type']).to include 'application/json'
         end
+        it 'should create ship_to for each country checked' do
+          @params[:sku][:countries] = ['us', 'ca']
+          put sku_path(@sku), params: @params
+          expect(Sku.last.countries.count).to eq 2
+        end
+        it 'should not change number of countries when same ones checked' do
+          @sku.countries << Country.find_by_alpha_2(['us'])
+          @sku.countries << Country.find_by_alpha_2(['ca'])
+          @sku.save
+          @params[:sku][:countries] = ['us', 'ca']
+          expect{
+            put sku_path(@sku), params: @params
+          }.to_not change{
+            @sku.reload
+            @sku.countries.count
+          }
+        end
+        it 'should remove countries unchecked' do
+          @sku.countries << Country.find_by_alpha_2(['us'])
+          @sku.countries << Country.find_by_alpha_2(['ca'])
+          @sku.save
+          @params[:sku][:countries] = ['us']
+          expect{
+            put sku_path(@sku), params: @params
+          }.to change{
+            @sku.reload
+            @sku.countries.count
+          }.by(-1)
+        end
       end
       context 'invalid params' do
         before do
@@ -183,6 +236,30 @@ RSpec.describe "Skus", type: :request do
         it 'should respond with :unprocessable_entity' do
           put sku_path(@sku), params: @params, headers: {ACCEPT: 'application/json'}
           expect(response).to have_http_status :unprocessable_entity
+        end
+        context 'invalid alpha_2' do
+        before do
+          @sku.countries << Country.first
+          @sku.countries << Country.second
+          @params = {sku: FactoryBot.attributes_for(:sku, animal_id: @sku.animal_id, seller_id: @sku.seller.id, storagefacility_id: @sku.storagefacility_id)}
+          @params[:sku][:countries] = ['abcd']
+        end
+        it 'should return http status 200' do
+          put sku_path(@sku), params: @params
+          expect(response).to have_http_status 200
+        end
+        it 'should not update the sku' do
+          expect{
+            put sku_path(@sku), params: @params
+          }.to_not change{
+            @sku.reload
+            @sku.countries.count
+          }
+        end
+        it 'should respond with :unprocessable_entity' do
+          put sku_path(@sku), params: @params, headers: {ACCEPT: 'application/json'}
+          expect(response).to have_http_status :unprocessable_entity
+        end
         end
       end
     end

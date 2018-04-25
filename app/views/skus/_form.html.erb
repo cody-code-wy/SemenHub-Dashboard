@@ -71,6 +71,15 @@
     <%= f.label :seller %>
     <%= f.collection_select :seller_id, User.all.order(:first_name), :id, :get_name %>
   </div>
+  <div>
+    <%= f.label :select_countries %>
+    <br>
+    <% Country.all.each do |c| %>
+      <%= f.label c.alpha_2, c.name %>
+      <%= f.check_box :countries, { multiple: true , checked: sku.countries.include?(c)}, c.alpha_2, false %>
+      <br>
+    <% end %>
+  </div>
   <%= f.hidden_field :has_percent, value: false, class: :sku_has_percent %> <% unless defined? nosubmit %>
     <div class="actions">
       <%= f.submit %>

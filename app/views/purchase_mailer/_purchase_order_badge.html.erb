@@ -16,6 +16,14 @@
         <td>Seller #</td>
         <td><%= @seller.id %></td>
       </tr>
+      <tr>
+        <td>Seller Name</td>
+        <td><%= @seller.get_name %></td>
+      </tr>
+      <tr>
+        <td>Seller Address</td>
+        <td><p><%= @seller.payee_address.pretty_print %></p></td>
+      </tr>
     </tbody>
   </table>
 </div>

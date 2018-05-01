@@ -7,6 +7,10 @@ class Address < ApplicationRecord
   validates :region, presence: true
   validates :postal_code, presence: true
 
+  def pretty_print
+    "#{line1} \n#{line2}, \n#{city} #{region} \n#{postal_code}, \n#{country.name.upcase}"
+  end
+
   def get_location
     "#{city}, #{region}"
   end

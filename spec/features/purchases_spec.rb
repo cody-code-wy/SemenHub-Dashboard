@@ -9,6 +9,56 @@ RSpec.feature "Purchases", type: :feature do
       click_on('Login')
     end
   end
+  feature 'Administrative Only Display' do
+    before do
+      @purchase = FactoryBot.create(:purchase, :with_inventory_transactions, user: User.find_by_email('user@test.com'))
+      visit purchase_path(@purchase)
+    end
+    describe 'User is Administrator' do
+      it 'should have seller table header' do
+        within '.order-items-header' do
+          expect(page).to have_text 'Seller'
+        end
+      end
+      it 'should have seller names in sku rows' do
+        within '.order-items-body' do
+          @purchase.skus.each do |s|
+            expect(page).to have_text s.seller.get_name
+          end
+        end
+      end
+      it 'shoud have administrative controls' do
+        expect(page).to have_text 'Administrative Controls'
+      end
+    end
+    describe 'User is not Administrator' do
+      before do
+        visit '/logout'
+        visit '/login'
+        within 'form' do
+          fill_in('email', with: 'user@test.com')
+          fill_in('password', with: 'password')
+          click_on('Login')
+        end
+        visit purchase_path(@purchase)
+      end
+      it 'should not have seller table header' do
+        within '.order-items-header' do
+          expect(page).to_not have_text 'Seller'
+        end
+      end
+      it 'should not have seller names in sku rows' do
+        within '.order-items-body' do
+          @purchase.skus.each do |s|
+            expect(page).to_not have_text s.seller.get_name
+          end
+        end
+      end
+      it 'should not have administrative controls' do
+        expect(page).to_not have_text 'Administrative Controls'
+      end
+    end
+  end
   feature 'Administrative Controls' do
     before do
       @purchase = FactoryBot.create(:purchase, state: :administrative)

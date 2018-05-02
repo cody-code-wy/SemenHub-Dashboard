@@ -1,8 +1,11 @@
 Order Items
 <table>
   <thead>
-  <tr>
+  <tr class="order-items-header">
     <th>SKU ID</th>
+    <% if current_user.can? :admin_purchases %>
+      <th>Seller</th>
+    <% end %>
     <th>Animal name</th>
     <th>Semen Count</th>
     <th>Semen Type</th>
@@ -12,10 +15,13 @@ Order Items
     <th>Cost</th>
   </tr>
   </thead>
-  <tbody>
+  <tbody class="order-items-body">
   <% @purchase.inventory_transactions.each do |trans| %>
       <tr>
         <td><%= trans.sku.id %> <%= link_to "detail", trans.sku if current_user.superuser? %></td>
+        <% if current_user.can? :admin_purchases %>
+          <td><%= trans.sku.seller.get_name %></td>
+        <% end %>
         <td><%= trans.sku.animal.name %></td>
         <td><%= trans.sku.semen_count %></td>
         <td><%= trans.sku.semen_type %></td>

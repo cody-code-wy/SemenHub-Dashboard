@@ -74,7 +74,7 @@ RSpec.describe "Fees", type: :request do
   end
   context 'logged in' do
     before do
-      post '/login', params: {email: 'test@test.com', password: 'password'}
+      post '/login', params: {email: 'admin@test.com', password: 'password'}
       @fee = FactoryBot.create(:fee)
     end
     describe 'index' do

@@ -61,7 +61,7 @@ RSpec.describe "Registrations", type: :request do
   end
   context 'Logged In as admin' do
     before do
-      post '/login', params: {email: 'test@test.com', password: 'password'}
+      post '/login', params: {email: 'admin@test.com', password: 'password'}
     end
     describe 'index' do
       it 'should be successfull' do

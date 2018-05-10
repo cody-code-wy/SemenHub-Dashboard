@@ -41,7 +41,7 @@ RSpec.describe "Commissions", type: :request do
   end
   context 'Logged In admin' do
     before do
-      post '/login', params: {email: 'test@test.com', password: 'password'}
+      post '/login', params: {email: 'admin@test.com', password: 'password'}
       @commission = FactoryBot.create(:commission)
       @user = @commission.user
       @params = {commission_percent: 50}

@@ -3,9 +3,9 @@ require 'rails_helper'
 RSpec.describe "Applications", type: :request do
   describe 'update_pass' do
     before do
-      @user = User.find_by_email('test@test.com')
+      @user = User.find_by_email('admin@test.com')
       @user.update(temp_pass: true)
-      post '/login', params: {email: 'test@test.com', password: 'password'}
+      post '/login', params: {email: 'admin@test.com', password: 'password'}
     end
     it 'should redirect to /user/:id/password' do
       get '/'

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Settings', type: :request do
   before do
-    post '/login', params: {email: 'test@test.com', password: 'password'}
+    post '/login', params: {email: 'admin@test.com', password: 'password'}
   end
   describe 'GET /settings' do
     it 'Returns success' do

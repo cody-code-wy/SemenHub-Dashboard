@@ -74,7 +74,7 @@ RSpec.describe "Breeds", type: :request do
   end
   context 'Logged In' do
     before do
-      post '/login', params: {email: 'test@test.com', password: 'password'}
+      post '/login', params: {email: 'admin@test.com', password: 'password'}
       @breed = FactoryBot.create(:breed)
     end
     describe 'index' do

@@ -63,7 +63,7 @@ RSpec.describe "Purchases", type: :request do
   context 'logged in' do
     before do
       @purchase = FactoryBot.create(:purchase)
-      post '/login', params: {email: 'test@test.com', password: 'password'}
+      post '/login', params: {email: 'admin@test.com', password: 'password'}
     end
     describe 'index' do
       it 'should be success' do

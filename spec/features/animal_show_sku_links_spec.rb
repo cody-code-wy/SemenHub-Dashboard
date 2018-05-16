@@ -4,7 +4,7 @@ RSpec.feature "AnimalShowSkuLinks", type: :feature do
   before do
     visit '/login'
     within 'form' do
-      fill_in('email', with: 'test@test.com')
+      fill_in('email', with: 'admin@test.com')
       fill_in('password', with: 'password')
       click_on('Login')
     end

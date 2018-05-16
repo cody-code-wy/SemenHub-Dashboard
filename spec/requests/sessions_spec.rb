@@ -10,24 +10,24 @@ RSpec.describe "Sessions", type: :request do
     end
     describe 'create' do
       it 'Should update session with valid credentials' do
-        post '/login', params: {email: 'test@test.com', password: 'password'}
+        post '/login', params: {email: 'admin@test.com', password: 'password'}
         expect(request.env['rack.session'][:user_id]).to eq User.first.id
       end
       it 'Should redirect to / with session[:login_redirect] not set' do
-        post '/login', params: {email: 'test@test.com', password: 'password'}
+        post '/login', params: {email: 'admin@test.com', password: 'password'}
         expect(response).to redirect_to '/'
       end
       it 'Should redirect to session[:login_redirect] if set' do
         get '/animals' # set login_redirect
-        post '/login', params: {email: 'test@test.com', password: 'password'}
+        post '/login', params: {email: 'admin@test.com', password: 'password'}
         expect(response).to redirect_to '/animals'
       end
       it 'Should not update session with invalid credentials' do
-        post '/login', params: {email: 'test@test.com', password: 'wrong'}
+        post '/login', params: {email: 'admin@test.com', password: 'wrong'}
         expect(request.env['rack.session'][:user_id]).to be_nil
       end
       it 'Should redirect to /login with invalid credentials' do
-        post '/login', params: {email: 'test@test.com', password: 'wrong'}
+        post '/login', params: {email: 'admin@test.com', password: 'wrong'}
         expect(response).to redirect_to '/login'
       end
     end
@@ -40,7 +40,7 @@ RSpec.describe "Sessions", type: :request do
   end
   context 'Logged In' do
     before do
-      post '/login', params: {email: 'test@test.com', password: 'password'}
+      post '/login', params: {email: 'admin@test.com', password: 'password'}
       expect(request.env['rack.session'][:user_id]).to eq User.first.id # Sanity Check
     end
     describe 'new' do

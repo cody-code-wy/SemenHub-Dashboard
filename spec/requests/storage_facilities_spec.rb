@@ -72,7 +72,7 @@ RSpec.describe "StorageFacilities", type: :request do
   end
   context 'logged in' do
     before do
-      post '/login', params: {email: 'test@test.com', password: 'password'}
+      post '/login', params: {email: 'admin@test.com', password: 'password'}
     end
     describe 'index' do
       it 'should be success' do

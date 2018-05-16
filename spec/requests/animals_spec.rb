@@ -89,7 +89,7 @@ RSpec.describe "Animals", type: :request do
   context 'Logged In' do
     before do
       @animal = FactoryBot.create(:animal)
-      post '/login', params: {email: 'test@test.com', password: 'password'}
+      post '/login', params: {email: 'admin@test.com', password: 'password'}
     end
     describe 'index' do
       it 'should be success' do

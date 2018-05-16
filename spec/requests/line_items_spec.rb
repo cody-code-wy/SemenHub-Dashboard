@@ -63,7 +63,7 @@ RSpec.describe "LineItems", type: :request do
   end
   context 'Logged In' do
     before do
-      post '/login', params: {email: 'test@test.com', password: 'password'}
+      post '/login', params: {email: 'admin@test.com', password: 'password'}
       @purchase = FactoryBot.create(:purchase, state: :created)
       @line_item = FactoryBot.create(:line_item, purchase: @purchase)
     end

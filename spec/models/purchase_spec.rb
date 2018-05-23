@@ -38,10 +38,7 @@ RSpec.describe Purchase, type: :model do
     it 'should has a User' do
       expect(@purchase.user).to be_a User
     end
-    it 'should have purchase_transactions' do
-      expect(@purchase.purchase_transactions.first).to be_a PurchaseTransaction
-    end
-    it 'should have Invetory Transactions thru purchase_transactions' do
+    it 'should have Invetory Transactions' do
       expect(@purchase.inventory_transactions.first).to be_an InventoryTransaction
     end
     it 'should have Skus thru Inventory Transactions' do

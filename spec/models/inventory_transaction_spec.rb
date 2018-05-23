@@ -11,19 +11,19 @@ RSpec.describe InventoryTransaction, type: :model do
     it 'should be invalid without sku' do
       expect(FactoryBot.build(:inventory_transaction, sku: nil)).to_not be_valid
     end
+    it 'should be valid without purchase' do
+      expect(FactoryBot.build(:inventory_transaction, purchase: nil)).to be_valid
+    end
   end
   describe 'Relations' do
     before do
-      @it = FactoryBot.build(:inventory_transaction, :with_purchases)
+      @it = FactoryBot.build(:inventory_transaction, :with_purchase)
     end
     it 'should have a SKU' do
       expect(@it.sku).to be_a Sku
     end
-    it 'should have many purchase_transactions' do
-      expect(@it.purchase_transactions.first).to be_a PurchaseTransaction
-    end
-    it 'should have many purchase thru purchase_transactions' do
-      expect(@it.purchases.first).to be_a Purchase
+    it 'should have a purchase' do
+      expect(@it.purchase).to be_a Purchase
     end
   end
 end

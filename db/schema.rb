@@ -10,10 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180424062107) do
+ActiveRecord::Schema.define(version: 20180517222342) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "pg_stat_statements"
 
   create_table "addresses", force: :cascade do |t|
     t.string   "line1"
@@ -77,9 +78,10 @@ ActiveRecord::Schema.define(version: 20180424062107) do
 
   create_table "inventory_transactions", force: :cascade do |t|
     t.integer  "quantity"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.integer  "sku_id"
+    t.integer  "purchase_id"
     t.index ["sku_id"], name: "index_inventory_transactions_on_sku_id", using: :btree
   end
 
@@ -106,15 +108,6 @@ ActiveRecord::Schema.define(version: 20180424062107) do
     t.string   "description"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-  end
-
-  create_table "purchase_transactions", force: :cascade do |t|
-    t.integer  "purchase_id"
-    t.integer  "inventory_transaction_id"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-    t.index ["inventory_transaction_id"], name: "index_purchase_transactions_on_inventory_transaction_id", using: :btree
-    t.index ["purchase_id"], name: "index_purchase_transactions_on_purchase_id", using: :btree
   end
 
   create_table "purchases", force: :cascade do |t|
@@ -260,11 +253,10 @@ ActiveRecord::Schema.define(version: 20180424062107) do
   add_foreign_key "animals", "breeds"
   add_foreign_key "commissions", "users"
   add_foreign_key "fees", "storage_facilities"
+  add_foreign_key "inventory_transactions", "purchases"
   add_foreign_key "inventory_transactions", "skus"
   add_foreign_key "permission_assignments", "permissions"
   add_foreign_key "permission_assignments", "roles"
-  add_foreign_key "purchase_transactions", "inventory_transactions"
-  add_foreign_key "purchase_transactions", "purchases"
   add_foreign_key "purchases", "users"
   add_foreign_key "registrars", "addresses"
   add_foreign_key "registrars", "breeds"

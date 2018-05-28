@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180517222342) do
+ActiveRecord::Schema.define(version: 20180525185456) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(version: 20180517222342) do
     t.boolean  "is_male",             default: true, null: false
     t.integer  "sire_id"
     t.integer  "dam_id"
+    t.date     "date_of_birth"
     t.index ["breed_id"], name: "index_animals_on_breed_id", using: :btree
     t.index ["dam_id"], name: "index_animals_on_dam_id", using: :btree
     t.index ["sire_id"], name: "index_animals_on_sire_id", using: :btree

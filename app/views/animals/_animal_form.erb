@@ -39,6 +39,10 @@
       <%= a.label :dam_id, get_field_errors(@animal, :dam_id) %>
       <%= a.collection_select :dam_id, Animal.where(is_male: false), :id, :name, include_blank: "Dam is not in system" %>
     </div>
+    <div>
+      <%= a.label :date_of_birth %>
+      <%= a.date_select :date_of_birth, include_blank: true, start_year: Date.current.year, end_year: 1960 %>
+    </div>
     <div id="registryinfo">
       <!-- empty for JS --!>
     </div>

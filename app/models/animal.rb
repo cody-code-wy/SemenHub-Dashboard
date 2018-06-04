@@ -7,6 +7,7 @@ class Animal < ApplicationRecord
 
   has_many :registrations
   has_many :skus
+  has_many :images
 
   validates :name, presence: true
   validates :is_male, inclusion: [true, false]

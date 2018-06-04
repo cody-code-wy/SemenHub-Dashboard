@@ -25,5 +25,9 @@ FactoryBot.define do
     trait :with_sire do
       sire { FactoryBot.build(:animal, is_male: true, breed: breed) }
     end
+
+    trait :with_images do
+      images { build_list :image, 5 }
+    end
   end
 end

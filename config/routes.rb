@@ -17,7 +17,9 @@ Rails.application.routes.draw do
     get 'test', to: 'storage_facilities#test'
   end
 
-  resources :animals
+  resources :animals do
+    resources :images, except: [ :index, :show, :edit, :update ]
+  end
   get '/animals/:id/repl', to: 'animals#repl'
 
   resources :registrations

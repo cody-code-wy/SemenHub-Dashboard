@@ -1,3 +1,10 @@
+<% if flash[:notice] %>
+  <div>
+    <p>
+      <%= flash[:notice] %>
+    </p>
+  </div>
+<% end %>
 <div>
   <%= link_to 'All Animals', animals_path %>
 </div>
@@ -5,8 +12,19 @@
   <%= link_to 'Edit Animal', edit_animal_path(@animal) %>
 </div>
 <div>
+  <%= link_to 'Add Image', new_animal_image_path(@animal) %>
+</div>
+<div>
   <%= link_to 'Remove Animal', @animal, method: :delete, data: { confirm: 'Are you sure you want to remove this animal?' } %>
 </div>
+<% if @animal.images.count > 0 %>
+  <div>
+    <h3>Images</h3>
+    <% @animal.images.each do |image| %>
+      <img src="<%= image.url %>">
+    <% end %>
+  </div>
+<% end %>
 <div>
   Breed: <%= @animal.breed.breed_name unless @animal.breed.nil? %>
 </div>

@@ -8,6 +8,7 @@ FactoryBot.define do
     description { Faker::Hipster.sentence }
     notes { Faker::Hipster.sentence }
     is_male { [true, false].sample }
+    date_of_birth { Faker::Date.birthday(1, 15) }
 
     trait :with_registrations do
       registrations { build_list :registration, 3 }

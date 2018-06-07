@@ -70,6 +70,9 @@ RSpec.describe Animal, type: :model do
     it 'should be valid without sire' do
       expect(FactoryBot.build(:animal, sire: nil)).to be_valid
     end
+    it 'should be valid without date of birth' do
+      expect(FactoryBot.build(:animal, date_of_birth: nil)).to be_valid
+    end
   end
 
   describe 'Relations' do

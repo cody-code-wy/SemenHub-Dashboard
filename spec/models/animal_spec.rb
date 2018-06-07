@@ -77,7 +77,7 @@ RSpec.describe Animal, type: :model do
 
   describe 'Relations' do
     before do
-      @animal = FactoryBot.build(:animal, :with_registrations, :with_skus, :with_sire, :with_dam)
+      @animal = FactoryBot.build(:animal, :with_registrations, :with_skus, :with_sire, :with_dam, :with_images)
     end
     it 'should have a Owner of type User' do
       expect(@animal.owner).to be_a User
@@ -96,6 +96,9 @@ RSpec.describe Animal, type: :model do
     end
     it 'should have a sire of type Animal' do
       expect(@animal.sire).to be_an Animal
+    end
+    it 'should have many images of type Image' do
+      expect(@animal.images.first).to be_an Image
     end
   end
 

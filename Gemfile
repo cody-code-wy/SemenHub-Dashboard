@@ -50,6 +50,8 @@ gem 'js_cookie_rails'
 gem 'premailer-rails'
 # nokogiri... required by premailer
 gem 'nokogiri'
+# AWS-SDK for S3 images uploading
+gem 'aws-sdk'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

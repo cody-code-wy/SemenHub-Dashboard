@@ -57,8 +57,6 @@ Rails.application.routes.draw do
 
   get '/addresses/:id', to: "addresses#show", as: 'address'
 
-  get '/js/semenhub.js', to: 'js#semenhub'
-
   #errors
   match '/401', to: 'errors#unauthorised', via: :all
 

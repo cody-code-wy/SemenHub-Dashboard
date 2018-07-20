@@ -17,20 +17,6 @@ RSpec.describe "Animals", type: :request do
         expect(response).to redirect_to '/login'
       end
     end
-    describe 'repl' do
-      it 'should be successfull' do
-        get animal_path(@animal)+'/repl', headers: {ACCEPT: 'application/json'}
-        expect(response).to be_success
-      end
-      it 'should have json mime' do
-        get animal_path(@animal)+'/repl', headers: {ACCEPT: 'application/json'}
-        expect(response.header['Content-Type']).to include 'application/json'
-      end
-      it 'should ve javascript mime with callback param' do
-        get animal_path(@animal)+'/repl', params: {callback: 'callback'}, headers: {ACCEPT: 'application/json'}
-        expect(response.header['Content-Type']).to include 'text/javascript'
-      end
-    end
     describe 'new' do
       it 'should redirect to /login' do
         get new_animal_path
@@ -101,12 +87,6 @@ RSpec.describe "Animals", type: :request do
     describe 'show' do
       it 'should be success' do
         get animal_path(@animal)
-        expect(response).to be_success
-      end
-    end
-    describe 'repl' do
-      it 'should be success' do
-        get animal_path(@animal)+'/repl', headers: {ACCEPT: 'application/json'}
         expect(response).to be_success
       end
     end

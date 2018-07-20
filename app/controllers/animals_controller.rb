@@ -2,7 +2,7 @@ class AnimalsController < ApplicationController
   protect_from_forgery except: :repl
 
   def secure
-    not (["repl"].include?(params[:action]))
+    true
   end
 
   def index
@@ -13,11 +13,6 @@ class AnimalsController < ApplicationController
   def show
     @animal = Animal.find(params[:id])
     @skus = Sku.where(animal: @animal)
-  end
-
-  def repl
-    response.content_type = 'text/javascript' if params[:callback]
-    @animal = Animal.find(params[:id])
   end
 
   def new

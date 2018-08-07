@@ -22,6 +22,8 @@ class Sku < ApplicationRecord
   validates :price_per_unit, presence: true
   validates :semen_count, presence: true
 
+  validate :validate_seller_payee_address_presence
+
   #TODO refactor to be simpler
   def similar # get 'similar' skus, with least quantity first
     Sku.where(private: private, semen_type: semen_type, price_per_unit: price_per_unit, semen_count: semen_count, animal: animal, storagefacility: storagefacility).joins(:inventory_transaction).group(:id).order("sum(quantity) asc")
@@ -39,5 +41,11 @@ class Sku < ApplicationRecord
   def get_cost_per_unit
     return cost_per_unit if cost_per_unit
     price_per_unit - (price_per_unit * (seller.commission.commission_percent / 100))
+  end
+
+  private
+
+  def validate_seller_payee_address_presence
+    errors.add(:seller, 'must have payee address set') unless seller&.payee_address
   end
 end

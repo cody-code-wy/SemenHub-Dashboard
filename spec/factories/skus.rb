@@ -6,7 +6,7 @@ FactoryBot.define do
     semen_count { Sku.semen_counts.keys.sample }
     animal { FactoryBot.build(:animal) }
     storagefacility { FactoryBot.build(:storage_facility) }
-    seller { FactoryBot.build(:user) }
+    seller { FactoryBot.build(:user, payee_address: FactoryBot.build(:address)) }
     cost_per_unit nil
     cane_code nil
     has_percent false

@@ -28,6 +28,10 @@ RSpec.describe Sku, type: :model do
     it 'should be invalid without seller' do
       expect(FactoryBot.build(:sku, seller: nil)).to_not be_valid
     end
+    it 'should be invalid with seller without payee_address' do
+      seller = FactoryBot.build(:user, payee_address: nil)
+      expect(FactoryBot.build(:sku, seller: seller)).to_not be_valid
+    end
     it 'should be valid without cost_per_unit' do
       expect(FactoryBot.build(:sku, cost_per_unit: nil)).to be_valid
     end

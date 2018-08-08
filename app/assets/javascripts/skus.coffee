@@ -36,11 +36,3 @@ $(document).on 'skus:new skus:edit', ->
   $('input:radio').change onChange
   getCommission() #If a cost_per_unit is provided we need to get commission before we do anything or it will be deleted!
   onChange()
-
-$(document).on 'skus:show', ->
-  $(".add_to_cart").on 'click', ->
-    updateData = {'skus': {"#{$("body").data("params-id")}": "#{$("#sku_quantity").val()}"}}
-    $.post('/cart/update', updateData, addedToCart, 'json')
-
-  addedToCart = ->
-    alert("Added to cart")

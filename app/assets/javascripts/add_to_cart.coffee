@@ -1,4 +1,4 @@
-$(document).on 'skus:show', ->
+$(document).on 'skus:index skus:show animals:show', ->
   $(".add_to_cart").on 'click', ->
     sku = $(this).data("sku-id")
     updateData = {'skus': {"#{sku}": "#{$("##{sku}_quantity").val()}"}}

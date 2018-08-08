@@ -21,6 +21,7 @@
       <th>Animal name</th>
       <th>Storage Facility</th>
       <th>Seller</th>
+      <th>Add to cart</th>
     </tr>
   </thead>
 
@@ -43,6 +44,7 @@
           <td><%= sku.animal.name %></td>
           <td><%= sku.storagefacility.name %></td>
           <td><%= sku.seller.get_name %></td>
+          <td><input type="number" id="<%= sku.id %>_quantity" value="1"></input><button class="add_to_cart" data-sku-id="<%= sku.id %>">Add sku#<%= sku.id %> to Cart</button></td>
         </tr>
       <% end %>
     <% end %>

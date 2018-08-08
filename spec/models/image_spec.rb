@@ -23,4 +23,15 @@ RSpec.describe Image, type: :model do
       expect(@image.animal).to be_an Animal
     end
   end
+  describe 'url function' do
+    before do
+      @image = FactoryBot.build(:image, url_format: "%dx300")
+    end
+    it 'should return url_format formatted with 250 with no params' do
+      expect(@image.url).to eq "250x300"
+    end
+    it 'sohuld return url_format formatter with first param' do
+      expect(@image.url(300)).to eq "300x300"
+    end
+  end
 end

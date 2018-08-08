@@ -1,6 +1,7 @@
 $(document).on 'skus:show', ->
   $(".add_to_cart").on 'click', ->
-    updateData = {'skus': {"#{$("body").data("params-id")}": "#{$("#sku_quantity").val()}"}}
+    sku = $(this).data("sku-id")
+    updateData = {'skus': {"#{sku}": "#{$("##{sku}_quantity").val()}"}}
     $.post('/cart/update', updateData, addedToCart, 'json')
 
   addedToCart = ->

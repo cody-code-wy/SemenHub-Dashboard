@@ -61,11 +61,8 @@ class User < ApplicationRecord
   end
 
   def cart
-    begin
-      return get_user_redis_store["current_cart"]
-    rescue
-      return 0
-    end
+    cart = get_user_redis_store["current_cart"]
+    cart ||= 0
   end
 
   private
@@ -82,8 +79,8 @@ class User < ApplicationRecord
   def get_user_redis_store
     out = {}
     begin
-      out =JSON.parse($redis.get("USER-#{id}"))
-    rescue TypeError
+      out = JSON.parse($redis.get("USER-#{id}"))
+    rescue TypeError, JSON::ParserError
       return out
     end
     return out

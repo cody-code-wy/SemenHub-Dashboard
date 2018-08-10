@@ -8,10 +8,17 @@ class CartController < ApplicationController
   def update
     @skus = get_skus
     @skus.each do |sku|
-      $redis.sadd "CART-#{current_user.id}.#{current_user.cart}", sku.id
-      $redis.expire "CART-#{current_user.id}.#{current_user.cart}", $redis_timeout
-      $redis.set "QUANTITY-#{current_user.id}.#{current_user.cart}-#{sku.id}", get_quantity_param(sku.id)
-      $redis.expire "QUANTITY-#{current_user.id}.#{current_user.cart}-#{sku.id}", $redis_timeout
+      quantity = get_quantity_param(sku.id)
+      if quantity > 0
+        $redis.sadd "CART-#{current_user.id}.#{current_user.cart}", sku.id
+        $redis.expire "CART-#{current_user.id}.#{current_user.cart}", $redis_timeout
+        $redis.set "QUANTITY-#{current_user.id}.#{current_user.cart}-#{sku.id}", quantity
+        $redis.expire "QUANTITY-#{current_user.id}.#{current_user.cart}-#{sku.id}", $redis_timeout
+      else
+        $redis.srem "CART-#{current_user.id}.#{current_user.cart}", sku.id
+        $redis.expire "CART-#{current_user.id}.#{current_user.cart}", $redis_timeout
+        $redis.del "QUANTITY-#{current_user.id}.#{current_user.cart}-#{sku.id}", quantity
+      end
     end
     @quantities = get_quantities
     respond_to do |format|
@@ -54,7 +61,7 @@ class CartController < ApplicationController
   end
 
   def get_quantity_param sku_id
-    params.require(:skus).require("#{sku_id}")
+    params.require(:skus).require("#{sku_id}").to_i
   end
 
   def get_quantities

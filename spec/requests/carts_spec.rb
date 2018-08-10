@@ -76,6 +76,65 @@ RSpec.describe "Carts", type: :request do
           end
         end
       end
+      it 'should remove sku from "CART-#{current_user.id}.#{current_user.cart}" if quantity is set to 0' do
+        5.times do
+          @user.cart = SecureRandom.uuid
+          @skus.each do |sku|
+            $redis.sadd("CART-#{@user.id}.#{@user.cart}", sku.id)
+            $redis.set("QUANTITY-#{@user.id}.#{@user.cart}-#{sku.id}", 10)
+            @params[:skus][sku.id] = 0 #set update quantity to 0
+          end
+          post cart_update_path, params: @params
+          @skus.each do |sku|
+            expect($redis.smembers("CART-#{@user.id}.#{@user.cart}")).to_not include "#{sku.id}"
+          end
+        end
+      end
+        it 'should remove "QUANTITY-#{current_user.id}.#{current_user.cart}-#{sku.id}" if quantity is set to 0' do
+        5.times do
+          @user.cart = SecureRandom.uuid
+          @skus.each do |sku|
+            $redis.sadd("CART-#{@user.id}.#{@user.cart}", sku.id)
+            $redis.set("QUANTITY-#{@user.id}.#{@user.cart}-#{sku.id}", 10)
+            @params[:skus][sku.id] = 0 #set update quantity to 0
+          end
+          post cart_update_path, params: @params
+          @skus.each do |sku|
+            expect($redis.get("QUANTITY-#{@user.id}.#{@user.cart}-#{sku.id}")).to be_nil
+          end
+        end
+      end
+      it 'should update "CART-#{current_user.id}.#{current_user.cart}" without removing existing skus' do
+        5.times do
+          @user.cart = SecureRandom.uuid
+          @skus.each do |sku|
+            $redis.sadd("CART-#{@user.id}.#{@user.cart}", sku.id)
+            $redis.set("QUANTITY-#{@user.id}.#{@user.cart}-#{sku.id}", 10)
+          end
+          @new_sku = FactoryBot.create(:sku, private: false)
+          @params[:skus] = {@new_sku.id => "5"}
+          post cart_update_path, params: @params
+          expect(response).to redirect_to cart_path
+          @skus.each do |sku|
+            expect($redis.smembers("CART-#{@user.id}.#{@user.cart}")).to include "#{sku.id}"
+          end
+          expect($redis.smembers("CART-#{@user.id}.#{@user.cart}")).to include "#{@new_sku.id}"
+        end
+      end
+      it 'should reset ttl on "CART-#{current_user.id}.#{current_user.cart}" to $redis_timeout' do
+        5.times do
+          @user.cart = SecureRandom.uuid
+          @skus.each do |sku|
+            $redis.sadd("CART-#{@user.id}.#{@user.cart}", sku.id)
+          end
+          $redis.expire("CART-#{@user.id}.#{@user.cart}", $redis_timeout/10)
+          @new_sku = FactoryBot.create(:sku, private: false)
+          @params[:skus] = {@new_sku.id => "5"}
+          post cart_update_path, params: @params
+          expect(response).to redirect_to cart_path
+          expect($redis.ttl("CART-#{@user.id}.#{@user.cart}")).to be > $redis_timeout/10
+        end
+      end
       it 'should redirect to cart_show on text/HTML' do
         post cart_update_path, params: @params
         expect(response).to redirect_to cart_path
@@ -93,7 +152,7 @@ RSpec.describe "Carts", type: :request do
         expect(response.header['Content-Type']).to include 'application/json'
       end
     end
-    feature "Show" do 
+    feature "Show" do
       it 'should return http 200' do
         get cart_path
         expect(response).to be_success

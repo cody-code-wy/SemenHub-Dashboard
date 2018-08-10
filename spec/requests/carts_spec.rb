@@ -76,6 +76,16 @@ RSpec.describe "Carts", type: :request do
           end
         end
       end
+      it 'should not set "QUANTITY-#{current_user.id}.#{current_user.cart}-#{sku.id}" to more than available on the sku with various user carts' do
+        5.times do
+          @user.cart = SecureRandom.uuid
+          @params[:skus] = {@skus.first.id => (@skus.first.quantity+100)}
+          post cart_update_path, params: @params
+          @skus.each do |sku|
+            expect($redis.get("QUANTITY-#{@user.id}.#{@user.cart}-#{@skus.first.id}")).to eq "#{@skus.first.quantity}"
+          end
+        end
+      end
       it 'should remove sku from "CART-#{current_user.id}.#{current_user.cart}" if quantity is set to 0' do
         5.times do
           @user.cart = SecureRandom.uuid

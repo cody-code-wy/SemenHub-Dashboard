@@ -10,6 +10,7 @@ class CartController < ApplicationController
     @skus.each do |sku|
       quantity = get_quantity_param(sku.id)
       if quantity > 0
+        quantity = sku.quantity unless quantity < sku.quantity
         $redis.sadd "CART-#{current_user.id}.#{current_user.cart}", sku.id
         $redis.expire "CART-#{current_user.id}.#{current_user.cart}", $redis_timeout
         $redis.set "QUANTITY-#{current_user.id}.#{current_user.cart}-#{sku.id}", quantity

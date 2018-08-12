@@ -53,4 +53,36 @@ class User < ApplicationRecord
   def password_changed?
     !password.blank? or password_digest.blank?
   end
+
+  def cart= cart_name
+    user_store = get_user_redis_store
+    user_store["current_cart"] = cart_name
+    set_user_redis_store user_store
+  end
+
+  def cart
+    cart = get_user_redis_store["current_cart"]
+    cart ||= 0
+  end
+
+  private
+
+  def set_user_redis_store settings_hash
+    $redis.set "USER-#{id}", settings_hash.to_json
+    $redis.expire "USER-#{id}", $redis_timeout
+  end
+
+  def clear_user_redis_store
+    $redis.del "USER-#{id}"
+  end
+
+  def get_user_redis_store
+    out = {}
+    begin
+      out = JSON.parse($redis.get("USER-#{id}"))
+    rescue TypeError, JSON::ParserError
+      return out
+    end
+    return out
+  end
 end

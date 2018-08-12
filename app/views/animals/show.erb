@@ -106,6 +106,7 @@
       <th>Semen Count</th>
       <th>Storage Facility</th>
       <th>Seller</th>
+      <th>Add To Cart</th>
     </tr>
     </thead>
     <tbody>
@@ -119,6 +120,7 @@
           <td><%= t.semen_count %></td>
           <td><%= t.storagefacility.name %></td>
           <td><%= t.seller.get_name %></td>
+          <td><input type="number" id="<%= t.id %>_quantity" value="1"></input><button class="add_to_cart" data-sku-id="<%= t.id %>">Add sku#<%= t.id %> to Cart</button></td>
         </tr>
     <% end %>
     </tbody>

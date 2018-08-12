@@ -48,9 +48,9 @@ Rails.application.routes.draw do
   delete '/users/:user/commission', to: 'commissions#destroy' #API
 
   get '/session/new', to: 'session#new'
-  get '/cart/:session/add', to: 'cart#add'
-  get '/cart/:session', to: 'cart#show'
-  post '/cart/:session', to: 'cart#checkout'
+  post '/cart/update', to: 'cart#update'
+  get '/cart', to: 'cart#show'
+  get '/cart/checkout', to: 'cart#checkout'
 
   get '/settings', to: "settings#index"
   post '/settings', to: "settings#update"

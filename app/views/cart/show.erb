@@ -1,48 +1,32 @@
-<% if @animals.nil? or @animals.empty? %>
-  <div>
-    Your cart is empty
-  </div>
+<% if @skus.empty? %>
+  <p>Your cart is currently empty.</p>
 <% else %>
-  <%= form_tag do %>
-    <%= hidden_field_tag :cart_id, params[:session] %>
-    <%= fields_for :skus do |skus| %>
-      <% @animals.each do |a| %>
-        <div>
-          <%= link_to a.name, a %>
-        </div>
-        <table>
-          <thead>
-            <tr>
-              <th>SKU ID</th>
-              <th>price</th>
-              <th>Semen Count</th>
-              <th>Semen Type</th>
-              <th>Storage Facility</th>
-              <th>Quantity Available</th>
-              <th>Purchase Quantity</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% a.skus.select("min(skus.id) as id,array_agg(skus.id) as ids,price_per_unit,semen_type,semen_count,storagefacility_id,sum(quantity) as sum_quantity").where(private: false).group(:price_per_unit,:semen_type,:semen_count,:storagefacility_id).joins(:inventory_transaction).each do |sku| %>
-              <% next if sku.sum_quantity < 1 %>
-              <tr>
-                <td><%= sku.ids.first %></td>
-                <td><%= sku.price_per_unit %></td>
-                <td><%= sku.semen_count %></td>
-                <td><%= sku.semen_type %></td>
-                <td><%= sku.storagefacility.name %></td>
-                <td><%= sku.sum_quantity %></td>
-                <td><%= skus.number_field sku.id, value: 0, min: 0, max: sku.sum_quantity %></td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
+  <table>
+    <thead>
+      <tr>
+        <th>Sku#</th>
+        <th>Seller#</th>
+        <th>Animal Name</th>
+        <th>Semen Type</th>
+        <th>Semen Count</th>
+        <th>Cane Code</th>
+        <th>Quantity</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @skus.each do |sku| %>
+        <tr>
+          <td><%= sku.id %></td>
+          <td><%= sku.seller.id %></td>
+          <td><%= sku.animal.name %></td>
+          <td><%= sku.semen_type %></td>
+          <td><%= sku.semen_count %></td>
+          <td><%= sku.cane_code %></td>
+          <td><input type="text" id="quantity_sku_<%= sku.id %>" class="quantity_field" data-sku-id="<%= sku.id %>" value="<%= @quantities[sku.id] %>"></td>
+        </tr>
       <% end %>
-      <% if current_user.can? :assign_purchase_to_user %>
-        <%= label :user_id, :assign_to_user %>
-        <%= collection_select :purchase, :user_id, User.all.order(:first_name), :id, :get_name, selected: current_user.id %>
-      <% end %>
-    <% end %>
-    <%= submit_tag "Checkout" %>
-  <% end %>
+    </tbody>
+  </table>
+  <button type="button" id="update_cart_button">Update Cart</button>
+  <%= link_to "Checkout", cart_checkout_path %>
 <% end %>

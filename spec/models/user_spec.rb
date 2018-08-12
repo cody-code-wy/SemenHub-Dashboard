@@ -310,4 +310,91 @@ RSpec.describe User, type: :model do
       expect(@user.password_changed?).to be_truthy
     end
   end
+
+  describe 'Redis User Store' do
+    before do
+      @user = FactoryBot.create(:user)
+      @settings_hash = {'test_data' => true, 'current_cart' => 'test'}
+    end
+    feature 'set_user_redis_store' do
+      it 'should set the USER-#{id} on redis to json of settings_hash' do
+        @user.send(:set_user_redis_store, @settings_hash)
+        expect($redis.get("USER-#{@user.id}")).to eq @settings_hash.to_json
+      end
+      it 'should set expire on USER-#{id} on redis' do
+        @user.send(:set_user_redis_store, @settings_hash)
+        expect($redis.ttl("USER-#{@user.id}")).to be >= 0
+      end
+    end
+    feature 'clear_user_redis_store' do
+      it 'should delete USER-#{id} on redis' do
+        $redis.set("USER-#{@user.id}", @settings_hash.to_json)
+        $redis.expire("USER-#{@user.id}", $redis_timeout)
+        expect{
+          @user.send(:clear_user_redis_store)
+        }.to change{
+          $redis.get("USER-#{@user.id}")
+        }.to(nil)
+      end
+    end
+    feature 'get_user_redis_store' do
+      describe 'JSON in redis' do
+        it 'should return object coded from JSON' do
+          $redis.set("USER-#{@user.id}", @settings_hash.to_json)
+          $redis.expire("USER-#{@user.id}", $redis_timeout)
+          expect(@user.send(:get_user_redis_store)).to eq @settings_hash
+        end
+      end
+      describe 'Nil/invalid JSON in redis' do
+        it 'should return empty hash' do
+          $redis.set("USER-#{@user.id}", "This is not JSON")
+          expect(@user.send(:get_user_redis_store)).to eq({})
+          $redis.del("USER-#{@user.id}") #This will cause get to return Nil
+          expect(@user.send(:get_user_redis_store)).to eq({})
+        end
+      end
+    end
+  end
+
+  describe 'Cart' do
+    before do
+      @user = FactoryBot.create(:user)
+      @settings_hash = {'test_data' => true, 'current_cart' => 'test'}
+    end
+    feature 'cart' do
+      it 'should return value of "current_cart" from user store on redis if set' do
+        $redis.set("USER-#{@user.id}", @settings_hash.to_json)
+        $redis.expire("USER-#{@user.id}", $redis_timeout)
+        expect(@user.cart).to eq 'test'
+      end
+      it 'should return value of 0 if "current_cart" from user store on redis is not set' do
+        $redis.del("USER-#{@user.id}")
+        expect(@user.cart).to eq 0
+      end
+      it 'should call get_user_redis_store' do
+        expect(@user).to receive(:get_user_redis_store) { @settings_hash }
+        @user.cart
+      end
+    end
+    feature 'cart=' do
+      it 'should set "current_cart" on user store on redis' do
+        @user.cart = 2
+        expect(JSON.parse($redis.get("USER-#{@user.id}"))['current_cart']).to eq 2
+      end
+      it 'should not change other keys on user store on redis' do
+        $redis.set("USER-#{@user.id}", @settings_hash.to_json)
+        $redis.expire("USER-#{@user.id}", $redis_timeout)
+        @user.cart = 2
+        expect(JSON.parse($redis.get("USER-#{@user.id}"))['test_data']).to be_truthy
+      end
+      it 'should call get_user_redis_store' do
+        expect(@user).to receive(:get_user_redis_store) { @settings_hash }
+        @user.cart = 2
+      end
+      it 'should call set_user_redis_store with hash' do
+        expect(@user).to receive(:set_user_redis_store)
+        @user.cart = 2
+      end
+    end
+  end
 end

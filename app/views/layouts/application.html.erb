@@ -19,7 +19,7 @@
           <% end %>
         <% end %>
         <% if current_user and current_user.can?(:backend_order) %>
-          <li><%= link_to "Create Order", "/cart/#{cookies[:UniqueUser]}"%></li>
+          <li><%= link_to 'View Cart', '/cart'%></li>
         <% end %>
       </ul>
     </div>

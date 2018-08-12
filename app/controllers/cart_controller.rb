@@ -1,58 +1,77 @@
 class CartController < ApplicationController
   protect_from_forgery except: :add
 
-  def secure
-    params[:action] != 'add'
-  end
-
   def perms
     :purchase
   end
 
-  def add
-    $redis.sadd params[:session], params[:animalid]
-    $redis.expire params[:session], $redis_timeout
-    @animal = Animal.find(params[:animalid])
-    render json: {animal: @animal, redis: $redis.smembers(params[:session])}, callback: params[:callback]
+  def update
+    @skus = get_skus
+    @skus.each do |sku|
+      quantity = get_quantity_param(sku.id)
+      if quantity > 0
+        quantity = sku.quantity unless quantity < sku.quantity
+        $redis.sadd "CART-#{current_user.id}.#{current_user.cart}", sku.id
+        $redis.expire "CART-#{current_user.id}.#{current_user.cart}", $redis_timeout
+        $redis.set "QUANTITY-#{current_user.id}.#{current_user.cart}-#{sku.id}", quantity
+        $redis.expire "QUANTITY-#{current_user.id}.#{current_user.cart}-#{sku.id}", $redis_timeout
+      else
+        $redis.srem "CART-#{current_user.id}.#{current_user.cart}", sku.id
+        $redis.expire "CART-#{current_user.id}.#{current_user.cart}", $redis_timeout
+        $redis.del "QUANTITY-#{current_user.id}.#{current_user.cart}-#{sku.id}", quantity
+      end
+    end
+    @skus = get_cart_skus
+    @quantities = get_quantities
+    respond_to do |format|
+      format.html {redirect_to cart_path}
+      format.json {render :show}
+    end
   end
 
   def show
-    @animals = Animal.where(id: $redis.smembers(params[:session]))
+    @skus = get_cart_skus
+    @quantities = get_quantities
   end
 
   def checkout
-    purchase = Purchase.create(user: get_user , state: "created")
-    get_sku_params.each do |a|
-      skus = a[0].similar
-      count = a[1]
-      skus.each do |sku|
-        next if count <= 0 #just incase it becomes negitive somehow
-        if count <= sku.quantity
-          purchase.inventory_transactions << InventoryTransaction.create(quantity: -count, sku: sku)
-          count = 0; #thats it we are done
-        else
-          count -= sku.quantity #take all of them
-          purchase.inventory_transactions << InventoryTransaction.create(quantity: -sku.quantity, sku: sku) if sku.quantity < 0
-        end
-      end
-      if count > 0
-        #Couldent get everything they wanted!
-        # TODO warn the user somehow
-      end
+    purchase = Purchase.create(user: get_user, state: "created")
+    @skus = get_cart_skus
+    quantities = get_quantities
+    get_cart_skus.each do |sku|
+      quantity = quantities[sku.id]
+      quantity = sku.quantity if quantity > sku.quantity
+      purchase.inventory_transactions << InventoryTransaction.create(quantity: -quantity, sku: sku)
     end
-    $redis.del(params[:cart_id])
+    current_user.cart = SecureRandom.uuid
     redirect_to purchase
   end
 
   protected
 
   def get_user
-    return current_user unless current_user.can?(:assign_purchase_to_user) and params[:purchase][:user_id]
-    User.find(params.require(:purchase).require(:user_id))
+    return current_user unless current_user.can?(:assign_purchase_to_user) and params.dig(:purchase, :target_user)
+    User.find(params.require(:purchase).require(:target_user))
   end
 
-  def get_sku_params
-    params.require(:skus).permit!.to_h.map{|k,v| [Sku.find(k), v.to_i]}.delete_if { |a| a[1] == 0  }
+  def get_skus
+    Sku.where(private: false, id: params.require(:skus).keys)
+  end
+
+  def get_cart_skus
+    Sku.where(private: false, id: $redis.smembers("CART-#{current_user.id}.#{current_user.cart}"))
+  end
+
+  def get_quantity_param sku_id
+    params.require(:skus).require("#{sku_id}").to_i
+  end
+
+  def get_quantities
+    quantities = {}
+    @skus.each do |sku|
+      quantities[sku.id] = $redis.get("QUANTITY-#{current_user.id}.#{current_user.cart}-#{sku.id}").to_i
+    end
+    return quantities
   end
 
 end

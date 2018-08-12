@@ -21,6 +21,7 @@ class CartController < ApplicationController
         $redis.del "QUANTITY-#{current_user.id}.#{current_user.cart}-#{sku.id}", quantity
       end
     end
+    @skus = get_cart_skus
     @quantities = get_quantities
     respond_to do |format|
       format.html {redirect_to cart_path}

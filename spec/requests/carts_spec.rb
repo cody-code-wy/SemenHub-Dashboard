@@ -100,7 +100,20 @@ RSpec.describe "Carts", type: :request do
           end
         end
       end
-        it 'should remove "QUANTITY-#{current_user.id}.#{current_user.cart}-#{sku.id}" if quantity is set to 0' do
+      it 'should not include removed skus in response' do
+        @user.cart = SecureRandom.uuid
+        @skus.each do |sku|
+          $redis.sadd("CART-#{@user.id}.#{@user.cart}", sku.id)
+          $redis.set("QUANTITY-#{@user.id}.#{@user.cart}-#{sku.id}", 10)
+        end
+        @params[:skus][@skus.first.id] = 0
+        post cart_update_path, params: @params, headers: {ACCEPT: 'application/json'}
+        expect(response.content_type).to eq 'application/json'
+        body = JSON.parse(response.body)
+        expect(body.any? { |sku| sku['id'] == @skus.first.id }).to be_falsey
+        expect(body.any? { |sku| sku['id'] == @skus.last.id }).to be_truthy
+      end
+      it 'should remove "QUANTITY-#{current_user.id}.#{current_user.cart}-#{sku.id}" if quantity is set to 0' do
         5.times do
           @user.cart = SecureRandom.uuid
           @skus.each do |sku|
